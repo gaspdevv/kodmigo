@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function WaitlistSection() {
   return (
     <section className="px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
@@ -10,12 +12,12 @@ export default function WaitlistSection() {
             <p className="mt-3 text-slate-600">
             Kodmigo ile programlamaya karmaşık kaynaklar arasında kaybolmadan, sade ve eğlenceli bir başlangıç yap.
             </p>
-            <a
-              href="#preview"
+            <Link
+              href="/dashboard"
               className="mt-6 inline-flex h-12 items-center justify-center rounded-2xl bg-kodmigo-orange px-8 font-semibold text-white shadow-lg shadow-kodmigo-orange/25 transition hover:bg-orange-600"
             >
               Python yoluna başla
-            </a>
+            </Link>
           </div>
         </div>
       </div>

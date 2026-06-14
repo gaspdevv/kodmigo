@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function HeroSection() {
   return (
     <section className="relative overflow-hidden bg-gradient-to-b from-kodmigo-orange-light/70 via-kodmigo-cream/50 to-background px-4 pb-16 pt-8 sm:px-6 lg:px-8 lg:pb-24 lg:pt-12">
@@ -35,12 +37,12 @@ export default function HeroSection() {
             </p>
 
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-              <a
-                href="#preview"
+              <Link
+                href="/dashboard"
                 className="inline-flex h-12 items-center justify-center rounded-2xl bg-kodmigo-orange px-6 text-base font-semibold text-white shadow-lg shadow-kodmigo-orange/25 transition hover:bg-orange-600"
               >
                 Python yoluna başla
-              </a>
+              </Link>
               <a
                 href="#how-it-works"
                 className="inline-flex h-12 items-center justify-center rounded-2xl border border-slate-200 bg-white px-6 text-base font-semibold text-kodmigo-navy shadow-sm transition hover:border-kodmigo-orange/40 hover:bg-kodmigo-orange-light/40"
