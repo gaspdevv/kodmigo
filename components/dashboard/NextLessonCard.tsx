@@ -32,7 +32,7 @@ export default function NextLessonCard() {
 
       <button
         type="button"
-        className={`w-full rounded-2xl py-3 text-sm font-semibold transition ${theme.secondaryButton} ${theme.secondaryButtonHover}`}
+        className={`w-full rounded-2xl py-3 text-sm font-semibold transition ${theme.primaryButton} ${theme.primaryButtonHover}`}
       >
         Derse başla
       </button>
