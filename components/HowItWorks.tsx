@@ -15,7 +15,7 @@ const steps = [
     number: "3",
     title: "Mini projeler geliştir",
     description:
-      "",
+      "Öğrendiklerini küçük projelerde kullanarak gerçekten bir şeyler üretmeye başla.",
   },
 ];
 
