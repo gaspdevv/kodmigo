@@ -38,7 +38,7 @@ export default function HeroSection() {
 
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
               <Link
-                href="/dashboard"
+                href="/onboarding"
                 className="inline-flex h-12 items-center justify-center rounded-2xl bg-kodmigo-orange px-6 text-base font-semibold text-white shadow-lg shadow-kodmigo-orange/25 transition hover:bg-orange-600"
               >
                 Python yoluna başla
