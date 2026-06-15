@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { getDashboardTheme } from "@/components/dashboard/getDashboardTheme";
 import { dashboardMock } from "@/lib/dashboard-mock";
 
@@ -30,12 +31,12 @@ export default function NextLessonCard() {
         ))}
       </div>
 
-      <button
-        type="button"
-        className={`w-full rounded-2xl py-3 text-sm font-semibold transition ${theme.primaryButton} ${theme.primaryButtonHover}`}
+      <Link
+        href="/learn/python"
+        className={`block w-full rounded-2xl py-3 text-center text-sm font-semibold transition ${theme.primaryButton} ${theme.primaryButtonHover}`}
       >
         Derse başla
-      </button>
+      </Link>
     </section>
   );
 }

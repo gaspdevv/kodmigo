@@ -15,10 +15,10 @@ export default function OptionCard({
     <button
       type="button"
       onClick={onSelect}
-      className={`w-full rounded-2xl border-2 px-4 py-4 text-left transition-all sm:px-5 sm:py-4 ${
+      className={`w-full cursor-pointer rounded-2xl border-2 px-4 py-4 text-left transition-all sm:px-5 sm:py-4 ${
         selected
           ? "border-kodmigo-orange bg-kodmigo-orange-light/60 shadow-md shadow-kodmigo-orange/10 ring-1 ring-kodmigo-orange/30"
-          : "border-slate-200/80 bg-white hover:border-kodmigo-orange/40 hover:bg-kodmigo-cream/50"
+          : "border-slate-200/80 bg-white hover:border-kodmigo-orange/40 hover:bg-kodmigo-cream/50 active:scale-[0.99]"
       }`}
     >
       <div className="flex items-start gap-3">

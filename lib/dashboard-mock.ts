@@ -5,7 +5,7 @@ import {
 } from "@/components/dashboard/stageThemes";
 
 /** Test için currentStage değiştir: bronze | silver | gold | platinum | diamond | master */
-const CURRENT_STAGE: StageKey = "bronze";
+const CURRENT_STAGE: StageKey = "diamond";
 /** Son aşamada (master) null yap */
 const NEXT_STAGE: StageKey | null = "silver";
 

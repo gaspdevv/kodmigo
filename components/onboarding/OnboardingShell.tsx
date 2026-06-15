@@ -135,7 +135,7 @@ export default function OnboardingShell() {
 
       <header className="relative z-10 px-4 pb-2 pt-6 sm:px-6">
         <div className="mx-auto flex max-w-lg items-center justify-between">
-          <Link href="/" className="flex items-center gap-2">
+          <Link href="/" className="flex cursor-pointer items-center gap-2">
             <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-kodmigo-orange text-lg font-bold text-white shadow-md shadow-kodmigo-orange/30">
               K
             </span>
@@ -272,7 +272,7 @@ export default function OnboardingShell() {
             <button
               type="button"
               onClick={handleBack}
-              className="inline-flex h-12 flex-1 items-center justify-center rounded-2xl border border-slate-200 bg-white px-4 text-base font-semibold text-kodmigo-navy shadow-sm transition hover:border-kodmigo-orange/40 hover:bg-kodmigo-orange-light/30"
+              className="inline-flex h-12 flex-1 cursor-pointer items-center justify-center rounded-2xl border border-slate-200 bg-white px-4 text-base font-semibold text-kodmigo-navy shadow-sm transition hover:border-kodmigo-orange/40 hover:bg-kodmigo-orange-light/30"
             >
               Geri
             </button>
@@ -282,7 +282,7 @@ export default function OnboardingShell() {
             <button
               type="button"
               onClick={handleFinish}
-              className="inline-flex h-12 flex-1 items-center justify-center rounded-2xl bg-kodmigo-orange px-4 text-base font-semibold text-white shadow-lg shadow-kodmigo-orange/25 transition hover:bg-orange-600"
+              className="inline-flex h-12 flex-1 cursor-pointer items-center justify-center rounded-2xl bg-kodmigo-orange px-4 text-base font-semibold text-white shadow-lg shadow-kodmigo-orange/25 transition hover:bg-orange-600"
             >
               Dashboard&apos;a geç
             </button>
@@ -295,7 +295,7 @@ export default function OnboardingShell() {
                 showBack ? "flex-1" : "w-full"
               } ${
                 canGoNext
-                  ? "bg-kodmigo-orange text-white shadow-lg shadow-kodmigo-orange/25 hover:bg-orange-600"
+                  ? "cursor-pointer bg-kodmigo-orange text-white shadow-lg shadow-kodmigo-orange/25 hover:bg-orange-600"
                   : "cursor-not-allowed bg-slate-200 text-slate-400"
               }`}
             >
