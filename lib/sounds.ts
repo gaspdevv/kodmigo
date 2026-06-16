@@ -60,13 +60,68 @@ export function playCorrectSound(): void {
   }
 }
 
+function playGentleTone(
+  ctx: AudioContext,
+  frequency: number,
+  startOffset: number,
+  duration: number,
+  volume = 0.03,
+): void {
+  const oscillator = ctx.createOscillator();
+  const gain = ctx.createGain();
+
+  oscillator.type = "sine";
+  oscillator.frequency.setValueAtTime(frequency, ctx.currentTime + startOffset);
+
+  gain.gain.setValueAtTime(0.001, ctx.currentTime + startOffset);
+  gain.gain.linearRampToValueAtTime(
+    volume,
+    ctx.currentTime + startOffset + 0.012,
+  );
+  gain.gain.exponentialRampToValueAtTime(
+    0.001,
+    ctx.currentTime + startOffset + duration,
+  );
+
+  oscillator.connect(gain);
+  gain.connect(ctx.destination);
+
+  oscillator.start(ctx.currentTime + startOffset);
+  oscillator.stop(ctx.currentTime + startOffset + duration);
+}
+
 export function playWrongSound(): void {
   try {
     const ctx = getAudioContext();
     if (!ctx) return;
 
-    playTone(ctx, 220, 0, 0.18, 0.07, "triangle");
-    playTone(ctx, 165, 0.06, 0.2, 0.05, "triangle");
+    playGentleTone(ctx, 392, 0, 0.07, 0.052);
+    playGentleTone(ctx, 330, 0.09, 0.08, 0.042);
+  } catch {
+    // Ses desteklenmiyorsa sessizce geç
+  }
+}
+
+export function playClickSound(): void {
+  try {
+    const ctx = getAudioContext();
+    if (!ctx) return;
+
+    const oscillator = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    oscillator.type = "sine";
+    oscillator.frequency.setValueAtTime(520, ctx.currentTime);
+
+    gain.gain.setValueAtTime(0.001, ctx.currentTime);
+    gain.gain.linearRampToValueAtTime(0.038, ctx.currentTime + 0.008);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.045);
+
+    oscillator.connect(gain);
+    gain.connect(ctx.destination);
+
+    oscillator.start(ctx.currentTime);
+    oscillator.stop(ctx.currentTime + 0.045);
   } catch {
     // Ses desteklenmiyorsa sessizce geç
   }

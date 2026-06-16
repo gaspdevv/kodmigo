@@ -1,7 +1,10 @@
+"use client";
+
 import Link from "next/link";
 import { getDashboardTheme } from "@/components/dashboard/getDashboardTheme";
 import type { StageTheme } from "@/components/dashboard/stageThemes";
 import type { Lesson } from "@/data/pythonPath";
+import { playClickSound } from "@/lib/sounds";
 
 type LessonCardProps = {
   lesson: Lesson;
@@ -74,6 +77,7 @@ function LessonAction({
     return (
       <Link
         href={`/lesson/${lesson.slug}`}
+        onClick={playClickSound}
         className={`mt-3 inline-flex w-full cursor-pointer items-center justify-center rounded-xl py-2.5 text-sm font-semibold transition ${theme.primaryButton} ${theme.primaryButtonHover}`}
       >
         Derse başla
@@ -85,6 +89,7 @@ function LessonAction({
     return (
       <Link
         href={`/lesson/${lesson.slug}`}
+        onClick={playClickSound}
         className={`mt-3 inline-flex w-full cursor-pointer items-center justify-center rounded-xl py-2.5 text-sm font-semibold transition ${theme.lessonCompletedButton}`}
       >
         Tekrar et

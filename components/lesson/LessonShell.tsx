@@ -9,7 +9,7 @@ import LessonComplete from "@/components/lesson/LessonComplete";
 import LessonFeedback from "@/components/lesson/LessonFeedback";
 import LessonProgress from "@/components/lesson/LessonProgress";
 import type { LessonContent, LessonStep } from "@/data/lessons";
-import { playCorrectSound, playWrongSound } from "@/lib/sounds";
+import { playCorrectSound, playClickSound, playWrongSound } from "@/lib/sounds";
 
 type LessonShellProps = {
   lesson: LessonContent;
@@ -110,6 +110,7 @@ export default function LessonShell({ lesson, theme }: LessonShellProps) {
 
   const handlePrimaryAction = () => {
     if (isInfoStep || isAnswerCorrect) {
+      playClickSound();
       goToNextStep();
     } else if (isQuiz) {
       handleCheckAnswer();

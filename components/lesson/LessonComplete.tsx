@@ -1,6 +1,9 @@
+"use client";
+
 import Link from "next/link";
 import type { StageTheme } from "@/components/dashboard/stageThemes";
 import type { LessonStep } from "@/data/lessons";
+import { playClickSound } from "@/lib/sounds";
 
 type LessonCompleteProps = {
   step: LessonStep;
@@ -49,12 +52,14 @@ export default function LessonComplete({ step, theme }: LessonCompleteProps) {
       <div className="flex flex-col gap-3">
         <Link
           href="/learn/python"
+          onClick={playClickSound}
           className={`inline-flex w-full cursor-pointer items-center justify-center rounded-xl py-3 text-sm font-semibold transition ${theme.primaryButton} ${theme.primaryButtonHover}`}
         >
           Python yoluna dön
         </Link>
         <Link
           href="/dashboard"
+          onClick={playClickSound}
           className={`inline-flex w-full cursor-pointer items-center justify-center rounded-xl py-3 text-sm font-semibold transition ${theme.secondaryButton} ${theme.secondaryButtonHover}`}
         >
           Dashboard&apos;a git

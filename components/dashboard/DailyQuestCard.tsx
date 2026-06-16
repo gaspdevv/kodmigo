@@ -1,6 +1,9 @@
+"use client";
+
 import Link from "next/link";
 import { getDashboardTheme } from "@/components/dashboard/getDashboardTheme";
 import { dashboardMock } from "@/lib/dashboard-mock";
+import { playClickSound } from "@/lib/sounds";
 
 export default function DailyQuestCard() {
   const { title, description, completed, total } = dashboardMock.dailyQuest;
@@ -22,6 +25,7 @@ export default function DailyQuestCard() {
 
       <Link
         href="/learn/python"
+        onClick={playClickSound}
         className={`block w-full cursor-pointer rounded-2xl py-3 text-center text-sm font-semibold transition ${theme.primaryButton} ${theme.primaryButtonHover}`}
       >
         Göreve başla

@@ -1,6 +1,9 @@
+"use client";
+
 import Link from "next/link";
 import { getDashboardTheme } from "@/components/dashboard/getDashboardTheme";
 import { dashboardMock } from "@/lib/dashboard-mock";
+import { playClickSound } from "@/lib/sounds";
 
 export default function NextLessonCard() {
   const { title, description, tags } = dashboardMock.nextLesson;
@@ -33,6 +36,7 @@ export default function NextLessonCard() {
 
       <Link
         href="/learn/python"
+        onClick={playClickSound}
         className={`block w-full rounded-2xl py-3 text-center text-sm font-semibold transition ${theme.primaryButton} ${theme.primaryButtonHover}`}
       >
         Derse başla
