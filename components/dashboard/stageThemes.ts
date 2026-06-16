@@ -44,6 +44,11 @@ export type StageTheme = {
   lessonLockedBadge: string;
   lessonLockedIcon: string;
   lessonLockedButton: string;
+  lessonChoiceDefault: string;
+  lessonChoiceSelected: string;
+  lessonFeedbackSuccess: string;
+  lessonFeedbackError: string;
+  lessonCodeBackground: string;
 };
 
 export const stageIcons: Record<StageKey, string> = {
@@ -110,6 +115,15 @@ export const stageThemes: Record<StageKey, StageTheme> = {
     lessonLockedIcon: "bg-orange-100 text-orange-600",
     lessonLockedButton:
       "border border-orange-200 bg-orange-50 text-orange-700",
+    lessonChoiceDefault:
+      "border border-orange-200/70 bg-white text-stone-700 hover:border-orange-300 hover:bg-orange-50/50",
+    lessonChoiceSelected:
+      "border-2 border-orange-500 bg-orange-50 text-stone-900",
+    lessonFeedbackSuccess:
+      "border border-emerald-200 bg-emerald-50 text-emerald-800",
+    lessonFeedbackError:
+      "border border-rose-200 bg-rose-50 text-rose-800",
+    lessonCodeBackground: "bg-stone-900 text-emerald-400",
   },
   silver: {
     pageBackground:
@@ -155,6 +169,15 @@ export const stageThemes: Record<StageKey, StageTheme> = {
     lessonLockedIcon: "bg-slate-100 text-slate-500",
     lessonLockedButton:
       "border border-slate-200 bg-slate-50 text-slate-600",
+    lessonChoiceDefault:
+      "border border-slate-200 bg-white text-slate-700 hover:border-slate-300 hover:bg-slate-50",
+    lessonChoiceSelected:
+      "border-2 border-slate-500 bg-slate-100 text-slate-900",
+    lessonFeedbackSuccess:
+      "border border-emerald-200 bg-emerald-50 text-emerald-800",
+    lessonFeedbackError:
+      "border border-rose-200 bg-rose-50 text-rose-800",
+    lessonCodeBackground: "bg-slate-900 text-emerald-400",
   },
   gold: {
     pageBackground:
@@ -202,6 +225,15 @@ export const stageThemes: Record<StageKey, StageTheme> = {
     lessonLockedIcon: "bg-yellow-100 text-amber-600",
     lessonLockedButton:
       "border border-yellow-200 bg-yellow-50 text-amber-700",
+    lessonChoiceDefault:
+      "border border-yellow-200 bg-white text-amber-800 hover:border-amber-300 hover:bg-yellow-50",
+    lessonChoiceSelected:
+      "border-2 border-amber-500 bg-yellow-50 text-amber-900",
+    lessonFeedbackSuccess:
+      "border border-emerald-200 bg-emerald-50 text-emerald-800",
+    lessonFeedbackError:
+      "border border-rose-200 bg-rose-50 text-rose-800",
+    lessonCodeBackground: "bg-stone-900 text-emerald-400",
   },
   platinum: {
     pageBackground:
@@ -248,6 +280,15 @@ export const stageThemes: Record<StageKey, StageTheme> = {
     lessonLockedIcon: "bg-indigo-50 text-indigo-500",
     lessonLockedButton:
       "border border-indigo-100 bg-slate-100 text-indigo-600",
+    lessonChoiceDefault:
+      "border border-indigo-100 bg-white text-slate-700 hover:border-indigo-200 hover:bg-indigo-50/40",
+    lessonChoiceSelected:
+      "border-2 border-indigo-500 bg-indigo-50 text-slate-900",
+    lessonFeedbackSuccess:
+      "border border-emerald-200 bg-emerald-50 text-emerald-800",
+    lessonFeedbackError:
+      "border border-rose-200 bg-rose-50 text-rose-800",
+    lessonCodeBackground: "bg-slate-900 text-emerald-400",
   },
   diamond: {
     pageBackground:
@@ -292,6 +333,15 @@ export const stageThemes: Record<StageKey, StageTheme> = {
     lessonLockedIcon: "bg-sky-100 text-slate-500",
     lessonLockedButton:
       "border border-sky-200 bg-slate-50 text-slate-600",
+    lessonChoiceDefault:
+      "border border-cyan-200 bg-white text-slate-800 hover:border-cyan-300 hover:bg-cyan-50/50",
+    lessonChoiceSelected:
+      "border-2 border-cyan-500 bg-cyan-50 text-slate-950",
+    lessonFeedbackSuccess:
+      "border border-emerald-200 bg-emerald-50 text-emerald-800",
+    lessonFeedbackError:
+      "border border-rose-200 bg-rose-50 text-rose-800",
+    lessonCodeBackground: "bg-slate-900 text-emerald-400",
   },
   master: {
     pageBackground:
@@ -340,6 +390,15 @@ export const stageThemes: Record<StageKey, StageTheme> = {
     lessonLockedIcon: "bg-slate-700 text-amber-400/80",
     lessonLockedButton:
       "border border-amber-500/15 bg-slate-700/90 text-slate-400",
+    lessonChoiceDefault:
+      "border border-amber-500/20 bg-slate-800/80 text-slate-200 hover:border-amber-500/35 hover:bg-slate-700/80",
+    lessonChoiceSelected:
+      "border-2 border-amber-500 bg-amber-500/10 text-amber-100",
+    lessonFeedbackSuccess:
+      "border border-emerald-500/30 bg-emerald-500/10 text-emerald-300",
+    lessonFeedbackError:
+      "border border-rose-500/30 bg-rose-500/10 text-rose-300",
+    lessonCodeBackground: "bg-slate-950 text-emerald-400 border border-amber-500/15",
   },
 };
 

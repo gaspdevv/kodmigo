@@ -1,6 +1,6 @@
-import { dashboardMock } from "@/lib/dashboard-mock";
 import { getStageTheme } from "@/components/dashboard/stageThemes";
+import { mockUser } from "@/lib/mockUser";
 
 export function getDashboardTheme() {
-  return getStageTheme(dashboardMock.user.currentStage);
+  return getStageTheme(mockUser.currentStage);
 }
