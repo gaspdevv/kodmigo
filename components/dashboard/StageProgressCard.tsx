@@ -15,6 +15,12 @@ import {
   saveUserProgress,
   type UserProgress,
 } from "@/lib/progress";
+import {
+  hasActiveStreak,
+  isStreakDimmed,
+  getStreakProgress,
+  type StreakProgress,
+} from "@/lib/streak";
 import { playCorrectSound } from "@/lib/sounds";
 
 const ANIMATION_DURATION_MS = 900;
@@ -37,6 +43,9 @@ export default function StageProgressCard() {
   const [showRewardNotice, setShowRewardNotice] = useState(false);
   const [rewardXp, setRewardXp] = useState(0);
   const [isReady, setIsReady] = useState(false);
+  const [streakProgress, setStreakProgress] = useState<StreakProgress | null>(
+    null,
+  );
 
   const isMaxStage = userProgress.nextStage === null;
   const currentStageName = stageNames[userProgress.currentStage];
@@ -49,6 +58,8 @@ export default function StageProgressCard() {
     : null;
 
   useEffect(() => {
+    setStreakProgress(getStreakProgress());
+
     const saved = getUserProgress();
     const reward = getPendingXpReward();
 
@@ -159,17 +170,23 @@ export default function StageProgressCard() {
         <h2 className={`text-base font-bold ${theme.primaryText}`}>
           Aşama ilerlemen
         </h2>
-        <span
-          className={`inline-flex shrink-0 items-center gap-1.5 rounded-full px-4 py-2 text-sm font-semibold shadow-sm sm:text-base ${theme.streakBg}`}
-        >
+        {streakProgress && hasActiveStreak(streakProgress) && (
           <span
-            className="flame-emoji text-xl leading-none sm:text-2xl"
-            aria-hidden="true"
+            className={`inline-flex shrink-0 items-center gap-1.5 rounded-full px-4 py-2 text-sm font-semibold shadow-sm sm:text-base ${theme.streakBg}`}
           >
-            🔥
+            <span
+              className={`text-xl leading-none sm:text-2xl ${
+                isStreakDimmed(streakProgress)
+                  ? "flame-emoji-dim"
+                  : "flame-emoji"
+              }`}
+              aria-hidden="true"
+            >
+              🔥
+            </span>
+            {streakProgress.currentStreak} gün seri
           </span>
-          {userProgress.streakDays} gün seri
-        </span>
+        )}
       </div>
 
       <p className={`mb-3 text-sm font-semibold ${theme.primaryText}`}>

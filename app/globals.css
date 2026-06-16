@@ -69,9 +69,21 @@ html {
   animation: kodmigo-flame-flicker 0.9s ease-in-out infinite;
 }
 
+.flame-emoji-dim {
+  display: inline-block;
+  line-height: 1;
+  opacity: 0.5;
+  filter: grayscale(1);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .flame-emoji {
     animation: none;
+  }
+
+  .flame-emoji-dim {
+    opacity: 0.5;
+    filter: grayscale(1);
   }
 
   .lesson-feedback-in {

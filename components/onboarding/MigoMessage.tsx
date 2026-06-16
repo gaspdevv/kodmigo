@@ -1,9 +1,16 @@
+import type { ReactNode } from "react";
+
 type MigoMessageProps = {
-  message: string;
+  message?: string;
+  children?: ReactNode;
   compact?: boolean;
 };
 
-export default function MigoMessage({ message, compact = false }: MigoMessageProps) {
+export default function MigoMessage({
+  message,
+  children,
+  compact = false,
+}: MigoMessageProps) {
   return (
     <div
       className={`rounded-2xl border border-kodmigo-orange/15 bg-white shadow-sm ${
@@ -20,8 +27,11 @@ export default function MigoMessage({ message, compact = false }: MigoMessagePro
         </div>
         <div className="relative min-w-0 flex-1 rounded-xl bg-kodmigo-navy px-4 py-3 text-white">
           <div className="absolute -left-1.5 top-4 h-3 w-3 rotate-45 bg-kodmigo-navy" />
-          <p className={`leading-relaxed text-slate-300 ${compact ? "text-sm" : "text-sm sm:text-base"}`}>
-            <span className="font-semibold text-kodmigo-amber">Migo:</span> {message}
+          <p
+            className={`leading-relaxed text-slate-300 ${compact ? "text-sm" : "text-sm sm:text-base"}`}
+          >
+            <span className="font-semibold text-kodmigo-amber">Migo:</span>{" "}
+            {children ?? message}
           </p>
         </div>
       </div>

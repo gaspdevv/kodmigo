@@ -21,10 +21,10 @@ export function buildMockUser() {
     nextStageName: nextStage ? stageNames[nextStage] : null,
     currentStageIcon: stageIcons[currentStage],
     nextStageIcon: nextStage ? stageIcons[nextStage] : null,
-    currentXp: currentStage === "master" ? 1200 : 120,
+    currentXp: currentStage === "master" ? 1200 : 0,
     requiredXp: currentStage === "master" ? 1200 : 200,
-    progressPercent: currentStage === "master" ? 100 : 60,
-    streakDays: currentStage === "master" ? 12 : 3,
+    progressPercent: currentStage === "master" ? 100 : 0,
+    streakDays: 0,
   };
 }
 

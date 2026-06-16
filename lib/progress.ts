@@ -130,11 +130,7 @@ export type LearningProgressStore = {
   python: PythonLearningProgress;
 };
 
-const DEFAULT_COMPLETED_LESSON_IDS = [
-  "python-what-is-python",
-  "python-print",
-  "python-first-output",
-];
+const DEFAULT_COMPLETED_LESSON_IDS: string[] = [];
 
 export function getPythonTotalLessons(): number {
   return pythonPathUnits.flatMap((unit) => unit.lessons).length;

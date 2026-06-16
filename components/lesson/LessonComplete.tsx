@@ -6,6 +6,7 @@ import type { StageTheme } from "@/components/dashboard/stageThemes";
 import type { LessonStep } from "@/data/lessons";
 import { isLessonCompleted } from "@/lib/progress";
 import { parseXpAmount, saveLessonRewardsIfNew } from "@/lib/rewards";
+import { updateStreakOnLessonComplete } from "@/lib/streak";
 import { playClickSound } from "@/lib/sounds";
 
 type LessonCompleteProps = {
@@ -25,18 +26,20 @@ export default function LessonComplete({
     isLessonCompleted("python", lessonId),
   );
 
+  const handleLessonRewards = () => {
+    if (isRepeatCompletion) return;
+    saveLessonRewardsIfNew("python", lessonId, xpAmount);
+    updateStreakOnLessonComplete();
+  };
+
   const handleDashboardClick = () => {
     playClickSound();
-    if (!isRepeatCompletion) {
-      saveLessonRewardsIfNew("python", lessonId, xpAmount);
-    }
+    handleLessonRewards();
   };
 
   const handleLearnPathClick = () => {
     playClickSound();
-    if (!isRepeatCompletion) {
-      saveLessonRewardsIfNew("python", lessonId, xpAmount);
-    }
+    handleLessonRewards();
   };
 
   return (
