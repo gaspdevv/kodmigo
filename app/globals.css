@@ -77,6 +77,10 @@ html {
   .lesson-feedback-in {
     animation: none;
   }
+
+  .xp-reward-in {
+    animation: none;
+  }
 }
 
 @keyframes lesson-feedback-in {
@@ -93,4 +97,20 @@ html {
 
 .lesson-feedback-in {
   animation: lesson-feedback-in 0.3s ease-out;
+}
+
+@keyframes xp-reward-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.xp-reward-in {
+  animation: xp-reward-in 0.35s ease-out;
 }

@@ -182,7 +182,7 @@ export default function LessonShell({ lesson, theme }: LessonShellProps) {
         className={`flex flex-1 flex-col rounded-3xl border p-5 ${theme.cardBackground} ${theme.cardBorder} ${theme.cardShadow}`}
       >
         {isCompleteStep ? (
-          <LessonComplete step={step} theme={theme} />
+          <LessonComplete lessonId={lesson.id} step={step} theme={theme} />
         ) : (
           <>
             <h2
