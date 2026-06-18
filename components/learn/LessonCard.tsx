@@ -8,6 +8,7 @@ import { playClickSound } from "@/lib/sounds";
 
 type LessonCardProps = {
   lesson: Lesson;
+  isFocused?: boolean;
 };
 
 function StatusIcon({
@@ -106,7 +107,7 @@ function LessonAction({
   );
 }
 
-export default function LessonCard({ lesson }: LessonCardProps) {
+export default function LessonCard({ lesson, isFocused = false }: LessonCardProps) {
   const theme = getDashboardTheme();
   const isCurrent = lesson.status === "current";
   const isLocked = lesson.status === "locked";
@@ -127,7 +128,12 @@ export default function LessonCard({ lesson }: LessonCardProps) {
   const metaClass = isLocked ? theme.lessonLockedMutedText : theme.mutedText;
 
   return (
-    <article className={`rounded-2xl p-4 transition ${cardClasses}`}>
+    <article
+      id={`lesson-${lesson.slug}`}
+      className={`rounded-2xl p-4 transition ${cardClasses} ${
+        isFocused ? "lesson-focus-highlight ring-2 ring-orange-400/80" : ""
+      }`}
+    >
       <div className="flex items-start gap-3">
         <StatusIcon status={lesson.status} theme={theme} />
         <div className="min-w-0 flex-1">

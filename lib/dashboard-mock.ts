@@ -16,11 +16,6 @@ export const dashboardMock = {
     completedLessons: 3,
     totalLessons: 16,
   },
-  nextLesson: {
-    title: "Python'da değişkenler",
-    description: "Verileri isimlerle saklamayı öğren.",
-    tags: ["5 dk", "Başlangıç", "Mini görev"],
-  },
   migoTip:
     "Kod öğrenirken her şeyi ezberlemeye çalışma. Önce mantığı anlamaya odaklan.",
 };

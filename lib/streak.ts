@@ -11,6 +11,7 @@ export type StreakProgress = {
   monthlyRestoreLimit: number;
   isPremium: boolean;
   rescueDecision: RescueDecision;
+  hasUsedStreakRestore: boolean;
 };
 
 function parseDateKey(dateKey: string): Date {
@@ -62,6 +63,7 @@ export function getDefaultStreakProgress(): StreakProgress {
     monthlyRestoreLimit: 2,
     isPremium: false,
     rescueDecision: null,
+    hasUsedStreakRestore: false,
   };
 }
 
@@ -102,6 +104,10 @@ function parseStreakProgress(raw: unknown): StreakProgress | null {
     monthlyRestoreLimit: Math.max(0, data.monthlyRestoreLimit),
     isPremium: data.isPremium,
     rescueDecision,
+    hasUsedStreakRestore:
+      typeof data.hasUsedStreakRestore === "boolean"
+        ? data.hasUsedStreakRestore
+        : data.restoresUsedThisMonth > 0,
   };
 }
 
@@ -258,6 +264,7 @@ export function restoreStreak(): StreakProgress {
     restoresUsedThisMonth: progress.restoresUsedThisMonth + 1,
     lastCompletedDate: getYesterdayKey(),
     rescueDecision: "restored",
+    hasUsedStreakRestore: true,
   };
 
   saveStreakProgress(updated);

@@ -186,6 +186,54 @@ export const pythonPathUnits: Unit[] = [
 
 const allLessons = pythonPathUnits.flatMap((unit) => unit.lessons);
 
+const internalIdToSlug = new Map(
+  allLessons.map((lesson) => [lesson.id, lesson.slug]),
+);
+
+export function normalizeLessonId(lessonId: string): string {
+  return internalIdToSlug.get(lessonId) ?? lessonId;
+}
+
+function isLessonCompletedInList(
+  lesson: Lesson,
+  completedLessonIds: string[],
+): boolean {
+  const completed = new Set(completedLessonIds.map(normalizeLessonId));
+  return completed.has(lesson.slug) || completed.has(lesson.id);
+}
+
+export function getPythonLessonsInOrder(): Lesson[] {
+  return allLessons;
+}
+
+export function getNextPythonLesson(
+  completedLessonIds: string[],
+): Lesson | null {
+  return (
+    allLessons.find(
+      (lesson) => !isLessonCompletedInList(lesson, completedLessonIds),
+    ) ?? null
+  );
+}
+
+/** @deprecated Use getNextPythonLesson instead */
+export function getNextIncompleteLesson(
+  completedLessonIds: string[],
+): Lesson | null {
+  return getNextPythonLesson(completedLessonIds);
+}
+
+export function getLessonUnit(lessonSlug: string): Unit | undefined {
+  return pythonPathUnits.find((unit) =>
+    unit.lessons.some((lesson) => lesson.slug === lessonSlug),
+  );
+}
+
+export function buildLearnPythonHref(lessonSlug: string | null): string {
+  if (!lessonSlug) return "/learn/python";
+  return `/learn/python?focus=${encodeURIComponent(lessonSlug)}`;
+}
+
 export const pythonPathProgress = {
   completedLessons: allLessons.filter((l) => l.status === "completed").length,
   totalLessons: allLessons.length,

@@ -1,6 +1,7 @@
 import type { StageKey } from "@/components/dashboard/stageThemes";
-import { pythonPathUnits, type Unit } from "@/data/pythonPath";
+import { normalizeLessonId, pythonPathUnits, type Unit } from "@/data/pythonPath";
 import { mockUser } from "@/lib/mockUser";
+import { getPendingLessonCompletion } from "@/lib/rewards";
 
 export type UserProgress = {
   currentXp: number;
@@ -172,9 +173,13 @@ function parsePythonLearningProgress(raw: unknown): PythonLearningProgress | nul
     return null;
   }
 
-  const completedLessonIds = data.completedLessonIds.filter(
-    (id): id is string => typeof id === "string",
-  );
+  const completedLessonIds = [
+    ...new Set(
+      data.completedLessonIds
+        .filter((id): id is string => typeof id === "string")
+        .map(normalizeLessonId),
+    ),
+  ];
   const totalLessons = Math.max(1, data.totalLessons);
   const completedCount = completedLessonIds.length;
 
@@ -213,6 +218,21 @@ export function getLearningProgress(): LearningProgressStore {
   }
 }
 
+export function getEffectiveCompletedLessonIds(): string[] {
+  const savedIds = getLearningProgress().python.completedLessonIds.map(
+    normalizeLessonId,
+  );
+  const uniqueSaved = [...new Set(savedIds)];
+
+  const pending = getPendingLessonCompletion();
+  if (!pending || pending.courseId !== "python") return uniqueSaved;
+
+  const pendingId = normalizeLessonId(pending.lessonId);
+  if (uniqueSaved.includes(pendingId)) return uniqueSaved;
+
+  return [...uniqueSaved, pendingId];
+}
+
 export function isLessonCompleted(
   courseId: string,
   lessonId: string,
@@ -220,7 +240,10 @@ export function isLessonCompleted(
   if (courseId !== "python") return false;
 
   const progress = getLearningProgress();
-  return progress.python.completedLessonIds.includes(lessonId);
+  const normalizedId = normalizeLessonId(lessonId);
+  return progress.python.completedLessonIds.some(
+    (id) => normalizeLessonId(id) === normalizedId,
+  );
 }
 
 export function saveLearningProgress(progress: LearningProgressStore): void {
@@ -247,11 +270,17 @@ export function applyLessonCompletion(
   progress: PythonLearningProgress,
   lessonId: string,
 ): { progress: PythonLearningProgress; applied: boolean } {
-  if (progress.completedLessonIds.includes(lessonId)) {
+  const normalizedId = normalizeLessonId(lessonId);
+
+  if (
+    progress.completedLessonIds.some(
+      (id) => normalizeLessonId(id) === normalizedId,
+    )
+  ) {
     return { progress, applied: false };
   }
 
-  const completedLessonIds = [...progress.completedLessonIds, lessonId];
+  const completedLessonIds = [...progress.completedLessonIds, normalizedId];
   const completedCount = completedLessonIds.length;
 
   return {
@@ -272,7 +301,7 @@ export function applyPythonLessonStatuses(
   units: Unit[],
   completedLessonIds: string[],
 ): Unit[] {
-  const completedSet = new Set(completedLessonIds);
+  const completedSet = new Set(completedLessonIds.map(normalizeLessonId));
   let foundCurrent = false;
 
   return units.map((unit) => ({

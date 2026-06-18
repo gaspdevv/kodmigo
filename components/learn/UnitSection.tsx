@@ -5,9 +5,14 @@ import type { Unit } from "@/data/pythonPath";
 type UnitSectionProps = {
   unit: Unit;
   index: number;
+  focusedLessonSlug?: string | null;
 };
 
-export default function UnitSection({ unit, index }: UnitSectionProps) {
+export default function UnitSection({
+  unit,
+  index,
+  focusedLessonSlug,
+}: UnitSectionProps) {
   const theme = getDashboardTheme();
   const hasCurrentLesson = unit.lessons.some((l) => l.status === "current");
   const allLocked = unit.lessons.every((l) => l.status === "locked");
@@ -51,7 +56,11 @@ export default function UnitSection({ unit, index }: UnitSectionProps) {
 
       <div className="flex flex-col gap-3 pl-0 sm:pl-12">
         {unit.lessons.map((lesson) => (
-          <LessonCard key={lesson.id} lesson={lesson} />
+          <LessonCard
+            key={lesson.id}
+            lesson={lesson}
+            isFocused={lesson.slug === focusedLessonSlug}
+          />
         ))}
       </div>
     </section>

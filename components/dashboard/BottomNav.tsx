@@ -1,16 +1,16 @@
 import Link from "next/link";
 import { getDashboardTheme } from "@/components/dashboard/getDashboardTheme";
 
-type NavTab = "Yol" | "Görevler" | "Profil";
+type NavTab = "Ana Sayfa" | "Yol" | "Profil";
 
 type BottomNavProps = {
   activeTab?: NavTab;
 };
 
 const navItems: { label: NavTab; icon: string; href: string }[] = [
+  { label: "Ana Sayfa", icon: "🏠", href: "/dashboard" },
   { label: "Yol", icon: "🛤️", href: "/learn/python" },
-  { label: "Görevler", icon: "✅", href: "/dashboard" },
-  { label: "Profil", icon: "👤", href: "/dashboard" },
+  { label: "Profil", icon: "👤", href: "/profile" },
 ];
 
 export default function BottomNav({ activeTab = "Yol" }: BottomNavProps) {

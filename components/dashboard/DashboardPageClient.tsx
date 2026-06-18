@@ -66,7 +66,7 @@ export default function DashboardPageClient() {
         <NextLessonCard />
         <MigoTipCard />
       </div>
-      <BottomNav />
+      <BottomNav activeTab="Ana Sayfa" />
     </main>
   );
 }

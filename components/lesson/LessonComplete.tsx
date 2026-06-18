@@ -114,7 +114,7 @@ export default function LessonComplete({
           onClick={handleDashboardClick}
           className={`inline-flex w-full cursor-pointer items-center justify-center rounded-xl py-3 text-sm font-semibold transition ${theme.secondaryButton} ${theme.secondaryButtonHover}`}
         >
-          Dashboard&apos;a git
+          Ana Sayfa&apos;ya dön
         </Link>
       </div>
     </div>
