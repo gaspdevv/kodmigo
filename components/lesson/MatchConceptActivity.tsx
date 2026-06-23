@@ -1,0 +1,112 @@
+"use client";
+
+import type { StageTheme } from "@/components/dashboard/stageThemes";
+import type { LessonStep } from "@/data/lessons";
+
+type MatchConceptActivityProps = {
+  step: LessonStep;
+  theme: StageTheme;
+  selectedAnswer: string | null;
+  selections: Record<string, string>;
+  feedbackState: "none" | "correct" | "incorrect";
+  onSelectSingle: (answer: string) => void;
+  onSelectPair: (concept: string, answer: string) => void;
+};
+
+export default function MatchConceptActivity({
+  step,
+  theme,
+  selectedAnswer,
+  selections,
+  feedbackState,
+  onSelectSingle,
+  onSelectPair,
+}: MatchConceptActivityProps) {
+  const pairs = step.matchPairs ?? [];
+  const options = step.options ?? [];
+
+  if (pairs.length > 0) {
+    return (
+      <div className="mb-4 space-y-3">
+        <div className="grid grid-cols-2 gap-2 text-xs font-semibold uppercase tracking-wide">
+          <span className={theme.mutedText}>Kavram</span>
+          <span className={theme.mutedText}>Açıklama</span>
+        </div>
+        {pairs.map((pair) => (
+          <div
+            key={pair.concept}
+            className={`grid grid-cols-2 gap-3 rounded-2xl border p-3 ${theme.cardBorder} ${theme.cardBackground}`}
+          >
+            <div
+              className={`flex items-center rounded-xl border px-3 py-2 text-sm font-semibold ${theme.cardBorder} bg-orange-50/80 ${theme.primaryText}`}
+            >
+              {pair.concept}
+            </div>
+            <select
+              value={selections[pair.concept] ?? ""}
+              disabled={feedbackState === "correct"}
+              onChange={(event) => onSelectPair(pair.concept, event.target.value)}
+              className={`w-full rounded-xl border px-3 py-2 text-sm outline-none transition focus:ring-2 focus:ring-orange-400/50 ${theme.cardBorder} ${theme.cardBackground} ${theme.primaryText}`}
+            >
+              <option value="">Seç...</option>
+              {options.map((option) => (
+                <option key={option} value={option}>
+                  {option}
+                </option>
+              ))}
+            </select>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  return (
+    <div className="mb-4">
+      <div className="grid gap-3 sm:grid-cols-2">
+        <div
+          className={`rounded-2xl border-2 border-dashed p-4 ${theme.cardBorder} bg-orange-50/70`}
+        >
+          <p className={`mb-2 text-xs font-bold uppercase tracking-wide ${theme.migoAccent}`}>
+            Kavram
+          </p>
+          <p className={`text-sm font-semibold leading-relaxed ${theme.primaryText}`}>
+            {step.content ?? step.title}
+          </p>
+        </div>
+        <div className="space-y-2">
+          <p className={`text-xs font-bold uppercase tracking-wide ${theme.mutedText}`}>
+            Doğru açıklamayı seç
+          </p>
+          {options.map((option) => {
+            const selected = selectedAnswer === option;
+            const feedback =
+              selected && feedbackState !== "none" ? feedbackState : "none";
+
+            return (
+              <button
+                key={option}
+                type="button"
+                disabled={feedbackState === "correct"}
+                onClick={() => onSelectSingle(option)}
+                className={`w-full rounded-xl border px-3 py-2.5 text-left text-sm transition ${
+                  selected
+                    ? `border-orange-400 bg-orange-50/80 font-semibold ${theme.primaryText}`
+                    : `${theme.cardBorder} ${theme.cardBackground} ${theme.mutedText} hover:border-orange-300`
+                } ${
+                  feedback === "correct"
+                    ? "border-emerald-400 bg-emerald-50"
+                    : feedback === "incorrect"
+                      ? "border-rose-400 bg-rose-50"
+                      : ""
+                }`}
+              >
+                {option}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+}

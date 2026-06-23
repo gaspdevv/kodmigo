@@ -7,7 +7,8 @@ import { getDashboardTheme } from "@/components/dashboard/getDashboardTheme";
 import LearningPathHeader from "@/components/learn/LearningPathHeader";
 import MigoPathTip from "@/components/learn/MigoPathTip";
 import UnitSection from "@/components/learn/UnitSection";
-import { pythonPathUnits, type Unit } from "@/data/pythonPath";
+import { getPythonPathMeta, getPythonPathUnits, type Unit } from "@/data/pythonPath";
+import { getActivePathLevel } from "@/lib/onboarding-data";
 import {
   applyPythonLessonStatuses,
   getLearningProgress,
@@ -16,7 +17,17 @@ import {
 export default function PythonLearnView() {
   const theme = getDashboardTheme();
   const searchParams = useSearchParams();
-  const [units, setUnits] = useState<Unit[]>(pythonPathUnits);
+  const pathLevel = getActivePathLevel();
+  const pathMeta = useMemo(
+    () => getPythonPathMeta(pathLevel),
+    [pathLevel],
+  );
+  const baseUnits = useMemo(
+    () => getPythonPathUnits(pathLevel),
+    [pathLevel],
+  );
+
+  const [units, setUnits] = useState<Unit[]>(baseUnits);
   const [focusedLessonSlug, setFocusedLessonSlug] = useState<string | null>(
     null,
   );
@@ -24,9 +35,11 @@ export default function PythonLearnView() {
 
   useEffect(() => {
     const saved = getLearningProgress().python;
-    setUnits(applyPythonLessonStatuses(pythonPathUnits, saved.completedLessonIds));
+    setUnits(
+      applyPythonLessonStatuses(baseUnits, saved.completedLessonIds),
+    );
     setIsReady(true);
-  }, []);
+  }, [pathLevel, baseUnits]);
 
   const focusParam = searchParams.get("focus");
 
@@ -60,8 +73,8 @@ export default function PythonLearnView() {
   return (
     <main className={`min-h-screen pb-24 ${theme.pageBackground}`}>
       <div className="mx-auto max-w-lg px-4 pb-6 pt-6 sm:px-6">
-        <LearningPathHeader />
-        <MigoPathTip />
+        <LearningPathHeader pathMeta={pathMeta} />
+        <MigoPathTip migoTip={pathMeta.migoTip} />
         {visibleUnits.map((unit, index) => (
           <UnitSection
             key={unit.id}

@@ -12,9 +12,11 @@ import {
   getDailyTimeLabel,
   getGoalLabel,
   getLevelLabel,
+  getPathLevelLabel,
   goalOptions,
   levelOptions,
-  ONBOARDING_STORAGE_KEY,
+  pathLevelFromCodingLevel,
+  saveOnboardingProfile,
   type OnboardingSelections,
 } from "@/lib/onboarding-data";
 
@@ -115,15 +117,14 @@ export default function OnboardingShell() {
       return;
     }
 
-    localStorage.setItem(
-      ONBOARDING_STORAGE_KEY,
-      JSON.stringify({
-        level: selections.level,
-        goal: selections.goal,
-        dailyTime: selections.dailyTime,
-        completedAt: new Date().toISOString(),
-      }),
-    );
+    const pathLevel = pathLevelFromCodingLevel(selections.level);
+
+    saveOnboardingProfile({
+      codingLevel: pathLevel,
+      learningGoal: selections.goal,
+      dailyTime: selections.dailyTime,
+      completedAt: new Date().toISOString(),
+    });
 
     router.push("/dashboard");
   }
@@ -229,8 +230,8 @@ export default function OnboardingShell() {
             selections.dailyTime && (
               <div className="flex flex-1 flex-col gap-6">
                 <OnboardingStep
-                  title="Python Başlangıç Yolun hazır"
-                  description="Seçimlerine göre sıfırdan başlayabileceğin kısa ve uygulanabilir bir Python yolu hazırladık."
+                  title={`Python ${getPathLevelLabel(pathLevelFromCodingLevel(selections.level))} Yolun hazır`}
+                  description="Seçimlerine göre sana uygun, kısa ve uygulanabilir bir Python yolu hazırladık."
                 >
                   <div className="rounded-2xl border border-kodmigo-orange/20 bg-white p-5 shadow-sm">
                     <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-kodmigo-orange">

@@ -7,6 +7,7 @@ import {
   buildLearnPythonHref,
   getNextPythonLesson,
 } from "@/data/pythonPath";
+import { getActivePathLevel } from "@/lib/onboarding-data";
 import { getEffectiveCompletedLessonIds } from "@/lib/progress";
 import { playClickSound } from "@/lib/sounds";
 import { getStreakProgress, hasCompletedToday } from "@/lib/streak";
@@ -20,8 +21,12 @@ export default function DailyQuestCard() {
   const [nextLessonSlug, setNextLessonSlug] = useState<string | null>(null);
 
   useEffect(() => {
+    const pathLevel = getActivePathLevel();
     const streak = getStreakProgress();
-    const nextLesson = getNextPythonLesson(getEffectiveCompletedLessonIds());
+    const nextLesson = getNextPythonLesson(
+      getEffectiveCompletedLessonIds(),
+      pathLevel,
+    );
 
     setIsCompletedToday(hasCompletedToday(streak));
     setNextLessonSlug(nextLesson?.slug ?? null);

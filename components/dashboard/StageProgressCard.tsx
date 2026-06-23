@@ -11,7 +11,6 @@ import {
   applyXpReward,
   getDefaultUserProgress,
   getUserProgress,
-  isLessonCompleted,
   saveUserProgress,
   type UserProgress,
 } from "@/lib/progress";
@@ -64,15 +63,6 @@ export default function StageProgressCard() {
     const reward = getPendingXpReward();
 
     if (!reward) {
-      setUserProgress(saved);
-      setDisplayXp(saved.currentXp);
-      setDisplayPercent(saved.progressPercent);
-      setIsReady(true);
-      return;
-    }
-
-    if (isLessonCompleted("python", reward.lessonId)) {
-      clearPendingXpReward();
       setUserProgress(saved);
       setDisplayXp(saved.currentXp);
       setDisplayPercent(saved.progressPercent);

@@ -8,8 +8,10 @@ import {
   getLessonUnit,
   getNextPythonLesson,
   getPythonLessonsInOrder,
+  getPythonPathMeta,
   type Lesson,
 } from "@/data/pythonPath";
+import { getActivePathLevel } from "@/lib/onboarding-data";
 import { getEffectiveCompletedLessonIds } from "@/lib/progress";
 import { playClickSound } from "@/lib/sounds";
 
@@ -18,12 +20,16 @@ export default function NextLessonCard() {
   const [isReady, setIsReady] = useState(false);
   const [nextLesson, setNextLesson] = useState<Lesson | null>(null);
   const [allCompleted, setAllCompleted] = useState(false);
+  const [pathTitle, setPathTitle] = useState("Python yolu");
 
   useEffect(() => {
+    const pathLevel = getActivePathLevel();
+    const pathMeta = getPythonPathMeta(pathLevel);
     const completedLessonIds = getEffectiveCompletedLessonIds();
-    const next = getNextPythonLesson(completedLessonIds);
-    const totalLessons = getPythonLessonsInOrder().length;
+    const next = getNextPythonLesson(completedLessonIds, pathLevel);
+    const totalLessons = getPythonLessonsInOrder(pathLevel).length;
 
+    setPathTitle(pathMeta.title);
     setNextLesson(next);
     setAllCompleted(next === null && totalLessons > 0);
     setIsReady(true);
@@ -53,10 +59,10 @@ export default function NextLessonCard() {
           Sıradaki ders
         </p>
         <h2 className={`mb-2 text-xl font-bold ${theme.primaryText}`}>
-          Python Başlangıç Yolu tamamlandı
+          {pathTitle} tamamlandı
         </h2>
         <p className={`mb-4 text-sm ${theme.mutedText}`}>
-          Harika iş! Yeni egzersizler yakında eklenecek.
+          Harika iş! Yeni projeler yakında eklenecek.
         </p>
 
         <Link
@@ -72,7 +78,8 @@ export default function NextLessonCard() {
 
   if (!nextLesson) return null;
 
-  const unit = getLessonUnit(nextLesson.slug);
+  const pathLevel = getActivePathLevel();
+  const unit = getLessonUnit(nextLesson.slug, pathLevel);
   const tags = [nextLesson.duration, nextLesson.type];
   const href = buildLearnPythonHref(nextLesson.slug);
 

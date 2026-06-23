@@ -1,45 +1,45 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { StageTheme } from "@/components/dashboard/stageThemes";
 import type { LessonStep } from "@/data/lessons";
+import {
+  finalizeLessonCompletion,
+  getLearnPathHrefAfterLesson,
+} from "@/lib/lesson-completion";
+import { parseXpAmount } from "@/lib/rewards";
 import { isLessonCompleted } from "@/lib/progress";
-import { parseXpAmount, saveLessonRewardsIfNew } from "@/lib/rewards";
-import { updateStreakOnLessonComplete } from "@/lib/streak";
 import { playClickSound } from "@/lib/sounds";
 
 type LessonCompleteProps = {
   lessonId: string;
   step: LessonStep;
   theme: StageTheme;
+  xpReward?: number;
 };
 
 export default function LessonComplete({
   lessonId,
   step,
   theme,
+  xpReward: xpRewardProp,
 }: LessonCompleteProps) {
   const rewards = step.completeRewards;
-  const xpAmount = parseXpAmount(rewards?.xp);
+  const xpAmount =
+    xpRewardProp ?? (rewards?.xp ? parseXpAmount(rewards.xp) : 10);
   const [isRepeatCompletion] = useState(() =>
     isLessonCompleted("python", lessonId),
   );
+  const [learnPathHref, setLearnPathHref] = useState("/learn/python");
 
-  const handleLessonRewards = () => {
-    if (isRepeatCompletion) return;
-    saveLessonRewardsIfNew("python", lessonId, xpAmount);
-    updateStreakOnLessonComplete();
-  };
+  useEffect(() => {
+    finalizeLessonCompletion(lessonId, xpAmount);
+    setLearnPathHref(getLearnPathHrefAfterLesson(lessonId));
+  }, [lessonId, xpAmount]);
 
-  const handleDashboardClick = () => {
+  const handleNavigate = () => {
     playClickSound();
-    handleLessonRewards();
-  };
-
-  const handleLearnPathClick = () => {
-    playClickSound();
-    handleLessonRewards();
   };
 
   return (
@@ -82,7 +82,7 @@ export default function LessonComplete({
             className={`mb-6 overflow-hidden rounded-2xl border-2 text-left ${theme.cardBorder} ${theme.cardShadow}`}
           >
             <div className="bg-gradient-to-r from-emerald-500 to-teal-500 px-4 py-3">
-              <p className="text-lg font-bold text-white">{rewards.xp}</p>
+              <p className="text-lg font-bold text-white">+{xpAmount} XP</p>
               <p className="text-xs font-medium text-emerald-50">
                 Deneyim puanı kazandın
               </p>
@@ -103,15 +103,15 @@ export default function LessonComplete({
       )}
       <div className="flex flex-col gap-3">
         <Link
-          href="/learn/python"
-          onClick={handleLearnPathClick}
+          href={learnPathHref}
+          onClick={handleNavigate}
           className={`inline-flex w-full cursor-pointer items-center justify-center rounded-xl py-3 text-sm font-semibold transition ${theme.primaryButton} ${theme.primaryButtonHover}`}
         >
           Python yoluna dön
         </Link>
         <Link
           href="/dashboard"
-          onClick={handleDashboardClick}
+          onClick={handleNavigate}
           className={`inline-flex w-full cursor-pointer items-center justify-center rounded-xl py-3 text-sm font-semibold transition ${theme.secondaryButton} ${theme.secondaryButtonHover}`}
         >
           Ana Sayfa&apos;ya dön

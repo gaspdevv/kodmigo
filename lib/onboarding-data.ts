@@ -1,4 +1,5 @@
 export type CodingLevel = "none" | "some" | "basic";
+export type PathLevel = "beginner" | "basic" | "intermediate";
 export type LearningGoal =
   | "start"
   | "school"
@@ -13,7 +14,183 @@ export type OnboardingSelections = {
   dailyTime: DailyTime | null;
 };
 
+export type OnboardingProfile = {
+  codingLevel: PathLevel;
+  learningGoal: LearningGoal;
+  dailyTime: DailyTime;
+  completedAt?: string;
+};
+
 export const ONBOARDING_STORAGE_KEY = "kodmigo-onboarding";
+export const ONBOARDING_PROFILE_KEY = "kodmigo_onboarding_profile";
+
+const CODING_LEVEL_TO_PATH: Record<CodingLevel, PathLevel> = {
+  none: "beginner",
+  some: "basic",
+  basic: "intermediate",
+};
+
+const DAILY_TIME_MAP: Record<string, DailyTime> = {
+  "5": "5",
+  "10": "10",
+  "10min": "10",
+  "15": "15",
+  "15min": "15",
+  "30": "30",
+  "30min": "30",
+};
+
+export function normalizeCodingLevel(value: unknown): PathLevel {
+  if (typeof value !== "string") return "beginner";
+
+  const normalized = value.trim().toLowerCase();
+  const pathAliases: Record<string, PathLevel> = {
+    beginner: "beginner",
+    basic: "basic",
+    intermediate: "intermediate",
+  };
+
+  if (pathAliases[normalized]) {
+    return pathAliases[normalized];
+  }
+
+  const legacyAliases: Record<string, PathLevel> = {
+    none: "beginner",
+    some: "basic",
+    basic: "intermediate",
+  };
+
+  return legacyAliases[normalized] ?? "beginner";
+}
+
+export function normalizeLegacyCodingLevel(level: CodingLevel): PathLevel {
+  return pathLevelFromCodingLevel(level);
+}
+
+export function pathLevelFromCodingLevel(level: CodingLevel): PathLevel {
+  return CODING_LEVEL_TO_PATH[level];
+}
+
+export function getPathLevelLabel(level: PathLevel): string {
+  switch (level) {
+    case "beginner":
+      return "Başlangıç";
+    case "basic":
+      return "Temel";
+    case "intermediate":
+      return "Orta";
+    default:
+      return "Başlangıç";
+  }
+}
+
+function normalizeDailyTime(value: unknown): DailyTime {
+  if (typeof value !== "string") return "10";
+  return DAILY_TIME_MAP[value] ?? "10";
+}
+
+function normalizeLearningGoal(value: unknown): LearningGoal {
+  const valid: LearningGoal[] = [
+    "start",
+    "school",
+    "career",
+    "ai",
+    "projects",
+  ];
+  if (typeof value === "string" && valid.includes(value as LearningGoal)) {
+    return value as LearningGoal;
+  }
+  return "start";
+}
+
+function parseOnboardingProfile(raw: unknown): OnboardingProfile | null {
+  if (!raw || typeof raw !== "object") return null;
+  const data = raw as Record<string, unknown>;
+
+  if (data.codingLevel !== undefined || data.pathLevel !== undefined) {
+    return {
+      codingLevel: normalizeCodingLevel(data.codingLevel ?? data.pathLevel),
+      learningGoal: normalizeLearningGoal(data.learningGoal ?? data.goal),
+      dailyTime: normalizeDailyTime(data.dailyTime ?? data.time),
+      completedAt:
+        typeof data.completedAt === "string" ? data.completedAt : undefined,
+    };
+  }
+
+  if (data.level !== undefined && typeof data.level === "string") {
+    const legacyLevel = data.level as CodingLevel;
+    return {
+      codingLevel: pathLevelFromCodingLevel(legacyLevel),
+      learningGoal: normalizeLearningGoal(data.goal),
+      dailyTime: normalizeDailyTime(data.dailyTime),
+      completedAt:
+        typeof data.completedAt === "string" ? data.completedAt : undefined,
+    };
+  }
+
+  return null;
+}
+
+export function getOnboardingProfile(): OnboardingProfile | null {
+  if (typeof window === "undefined") return null;
+
+  try {
+    const profileRaw = localStorage.getItem(ONBOARDING_PROFILE_KEY);
+    if (profileRaw) {
+      const parsed = parseOnboardingProfile(JSON.parse(profileRaw));
+      if (parsed) return parsed;
+    }
+
+    const legacyRaw = localStorage.getItem(ONBOARDING_STORAGE_KEY);
+    if (!legacyRaw) return null;
+
+    const legacy = JSON.parse(legacyRaw) as Record<string, unknown>;
+    if (legacy.level === undefined || typeof legacy.level !== "string") {
+      return null;
+    }
+
+    return {
+      codingLevel: pathLevelFromCodingLevel(legacy.level as CodingLevel),
+      learningGoal: normalizeLearningGoal(legacy.goal),
+      dailyTime: normalizeDailyTime(legacy.dailyTime),
+      completedAt:
+        typeof legacy.completedAt === "string" ? legacy.completedAt : undefined,
+    };
+  } catch {
+    return null;
+  }
+}
+
+export function getActivePathLevel(): PathLevel {
+  return getOnboardingProfile()?.codingLevel ?? "beginner";
+}
+
+export function saveOnboardingProfile(profile: OnboardingProfile): void {
+  if (typeof window === "undefined") return;
+
+  try {
+    localStorage.setItem(ONBOARDING_PROFILE_KEY, JSON.stringify(profile));
+
+    const legacyLevel: CodingLevel =
+      profile.codingLevel === "beginner"
+        ? "none"
+        : profile.codingLevel === "basic"
+          ? "some"
+          : "basic";
+
+    localStorage.setItem(
+      ONBOARDING_STORAGE_KEY,
+      JSON.stringify({
+        level: legacyLevel,
+        goal: profile.learningGoal,
+        dailyTime: profile.dailyTime,
+        completedAt: profile.completedAt ?? new Date().toISOString(),
+      }),
+    );
+  } catch {
+    // localStorage kullanılamıyorsa sessizce geç
+  }
+}
 
 export const levelOptions: {
   value: CodingLevel;

@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { getDashboardTheme } from "@/components/dashboard/getDashboardTheme";
-import { dashboardMock } from "@/lib/dashboard-mock";
+import { getPythonPathMeta } from "@/data/pythonPath";
+import { getActivePathLevel } from "@/lib/onboarding-data";
 import {
   applyLessonCompletion,
   getDefaultLearningProgress,
@@ -13,7 +14,6 @@ import {
 } from "@/lib/progress";
 import {
   clearPendingLessonCompletion,
-  clearPendingXpReward,
   getPendingLessonCompletion,
 } from "@/lib/rewards";
 
@@ -25,8 +25,8 @@ function easeOutCubic(t: number): number {
 }
 
 export default function LearningPathCard() {
-  const { title, description } = dashboardMock.learningPath;
   const theme = getDashboardTheme();
+  const pathMeta = getPythonPathMeta(getActivePathLevel());
   const defaultProgress = getDefaultLearningProgress().python;
 
   const [learningProgress, setLearningProgress] =
@@ -57,7 +57,6 @@ export default function LearningPathCard() {
 
     if (!applied) {
       clearPendingLessonCompletion();
-      clearPendingXpReward();
       setLearningProgress(saved);
       setDisplayCount(saved.completedCount);
       setDisplayPercent(saved.progressPercent);
@@ -157,9 +156,11 @@ export default function LearningPathCard() {
         )}
 
         <h2 className={`mb-2 text-lg font-bold ${theme.primaryText}`}>
-          {title}
+          {pathMeta.title}
         </h2>
-        <p className={`mb-4 text-sm ${theme.mutedText}`}>{description}</p>
+        <p className={`mb-4 text-sm ${theme.mutedText}`}>
+          {pathMeta.description}
+        </p>
 
         <div
           className={`mb-2 h-2.5 overflow-hidden rounded-full ${theme.progressTrack}`}

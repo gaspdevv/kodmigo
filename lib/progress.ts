@@ -1,14 +1,23 @@
-import type { StageKey } from "@/components/dashboard/stageThemes";
-import { normalizeLessonId, pythonPathUnits, type Unit } from "@/data/pythonPath";
+import type { PathLevel } from "@/lib/onboarding-data";
+import { getActivePathLevel } from "@/lib/onboarding-data";
+import {
+  filterCompletedForPath,
+  getPythonTotalLessons,
+  normalizeLessonId,
+  type Unit,
+} from "@/data/pythonPath";
 import { mockUser } from "@/lib/mockUser";
 import { getPendingLessonCompletion } from "@/lib/rewards";
+
+export type { Unit } from "@/data/pythonPath";
+export { normalizeLessonId } from "@/data/pythonPath";
 
 export type UserProgress = {
   currentXp: number;
   requiredXp: number;
   progressPercent: number;
-  currentStage: StageKey;
-  nextStage: StageKey | null;
+  currentStage: import("@/components/dashboard/stageThemes").StageKey;
+  nextStage: import("@/components/dashboard/stageThemes").StageKey | null;
   streakDays: number;
 };
 
@@ -33,7 +42,9 @@ export function calculateProgressPercent(
   return Math.min(100, Math.round((currentXp / requiredXp) * 100));
 }
 
-function isValidStageKey(value: unknown): value is StageKey {
+function isValidStageKey(
+  value: unknown,
+): value is import("@/components/dashboard/stageThemes").StageKey {
   return (
     typeof value === "string" &&
     ["bronze", "silver", "gold", "platinum", "diamond", "master"].includes(
@@ -121,6 +132,7 @@ export function applyXpReward(progress: UserProgress, xp: number): UserProgress 
 const LEARNING_PROGRESS_KEY = "kodmigo_learning_progress";
 
 export type PythonLearningProgress = {
+  activePathLevel: PathLevel;
   totalLessons: number;
   completedLessonIds: string[];
   completedCount: number;
@@ -131,27 +143,36 @@ export type LearningProgressStore = {
   python: PythonLearningProgress;
 };
 
-const DEFAULT_COMPLETED_LESSON_IDS: string[] = [];
-
-export function getPythonTotalLessons(): number {
-  return pythonPathUnits.flatMap((unit) => unit.lessons).length;
-}
-
-export function getDefaultLearningProgress(): LearningProgressStore {
-  const totalLessons = getPythonTotalLessons();
-  const completedCount = DEFAULT_COMPLETED_LESSON_IDS.length;
+function buildPythonProgress(
+  activePathLevel: PathLevel,
+  completedLessonIds: string[],
+): PythonLearningProgress {
+  const pathFiltered = filterCompletedForPath(
+    completedLessonIds,
+    activePathLevel,
+  );
+  const totalLessons = getPythonTotalLessons(activePathLevel);
+  const completedCount = pathFiltered.length;
 
   return {
-    python: {
-      totalLessons,
-      completedLessonIds: [...DEFAULT_COMPLETED_LESSON_IDS],
+    activePathLevel,
+    totalLessons,
+    completedLessonIds: pathFiltered,
+    completedCount,
+    progressPercent: calculateLearningProgressPercent(
       completedCount,
-      progressPercent: calculateLearningProgressPercent(
-        completedCount,
-        totalLessons,
-      ),
-    },
+      totalLessons,
+    ),
   };
+}
+
+export function getDefaultLearningProgress(
+  level?: PathLevel,
+): LearningProgressStore {
+  const activePathLevel = level ?? "beginner";
+  const python = buildPythonProgress(activePathLevel, []);
+
+  return { python };
 }
 
 export function calculateLearningProgressPercent(
@@ -165,13 +186,16 @@ export function calculateLearningProgressPercent(
 function parsePythonLearningProgress(raw: unknown): PythonLearningProgress | null {
   if (!raw || typeof raw !== "object") return null;
 
-  const data = raw as Partial<PythonLearningProgress>;
-  if (
-    typeof data.totalLessons !== "number" ||
-    !Array.isArray(data.completedLessonIds)
-  ) {
-    return null;
-  }
+  const data = raw as Partial<PythonLearningProgress> & {
+    completedLessonIds?: unknown;
+  };
+
+  if (!Array.isArray(data.completedLessonIds)) return null;
+
+  const activePathLevel =
+    typeof data.activePathLevel === "string"
+      ? (data.activePathLevel as PathLevel)
+      : getActivePathLevel();
 
   const completedLessonIds = [
     ...new Set(
@@ -180,18 +204,8 @@ function parsePythonLearningProgress(raw: unknown): PythonLearningProgress | nul
         .map(normalizeLessonId),
     ),
   ];
-  const totalLessons = Math.max(1, data.totalLessons);
-  const completedCount = completedLessonIds.length;
 
-  return {
-    totalLessons,
-    completedLessonIds,
-    completedCount,
-    progressPercent: calculateLearningProgressPercent(
-      completedCount,
-      totalLessons,
-    ),
-  };
+  return buildPythonProgress(activePathLevel, completedLessonIds);
 }
 
 function parseLearningProgressStore(raw: unknown): LearningProgressStore | null {
@@ -205,23 +219,40 @@ function parseLearningProgressStore(raw: unknown): LearningProgressStore | null 
 }
 
 export function getLearningProgress(): LearningProgressStore {
-  if (typeof window === "undefined") return getDefaultLearningProgress();
+  if (typeof window === "undefined") {
+    return getDefaultLearningProgress();
+  }
 
   try {
     const raw = localStorage.getItem(LEARNING_PROGRESS_KEY);
-    if (!raw) return getDefaultLearningProgress();
+    if (!raw) {
+      return getDefaultLearningProgress(getActivePathLevel());
+    }
 
     const parsed = parseLearningProgressStore(JSON.parse(raw));
-    return parsed ?? getDefaultLearningProgress();
+    if (!parsed) {
+      return getDefaultLearningProgress(getActivePathLevel());
+    }
+
+    const currentLevel = getActivePathLevel();
+    if (parsed.python.activePathLevel !== currentLevel) {
+      return {
+        python: buildPythonProgress(
+          currentLevel,
+          parsed.python.completedLessonIds,
+        ),
+      };
+    }
+
+    return parsed;
   } catch {
-    return getDefaultLearningProgress();
+    return getDefaultLearningProgress(getActivePathLevel());
   }
 }
 
 export function getEffectiveCompletedLessonIds(): string[] {
-  const savedIds = getLearningProgress().python.completedLessonIds.map(
-    normalizeLessonId,
-  );
+  const progress = getLearningProgress();
+  const savedIds = progress.python.completedLessonIds.map(normalizeLessonId);
   const uniqueSaved = [...new Set(savedIds)];
 
   const pending = getPendingLessonCompletion();
@@ -250,15 +281,12 @@ export function saveLearningProgress(progress: LearningProgressStore): void {
   if (typeof window === "undefined") return;
 
   try {
-    const normalized: LearningProgressStore = {
-      python: {
-        ...progress.python,
-        completedCount: progress.python.completedLessonIds.length,
-        progressPercent: calculateLearningProgressPercent(
-          progress.python.completedLessonIds.length,
-          progress.python.totalLessons,
-        ),
-      },
+    const activePathLevel = progress.python.activePathLevel;
+    const normalized = {
+      python: buildPythonProgress(
+        activePathLevel,
+        progress.python.completedLessonIds,
+      ),
     };
     localStorage.setItem(LEARNING_PROGRESS_KEY, JSON.stringify(normalized));
   } catch {
@@ -281,19 +309,13 @@ export function applyLessonCompletion(
   }
 
   const completedLessonIds = [...progress.completedLessonIds, normalizedId];
-  const completedCount = completedLessonIds.length;
 
   return {
     applied: true,
-    progress: {
-      ...progress,
+    progress: buildPythonProgress(
+      progress.activePathLevel,
       completedLessonIds,
-      completedCount,
-      progressPercent: calculateLearningProgressPercent(
-        completedCount,
-        progress.totalLessons,
-      ),
-    },
+    ),
   };
 }
 
@@ -320,3 +342,6 @@ export function applyPythonLessonStatuses(
     }),
   }));
 }
+
+// Re-export for consumers that need total lessons with active level
+export { getPythonTotalLessons } from "@/data/pythonPath";

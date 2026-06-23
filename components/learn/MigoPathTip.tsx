@@ -1,7 +1,10 @@
 import { getDashboardTheme } from "@/components/dashboard/getDashboardTheme";
-import { pythonPathMeta } from "@/data/pythonPath";
 
-export default function MigoPathTip() {
+type MigoPathTipProps = {
+  migoTip: string;
+};
+
+export default function MigoPathTip({ migoTip }: MigoPathTipProps) {
   const theme = getDashboardTheme();
 
   return (
@@ -17,7 +20,7 @@ export default function MigoPathTip() {
         <div>
           <h2 className={`mb-1 text-sm font-bold ${theme.migoAccent}`}>Migo</h2>
           <p className={`text-sm leading-relaxed ${theme.mutedText}`}>
-            {pythonPathMeta.migoTip}
+            {migoTip}
           </p>
         </div>
       </div>

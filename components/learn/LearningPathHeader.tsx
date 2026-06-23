@@ -2,14 +2,20 @@
 
 import { useEffect, useState } from "react";
 import { getDashboardTheme } from "@/components/dashboard/getDashboardTheme";
+import type { PathMeta } from "@/data/pythonPath";
 import {
   getDefaultLearningProgress,
   getLearningProgress,
   type PythonLearningProgress,
 } from "@/lib/progress";
-import { pythonPathMeta } from "@/data/pythonPath";
 
-export default function LearningPathHeader() {
+type LearningPathHeaderProps = {
+  pathMeta: PathMeta;
+};
+
+export default function LearningPathHeader({
+  pathMeta,
+}: LearningPathHeaderProps) {
   const theme = getDashboardTheme();
   const defaultProgress = getDefaultLearningProgress().python;
   const [progress, setProgress] =
@@ -23,15 +29,20 @@ export default function LearningPathHeader() {
 
   return (
     <header className="mb-6">
+      <span
+        className={`mb-2 inline-block rounded-full px-3 py-1 text-xs font-semibold ${theme.softBadge}`}
+      >
+        Seviye: {pathMeta.levelLabel}
+      </span>
       <h1
         className={`text-2xl font-bold tracking-tight sm:text-3xl ${theme.primaryText}`}
       >
-        {pythonPathMeta.title}
+        {pathMeta.title}
       </h1>
       <p
         className={`mt-2 text-sm leading-relaxed sm:text-base ${theme.mutedText}`}
       >
-        {pythonPathMeta.description}
+        {pathMeta.description}
       </p>
 
       <div className="mt-5">
