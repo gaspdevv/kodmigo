@@ -1,19 +1,35 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { getDashboardTheme } from "@/components/dashboard/getDashboardTheme";
-import { dashboardMock } from "@/lib/dashboard-mock";
+import { useAuthUser } from "@/lib/auth/useAuthUser";
+import { getProfile } from "@/lib/profile";
 import { playClickSound } from "@/lib/sounds";
+import { formatGreeting } from "@/lib/username";
 
 export default function DashboardHeader() {
-  const { name } = dashboardMock.user;
   const theme = getDashboardTheme();
+  const { username: authUsername, loading: authLoading } = useAuthUser();
+  const [localUsername, setLocalUsername] = useState<string | null>(null);
+  const [isReady, setIsReady] = useState(false);
+
+  useEffect(() => {
+    setLocalUsername(getProfile().username);
+    setIsReady(true);
+  }, []);
+
+  const greeting = formatGreeting(
+    authLoading ? null : authUsername,
+    localUsername,
+  );
 
   return (
     <header className="mb-6 flex items-start justify-between gap-4">
       <div>
         <h1 className={`text-2xl font-bold ${theme.primaryText}`}>
-          Merhaba, {name} 👋
+          {isReady && !authLoading ? greeting : "Merhaba!"}
+          {isReady && !authLoading ? " 👋" : ""}
         </h1>
         <p className={`mt-1 text-sm ${theme.mutedText}`}>
           Bugün Python yolunda küçük bir adım daha atalım.

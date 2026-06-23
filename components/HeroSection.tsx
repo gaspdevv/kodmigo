@@ -16,9 +16,17 @@ export default function HeroSection() {
               Kodmigo
             </span>
           </div>
-          <span className="hidden text-sm text-slate-500 sm:block">
-            Yazılım öğrenmenin en eğlenceli yolu.
-          </span>
+          <div className="flex items-center gap-3 sm:gap-4">
+            <span className="hidden text-sm text-slate-500 sm:block">
+              Yazılım öğrenmenin en eğlenceli yolu.
+            </span>
+            <Link
+              href="/auth/sign-in"
+              className="text-sm font-medium text-slate-600 transition hover:text-kodmigo-orange"
+            >
+              Giriş yap
+            </Link>
+          </div>
         </header>
 
         <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">

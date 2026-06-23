@@ -36,7 +36,7 @@ export const intermediateLessons: Record<string, LessonContent> = {
           { concept: "yazdir_fatura", answer: "Ürün ve fiyatı yazdırır" },
         ],
         ["Her şeyi yapar", "Sadece import eder"],
-        { code: "def format_para(tutar):\n    return f'{tutar:.2f} TL'" },
+        { content: "def format_para(tutar):\n    return f'{tutar:.2f} TL'" },
       ),
       debugStep(
         "step-3",

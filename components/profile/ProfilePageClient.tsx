@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import AchievementBadgeCard from "@/components/profile/AchievementBadgeCard";
 import ProfileCard from "@/components/profile/ProfileCard";
 import BottomNav from "@/components/dashboard/BottomNav";
@@ -10,6 +10,7 @@ import {
   getAchievements,
   getShowcasedAchievement,
 } from "@/lib/achievements";
+import { useAuthUser } from "@/lib/auth/useAuthUser";
 import {
   getDefaultLearningProgress,
   getDefaultUserProgress,
@@ -33,9 +34,11 @@ import {
   isStreakDimmed,
   type StreakProgress,
 } from "@/lib/streak";
+import { resolveDisplayUsername } from "@/lib/username";
 
 export default function ProfilePageClient() {
   const theme = getDashboardTheme();
+  const { user, username: authUsername, loading: authLoading } = useAuthUser();
   const defaultUserProgress = getDefaultUserProgress();
   const defaultLearningProgress = getDefaultLearningProgress().python;
   const defaultStreakProgress = getDefaultStreakProgress();
@@ -58,6 +61,14 @@ export default function ProfilePageClient() {
     setIsReady(true);
   }, []);
 
+  const displayProfile = useMemo(
+    () => ({
+      ...profile,
+      username: resolveDisplayUsername(authUsername, profile.username),
+    }),
+    [authUsername, profile],
+  );
+
   const achievements = getAchievements(
     userProgress,
     learningProgress,
@@ -78,7 +89,7 @@ export default function ProfilePageClient() {
     setProfile(updated);
   };
 
-  if (!isReady) {
+  if (!isReady || authLoading) {
     return (
       <main
         className={`min-h-screen pb-24 ${theme.pageBackground}`}
@@ -111,10 +122,11 @@ export default function ProfilePageClient() {
         </div>
 
         <ProfileCard
-          profile={profile}
+          profile={displayProfile}
           userProgress={userProgress}
           showcasedBadge={showcasedBadge}
           theme={theme}
+          isAuthenticated={Boolean(user)}
           onProfileChange={handleProfileChange}
           onAvatarChange={handleAvatarChange}
         />
