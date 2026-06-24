@@ -29,7 +29,7 @@ export const basicLessons: Record<string, LessonContent> = {
         migo: "Temel yolda hızlı ilerliyoruz — temelleri sağlam tut.",
       }),
       fillStep("step-2", "Eksik komut", 'mesaj = "Hazır"\n____(mesaj)', ["print", "input", "def", "str"], "print", {
-        migo: "Değişkeni ekrana yazdırmak için print.",
+        migo: "Değişkeni tanımladıktan sonra ekrana yazdırmak için hangi komutu kullanırsın?",
       }),
       outputStep("step-3", "Çıktı", 'x = 5\nprint(x + 3)', ["8", "53", "x+3", "Hata"], "8"),
       codeOrderLinesStep(
@@ -44,9 +44,10 @@ export const basicLessons: Record<string, LessonContent> = {
         "Bir değişkene sayı ata ve print() ile yazdır.",
         {
           validation: {
-            requiredPatterns: ["=\\s*\\d", "print\\s*\\("],
+            mustIncludeAssignment: true,
+            mustIncludePrint: true,
+            requiredPatterns: ["=\\s*\\d"],
             minLength: 15,
-            hint: "sayi = 10 ve print(sayi) yapısını kullan.",
           },
           exampleSolution: "sayi = 10\nprint(sayi)",
         },
@@ -97,9 +98,10 @@ export const basicLessons: Record<string, LessonContent> = {
         "Bir değişkene sayı ata ve type() ile türünü yazdır.",
         {
           validation: {
-            requiredPatterns: ["type\\s*\\(", "print\\s*\\(", "="],
+            mustIncludeAssignment: true,
+            mustIncludePrint: true,
+            requiredPatterns: ["type\\s*\\("],
             minLength: 20,
-            hint: "x = 42 ve print(type(x)) kullan.",
           },
           exampleSolution: "x = 42\nprint(type(x))",
         },
@@ -195,9 +197,10 @@ export const basicLessons: Record<string, LessonContent> = {
         "Önce isim değişkenini tanımla, sonra print() ile yazdır.",
         {
           validation: {
-            requiredPatterns: ["isim\\s*=", "print\\s*\\("],
+            mustIncludeAssignment: true,
+            mustIncludePrint: true,
+            requiredPatterns: ["isim\\s*="],
             minLength: 20,
-            hint: 'isim = "..." ve print(isim) sırasını kullan.',
           },
           exampleSolution: 'isim = "Ali"\nprint(isim)',
         },
@@ -301,8 +304,9 @@ export const basicLessons: Record<string, LessonContent> = {
     "8 dk",
     25,
     [
-      infoStep("step-1", "Not sistemi", "if/elif ile aralıkları ayır.", {
-        code: 'notu = int(input("Not: "))\nif notu >= 85:\n    print("Pekiyi")\nelif notu >= 70:\n    print("İyi")\nelse:\n    print("Orta")',
+      infoStep("step-1", "Not sistemi", "if/elif ile not aralıklarını ayıran bir program yazacaksın.", {
+        expectedBehavior:
+          "Kullanıcıdan not al; farklı aralıklar için farklı harf veya mesaj yazdır (ör. Pekiyi, İyi, Orta).",
       }),
       miniTaskStep("step-2", "İki kademe", "Not al; 50 altı kaldı, üstü geçti yazdır.", {
         checklist: ["input ve int", "if/else", "İki farklı mesaj"],
@@ -386,8 +390,9 @@ export const basicLessons: Record<string, LessonContent> = {
     "8 dk",
     25,
     [
-      infoStep("step-1", "Rehber", "Her kişi bir dict; rehber liste veya tek dict olabilir.", {
-        code: 'kisi = {"ad": "Ayşe", "tel": "555-0100"}\nprint(f"{kisi[\'ad\']}: {kisi[\'tel\']}")',
+      infoStep("step-1", "Rehber", "Kişi bilgilerini dict ile saklayan bir rehber oluşturacaksın.", {
+        expectedBehavior:
+          "Her kişi bir dict; ad ve iletişim alanlarını tutup print veya f-string ile göster.",
       }),
       miniTaskStep("step-2", "Tek kişi", "ad ve email anahtarlı dict oluştur ve yazdır.", {
         checklist: ["dict tanımlı", "2 anahtar", "print ile gösterim"],
@@ -496,8 +501,9 @@ export const basicLessons: Record<string, LessonContent> = {
     "8 dk",
     25,
     [
-      infoStep("step-1", "Harcama listesi", "float listesi ve döngü veya sum.", {
-        code: 'harcamalar = [50.0, 120.5, 30.0]\nprint(f"Toplam: {sum(harcamalar)}")',
+      infoStep("step-1", "Harcama listesi", "Harcamaları listede tutup özet istatistik üreteceksin.", {
+        expectedBehavior:
+          "float değerlerden oluşan harcama listesi oluştur; toplam, ortalama veya en yüksek değeri hesapla.",
       }),
       miniTaskStep("step-2", "Toplam", "En az 3 harcamalı liste; toplamı yazdır.", {
         checklist: ["3+ eleman", "sum veya döngü", "toplam print"],
@@ -597,8 +603,9 @@ export const basicLessons: Record<string, LessonContent> = {
     "8 dk",
     25,
     [
-      infoStep("step-1", "Hesap makinesi", "topla, cikar, carp fonksiyonları; input ile sayı al.", {
-        code: "def topla(a, b):\n    return a + b\n\na = float(input('A: '))\nb = float(input('B: '))\nprint(topla(a, b))",
+      infoStep("step-1", "Hesap makinesi", "Basit işlemler yapan fonksiyonlar yazacaksın.", {
+        expectedBehavior:
+          "topla, çıkar, çarp gibi fonksiyonlar tanımla; input ile sayı al ve sonucu yazdır.",
       }),
       miniTaskStep("step-2", "Toplama", "İki sayı alan topla fonksiyonu ve print.", {
         checklist: ["def topla", "input/float", "çağrı ve print"],
@@ -696,8 +703,9 @@ export const basicLessons: Record<string, LessonContent> = {
     "8 dk",
     40,
     [
-      infoStep("step-1", "Adım 1", "Alışkanlıkları liste olarak tut; tamamlananları ayrı işaretle.", {
-        code: 'aliskanliklar = ["Spor", "Okuma", "Su"]\nfor a in aliskanliklar:\n    print(f"- {a}")',
+      infoStep("step-1", "Adım 1", "Alışkanlıkları liste olarak tutacaksın.", {
+        expectedBehavior:
+          "En az 3 alışkanlıklı liste oluştur ve her birini okunur şekilde yazdır.",
       }),
       projectStep("step-2", "Liste oluştur", "En az 3 alışkanlıklı liste yazdır.", {
         checklist: ["3+ alışkanlık", "for veya çoklu print", "okunur çıktı"],
@@ -720,8 +728,9 @@ export const basicLessons: Record<string, LessonContent> = {
     "8 dk",
     40,
     [
-      infoStep("step-1", "Adım 2", "Döngüyle tamamlananları say; yüzde = tamamlanan / toplam * 100.", {
-        code: "tamam = 0\nfor g in gorevler:\n    if g['tamamlandi']:\n        tamam += 1",
+      infoStep("step-1", "Adım 2", "Tamamlanan alışkanlıkları sayıp yüzde hesaplayacaksın.", {
+        expectedBehavior:
+          "Her alışkanlık için tamamlandi (bool) alanı olan dict listesi; döngüyle tamamlanan sayısını ve yüzdeyi hesapla.",
       }),
       projectStep("step-2", "Sayaç", "Tamamlanan alışkanlık sayısını hesapla ve yazdır.", {
         checklist: ["for + if", "sayaç", "print sonuç"],
@@ -745,8 +754,9 @@ export const basicLessons: Record<string, LessonContent> = {
     "8 dk",
     40,
     [
-      infoStep("step-1", "Adım 3", "input ile yeni alışkanlık; append ve özet fonksiyonu.", {
-        code: 'yeni = input("Yeni alışkanlık: ")\naliskanliklar.append({"ad": yeni, "tamamlandi": False})',
+      infoStep("step-1", "Adım 3", "Kullanıcıdan yeni alışkanlık ekleyip özet göstereceksin.", {
+        expectedBehavior:
+          "input ile yeni alışkanlık al, listeye dict olarak ekle; özet istatistikleri yazdıran bir fonksiyon kullan.",
       }),
       projectStep("step-2", "Yeni ekle", "Kullanıcıdan alışkanlık adı al ve listeye dict olarak ekle.", {
         checklist: ["input", "append dict", "liste güncelleniyor"],

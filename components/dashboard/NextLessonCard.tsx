@@ -81,6 +81,9 @@ export default function NextLessonCard() {
   const pathLevel = getActivePathLevel();
   const unit = getLessonUnit(nextLesson.slug, pathLevel);
   const tags = [nextLesson.duration, nextLesson.type];
+  if (nextLesson.type === "Mini Proje") {
+    tags.push(`+${nextLesson.xpReward} XP`);
+  }
   const href = buildLearnPythonHref(nextLesson.slug);
 
   return (

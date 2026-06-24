@@ -1,5 +1,20 @@
 import type { LessonStep, LessonContent, StepValidation, MatchPair } from "./types";
 
+function withCodeValidationDefaults(
+  validation?: StepValidation,
+): StepValidation {
+  return {
+    mustLookLikePython: true,
+    ...validation,
+  };
+}
+
+type TaskStepFields = {
+  targetOutput?: string;
+  expectedBehavior?: string;
+  taskNote?: string;
+};
+
 export function xpLabel(amount: number): string {
   return `+${amount} XP`;
 }
@@ -8,7 +23,14 @@ export function infoStep(
   id: string,
   title: string,
   content: string,
-  opts?: { code?: string; migo?: string; button?: string },
+  opts?: {
+    code?: string;
+    migo?: string;
+    button?: string;
+    targetOutput?: string;
+    expectedBehavior?: string;
+    taskNote?: string;
+  },
 ): LessonStep {
   return {
     id,
@@ -16,6 +38,9 @@ export function infoStep(
     title,
     content,
     code: opts?.code,
+    targetOutput: opts?.targetOutput,
+    expectedBehavior: opts?.expectedBehavior,
+    taskNote: opts?.taskNote,
     migoMessage: opts?.migo,
     buttonLabel: opts?.button ?? "Devam et",
   };
@@ -223,18 +248,23 @@ export function miniTaskStep(
     exampleSolution: string;
     migo?: string;
     validation?: StepValidation;
-  },
+  } & TaskStepFields,
 ): LessonStep {
   return {
     id,
     type: "mini-task",
     title,
     content,
-    placeholder: opts.placeholder ?? "Kodunu veya cevabını buraya yaz...",
+    placeholder: opts.placeholder ?? "Kodunu buraya yaz...",
     checklist: opts.checklist,
     exampleSolution: opts.exampleSolution,
+    targetOutput: opts.targetOutput,
+    expectedBehavior: opts.expectedBehavior,
+    taskNote: opts.taskNote,
     migoMessage: opts.migo,
-    validation: opts.validation,
+    validation: withCodeValidationDefaults(
+      opts.validation ?? { minLength: 12 },
+    ),
   };
 }
 
@@ -248,18 +278,23 @@ export function codeWritingStep(
     exampleSolution?: string;
     migo?: string;
     validation: StepValidation;
-  },
+  } & TaskStepFields,
 ): LessonStep {
   return {
     id,
     type: "code-writing",
     title,
     content,
-    placeholder: opts.placeholder ?? "Python kodunu buraya yaz...",
+    placeholder: opts.placeholder ?? "Kodunu yaz...",
     checklist: opts.checklist,
     exampleSolution: opts.exampleSolution,
+    targetOutput: opts.targetOutput,
+    expectedBehavior: opts.expectedBehavior,
+    taskNote: opts.taskNote,
     migoMessage: opts.migo,
-    validation: opts.validation,
+    validation: withCodeValidationDefaults(
+      opts.validation ?? { minLength: 12 },
+    ),
   };
 }
 
@@ -273,18 +308,23 @@ export function projectStep(
     exampleSolution: string;
     migo?: string;
     validation?: StepValidation;
-  },
+  } & TaskStepFields,
 ): LessonStep {
   return {
     id,
     type: "project-step",
     title,
     content,
-    placeholder: opts.placeholder ?? "Çözümünü buraya yaz...",
+    placeholder: opts.placeholder ?? "Kodunu yaz...",
     checklist: opts.checklist,
     exampleSolution: opts.exampleSolution,
+    targetOutput: opts.targetOutput,
+    expectedBehavior: opts.expectedBehavior,
+    taskNote: opts.taskNote,
     migoMessage: opts.migo,
-    validation: opts.validation,
+    validation: withCodeValidationDefaults(
+      opts.validation ?? { minLength: 15 },
+    ),
   };
 }
 
@@ -292,12 +332,12 @@ export function completeStep(
   id: string,
   xp: number,
   nextLesson: string,
-  opts?: { content?: string },
+  opts?: { content?: string; title?: string },
 ): LessonStep {
   return {
     id,
     type: "complete",
-    title: "Dersi tamamladın!",
+    title: opts?.title ?? "Dersi tamamladın!",
     content: opts?.content ?? "Harika iş çıkardın. Bir sonraki derse geçebilirsin.",
     completeRewards: {
       xp: xpLabel(xp),

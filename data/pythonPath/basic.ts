@@ -18,8 +18,9 @@ export const basicPathUnits: Unit[] = [
     lessons: [
       makeLesson("bas-u1-l1", "bas-quick-print", "print ve değişken tekrarı", "5 dk", "Kısa ders"),
       makeLesson("bas-u1-l2", "bas-quick-types", "Veri türleri hızlı tekrar", "5 dk", "Kısa ders"),
-      makeLesson("bas-u1-l3", "bas-output-prediction", "Çıktı tahmini pratiği", "5 dk", "Pratik"),
-      makeLesson("bas-u1-l4", "bas-debug-intro", "Debug görevi: Hatalı kodu bul", "6 dk", "Uygulama"),
+      makeLesson("bas-u1-l3", "beg-migo-intro-card", "Migo'nun Tanışma Kartı", "6 dk", "Mini Proje"),
+      makeLesson("bas-u1-l4", "bas-output-prediction", "Çıktı tahmini pratiği", "5 dk", "Pratik"),
+      makeLesson("bas-u1-l5", "bas-debug-intro", "Debug görevi: Hatalı kodu bul", "6 dk", "Uygulama"),
     ],
   },
   {

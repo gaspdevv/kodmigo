@@ -12,6 +12,7 @@ import LessonComplete from "@/components/lesson/LessonComplete";
 import LessonFeedback from "@/components/lesson/LessonFeedback";
 import LessonProgress from "@/components/lesson/LessonProgress";
 import MatchConceptActivity from "@/components/lesson/MatchConceptActivity";
+import TaskTargetPanel from "@/components/lesson/TaskTargetPanel";
 import type { LessonContent, LessonStep } from "@/data/lessons";
 import {
   isQuizStepType,
@@ -23,7 +24,13 @@ import {
   answersMatch,
   getStableQuizOptions,
 } from "@/lib/lesson-answers";
-import { validateCodeAnswer } from "@/lib/lesson-code-validation";
+import { validateTaskStep } from "@/lib/lesson-code-validation";
+import {
+  getPostCorrectMigoMessage,
+  getPreAnswerMigoMessage,
+  getSafeQuizCorrectFeedback,
+  getSafeQuizIncorrectFeedback,
+} from "@/lib/lesson-migo-safety";
 import { playCorrectSound, playClickSound, playWrongSound } from "@/lib/sounds";
 
 type LessonShellProps = {
@@ -59,44 +66,6 @@ function MigoTip({
   );
 }
 
-function TaskReveal({
-  step,
-  theme,
-}: {
-  step: LessonStep;
-  theme: StageTheme;
-}) {
-  return (
-    <div className="mt-4 space-y-4">
-      {step.checklist && step.checklist.length > 0 && (
-        <div
-          className={`rounded-2xl border p-4 text-left ${theme.cardBorder} ${theme.cardBackground}`}
-        >
-          <p className={`mb-2 text-sm font-semibold ${theme.primaryText}`}>
-            Kontrol listesi
-          </p>
-          <ul className={`space-y-1.5 text-sm ${theme.mutedText}`}>
-            {step.checklist.map((item) => (
-              <li key={item} className="flex gap-2">
-                <span aria-hidden>✓</span>
-                <span>{item}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-      {step.exampleSolution && (
-        <div>
-          <p className={`mb-2 text-sm font-semibold ${theme.primaryText}`}>
-            Örnek çözüm
-          </p>
-          <LessonCodeBlock code={step.exampleSolution} theme={theme} />
-        </div>
-      )}
-    </div>
-  );
-}
-
 export default function LessonShell({ lesson, theme }: LessonShellProps) {
   const router = useRouter();
   const [stepIndex, setStepIndex] = useState(0);
@@ -122,7 +91,30 @@ export default function LessonShell({ lesson, theme }: LessonShellProps) {
   const isCodeOrderInteractive = step.type === "code-order" && !!step.orderLines?.length;
   const isCodeWriting = step.type === "code-writing";
   const isProjectStep = step.type === "project-step";
+  const isMiniTask = step.type === "mini-task";
+  const isCodeTask = isCodeWriting || isProjectStep || isMiniTask;
+  const showInfoCode = Boolean(step.code) && !step.targetOutput && !isCodeTask;
   const xpReward = lesson.xpReward ?? getLessonXpReward(lesson.id);
+
+  const preAnswerMigo = useMemo(() => {
+    if (isCompleteStep) return null;
+    if (isTask && (taskError !== null || taskRevealed)) return null;
+    if (!isInfoStep && feedbackState !== "none") return null;
+    return getPreAnswerMigoMessage(step);
+  }, [
+    isCompleteStep,
+    isTask,
+    isInfoStep,
+    taskError,
+    taskRevealed,
+    feedbackState,
+    step,
+  ]);
+
+  const postCorrectMigo = useMemo(() => {
+    if (feedbackState !== "correct" || isTask) return null;
+    return getPostCorrectMigoMessage(step);
+  }, [feedbackState, isTask, step]);
 
   const quizPresentation = useMemo(() => {
     if (!isQuiz || isCodeOrderInteractive || isMatchConcept && step.matchPairs?.length) {
@@ -276,11 +268,12 @@ export default function LessonShell({ lesson, theme }: LessonShellProps) {
   };
 
   const handleCheckTask = () => {
-    const result = validateCodeAnswer(taskInput, step.validation);
+    const result = validateTaskStep(taskInput, step);
 
     if (!result.valid) {
       setTaskError(result.message ?? "Cevabın henüz uygun değil.");
       setTaskRevealed(false);
+      setFeedbackState("incorrect");
       playWrongSound();
       return;
     }
@@ -288,6 +281,7 @@ export default function LessonShell({ lesson, theme }: LessonShellProps) {
     playCorrectSound();
     setTaskError(null);
     setTaskRevealed(true);
+    setFeedbackState("correct");
   };
 
   const handlePrimaryAction = () => {
@@ -306,7 +300,7 @@ export default function LessonShell({ lesson, theme }: LessonShellProps) {
     : isTask
       ? taskRevealed
         ? "Devam et"
-        : "Kontrol et"
+        : "Denemeni kontrol et"
       : isAnswerCorrect
         ? "Devam et"
         : "Cevabı kontrol et";
@@ -326,16 +320,26 @@ export default function LessonShell({ lesson, theme }: LessonShellProps) {
 
   const showFeedback =
     (isQuiz && feedbackState !== "none" && step.feedback) ||
-    (isTask && taskError !== null);
+    (isTask && taskError !== null) ||
+    (isTask && taskRevealed && feedbackState === "correct");
 
   const feedbackMessage = isTask
-    ? taskError ?? undefined
+    ? taskError ??
+      (taskRevealed && feedbackState === "correct"
+        ? "Kodun görevle uyumlu görünüyor. Devam edebilirsin."
+        : undefined)
     : feedbackState === "correct"
-      ? step.feedback?.correct
-      : step.feedback?.incorrect;
+      ? getSafeQuizCorrectFeedback(step)
+      : feedbackState === "incorrect"
+        ? getSafeQuizIncorrectFeedback(step)
+        : undefined;
 
   const feedbackType: "correct" | "incorrect" = isTask
-    ? "incorrect"
+    ? taskError
+      ? "incorrect"
+      : feedbackState === "correct"
+        ? "correct"
+        : "incorrect"
     : feedbackState === "correct"
       ? "correct"
       : "incorrect";
@@ -408,9 +412,13 @@ export default function LessonShell({ lesson, theme }: LessonShellProps) {
               </p>
             )}
 
-            {step.code && !isDebugChoice && (
+            {(step.targetOutput || step.expectedBehavior) && (
+              <TaskTargetPanel step={step} theme={theme} />
+            )}
+
+            {showInfoCode && !isDebugChoice && (
               <div className="mb-4">
-                <LessonCodeBlock code={step.code} theme={theme} />
+                <LessonCodeBlock code={step.code!} theme={theme} />
               </div>
             )}
 
@@ -498,6 +506,9 @@ export default function LessonShell({ lesson, theme }: LessonShellProps) {
 
             {isTask && (
               <div className="mb-4">
+                <p className={`mb-2 text-xs font-bold uppercase tracking-wide ${theme.sectionAccent}`}>
+                  Görev
+                </p>
                 <div
                   className={`rounded-2xl border p-4 ${
                     isProjectStep
@@ -514,7 +525,7 @@ export default function LessonShell({ lesson, theme }: LessonShellProps) {
                   )}
                   {isCodeWriting && (
                     <p className="mb-2 text-xs font-bold uppercase tracking-wide text-slate-300">
-                      Kod editörü
+                      Kodunu yaz
                     </p>
                   )}
                   <textarea
@@ -522,8 +533,11 @@ export default function LessonShell({ lesson, theme }: LessonShellProps) {
                     onChange={(e) => {
                       setTaskInput(e.target.value);
                       if (taskError) setTaskError(null);
+                      if (feedbackState === "incorrect") {
+                        setFeedbackState("none");
+                      }
                     }}
-                    placeholder={step.placeholder ?? "Cevabını buraya yaz..."}
+                    placeholder={step.placeholder ?? "Kodunu yaz..."}
                     rows={isProjectStep ? 8 : 5}
                     className={`w-full resize-y rounded-xl border px-4 py-3 font-mono text-sm leading-relaxed outline-none transition focus:ring-2 focus:ring-orange-400/50 ${
                       isCodeWriting
@@ -532,12 +546,15 @@ export default function LessonShell({ lesson, theme }: LessonShellProps) {
                     }`}
                   />
                 </div>
-                {taskRevealed && <TaskReveal step={step} theme={theme} />}
               </div>
             )}
 
-            {step.migoMessage && (
-              <MigoTip message={step.migoMessage} theme={theme} />
+            {preAnswerMigo && (
+              <MigoTip message={preAnswerMigo} theme={theme} />
+            )}
+
+            {postCorrectMigo && (
+              <MigoTip message={postCorrectMigo} theme={theme} />
             )}
 
             {showFeedback && feedbackMessage && (

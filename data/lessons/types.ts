@@ -20,9 +20,39 @@ export type LessonStepFeedback = {
 
 export type StepValidation = {
   requiredIncludes?: string[];
+  requiredAnyIncludes?: string[];
   requiredPatterns?: string[];
   rejectPatterns?: string[];
+  forbiddenExactAnswers?: string[];
   minLength?: number;
+  minPrintCount?: number;
+  minLines?: number;
+  mustLookLikePython?: boolean;
+  mustIncludePrint?: boolean;
+  mustIncludeAssignment?: boolean;
+  mustIncludeDef?: boolean;
+  mustIncludeIf?: boolean;
+  mustIncludeLoop?: boolean;
+  hints?: Partial<Record<
+    | "empty"
+    | "junk"
+    | "tooShort"
+    | "notPython"
+    | "missingPrint"
+    | "emptyPrint"
+    | "missingAssignment"
+    | "incompleteAssignment"
+    | "missingKeyword"
+    | "missingAnyKeyword"
+    | "missingStructure"
+    | "missingPrintCount"
+    | "missingLines"
+    | "consoleLog"
+    | "plainTextOnly"
+    | "default",
+    string
+  >>;
+  /** @deprecated Prefer hints.* — must not contain solution code */
   hint?: string;
 };
 
@@ -43,10 +73,15 @@ export type LessonStep = {
   matchPairs?: MatchPair[];
   correctAnswer?: string;
   migoMessage?: string;
+  /** Shown only after a correct answer — may explain the concept */
+  migoMessageAfterCorrect?: string;
   feedback?: LessonStepFeedback;
   buttonLabel?: string;
   placeholder?: string;
   expectedText?: string;
+  targetOutput?: string;
+  expectedBehavior?: string;
+  taskNote?: string;
   checklist?: string[];
   exampleSolution?: string;
   validation?: StepValidation;
@@ -87,5 +122,9 @@ export function isTaskStepType(type: LessonStepType): boolean {
 }
 
 export function isValidatedTaskStepType(type: LessonStepType): boolean {
-  return type === "code-writing" || type === "project-step";
+  return (
+    type === "code-writing" ||
+    type === "project-step" ||
+    type === "mini-task"
+  );
 }

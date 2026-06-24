@@ -30,8 +30,9 @@ export const beginnerPathUnits: Unit[] = [
       makeLesson("beg-u2-l1", "beg-variables-intro", "Değişken mantığı", "5 dk", "Kısa ders"),
       makeLesson("beg-u2-l2", "beg-naming-rules", "İsimlendirme kuralları", "5 dk", "Kısa ders"),
       makeLesson("beg-u2-l3", "beg-strings-numbers", "Metinler ve sayılar", "5 dk", "Kısa ders"),
-      makeLesson("beg-u2-l4", "beg-boolean-fstring", "Boolean ve f-string", "6 dk", "Kısa ders"),
-      makeLesson("beg-u2-l5", "beg-profile-card-project", "Mini proje: Profil kartı", "8 dk", "Mini görev"),
+      makeLesson("beg-u2-l4", "beg-migo-intro-card", "Migo'nun Tanışma Kartı", "6 dk", "Mini Proje"),
+      makeLesson("beg-u2-l5", "beg-boolean-fstring", "Boolean ve f-string", "6 dk", "Kısa ders"),
+      makeLesson("beg-u2-l6", "beg-profile-card-project", "Mini proje: Profil kartı", "8 dk", "Mini görev"),
     ],
   },
   {

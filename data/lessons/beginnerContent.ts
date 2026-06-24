@@ -128,9 +128,8 @@ export const beginnerLessons: Record<string, LessonContent> = {
         "print() kullanarak ekrana kendi cümleni yazdır.",
         {
           validation: {
-            requiredPatterns: ["print\\s*\\("],
+            mustIncludePrint: true,
             minLength: 10,
-            hint: "print() fonksiyonunu kullanarak ekrana bir cümle yazmalısın.",
           },
           exampleSolution: 'print("Merhaba, ben Migo!")',
           migo: "Kendi adını veya kısa bir selamlamayı kullanabilirsin.",
@@ -196,9 +195,9 @@ export const beginnerLessons: Record<string, LessonContent> = {
         'İki print() ile önce "Merhaba" sonra "Dünya" yazdır.',
         {
           validation: {
-            requiredPatterns: ["print\\s*\\(", "Merhaba", "Dünya"],
+            mustIncludePrint: true,
+            requiredPatterns: ["Merhaba", "Dünya"],
             minLength: 20,
-            hint: 'İki ayrı print() satırı kullan: print("Merhaba") ve print("Dünya").',
           },
           exampleSolution: 'print("Merhaba")\nprint("Dünya")',
         },
@@ -220,10 +219,12 @@ export const beginnerLessons: Record<string, LessonContent> = {
       infoStep(
         "step-1",
         "Mini görev zamanı",
-        "print() ile kendini tanıtabilirsin. Parantez içine yazdığın metin ekranda görünür.",
+        "print() ile ekrana kendini tanıtan bir çıktı oluşturacaksın.",
         {
-          code: 'print("Merhaba, ben Ali!")',
-          migo: "Kendi adını veya kısa bir selamlamayı print() ile yazabilirsin.",
+          targetOutput: "Merhaba, ben Ali!",
+          taskNote:
+            "Kendi adını ve cümlelerini kullanabilirsin. Önemli olan print ile anlamlı bir tanışma çıktısı üretmek.",
+          migo: "Hedef çıktıya benzer bir sonuç için Python kodunu kendin yaz.",
         },
       ),
       codeWritingStep(
@@ -232,11 +233,11 @@ export const beginnerLessons: Record<string, LessonContent> = {
         "print() kullanarak kendini tanıtan bir cümle yaz.",
         {
           validation: {
+            mustIncludePrint: true,
             requiredIncludes: ["print"],
             requiredPatterns: ["print\\s*\\("],
             minLength: 10,
             rejectPatterns: ["^abc$", "^x\\s*="],
-            hint: "print() fonksiyonunu kullanarak ekrana bir cümle yazmalısın.",
           },
           checklist: [
             "print() fonksiyonu kullanıldı",
@@ -253,9 +254,9 @@ export const beginnerLessons: Record<string, LessonContent> = {
         "Bir ad değişkeni oluştur ve print() ile yazdır.",
         {
           validation: {
-            requiredPatterns: ["=\\s*[\"']", "print\\s*\\("],
+            mustIncludeAssignment: true,
+            mustIncludePrint: true,
             minLength: 15,
-            hint: "Önce ad = \"...\" şeklinde değişken ata, sonra print(ad) kullan.",
           },
           exampleSolution: 'ad = "Efe"\nprint(ad)',
           migo: "Değişkene atayıp print ile yazdırabilirsin.",
@@ -280,9 +281,9 @@ export const beginnerLessons: Record<string, LessonContent> = {
           exampleSolution:
             'ad = "Efe"\nsehir = "İstanbul"\nprint(f"Ad: {ad}")\nprint(f"Şehir: {sehir}")',
           validation: {
-            requiredPatterns: ["=", "print\\s*\\("],
+            mustIncludeAssignment: true,
+            mustIncludePrint: true,
             minLength: 30,
-            hint: "Değişken ata ve print() ile en az iki satır çıktı üret.",
           },
           migo: "f-string kullanmak çıktıyı düzenli gösterir.",
         },
@@ -348,9 +349,9 @@ export const beginnerLessons: Record<string, LessonContent> = {
         "Bir şehir değişkeni oluştur ve print() ile yazdır.",
         {
           validation: {
-            requiredPatterns: ["=\\s*[\"']", "print\\s*\\("],
+            mustIncludeAssignment: true,
+            mustIncludePrint: true,
             minLength: 15,
-            hint: 'sehir = "..." ve print(sehir) yapısını kullan.',
           },
           exampleSolution: 'sehir = "Ankara"\nprint(sehir)',
         },
@@ -470,14 +471,106 @@ export const beginnerLessons: Record<string, LessonContent> = {
         "Bir fiyat değişkenine ondalıklı sayı ata ve print() ile yazdır.",
         {
           validation: {
-            requiredPatterns: ["=\\s*\\d", "print\\s*\\("],
+            mustIncludeAssignment: true,
+            mustIncludePrint: true,
+            requiredPatterns: ["=\\s*\\d"],
             minLength: 15,
-            hint: "fiyat = 29.90 gibi tırnaksız sayı ata, sonra print(fiyat) kullan.",
           },
           exampleSolution: "fiyat = 29.90\nprint(fiyat)",
         },
       ),
-      completeStep("step-6", 10, "Boolean ve f-string"),
+      completeStep("step-6", 10, "Migo'nun Tanışma Kartı"),
+    ],
+    "beginner",
+  ),
+
+  "beg-migo-intro-card": buildLesson(
+    "beg-migo-intro-card",
+    "Migo'nun Tanışma Kartı",
+    "Print ve değişkenleri kullanarak Migo için küçük bir tanışma çıktısı hazırla.",
+    "6 dk",
+    25,
+    [
+      infoStep(
+        "step-1",
+        "Projeyi tanı",
+        "Görevin, Python kodu yazarak buna benzer bir tanışma çıktısı oluşturmak.",
+        {
+          targetOutput:
+            "Merhaba! Ben Migo.\nBen Kodmigo'nun tilki rehberiyim.\nBugün Python öğrenmeye başladım.\nEn sevdiğim şey: Her gün biraz kod!",
+          taskNote:
+            "Hedef çıktı birebir aynı olmak zorunda değil. Ama kodunda print kullanmalı, Migo'dan bahsetmeli ve birkaç satırlık bir tanışma mesajı oluşturmalısın.",
+          migo: "Çözüm kodunu düşünerek yaz — hedef çıktıya benzer bir sonuç üretmen yeterli.",
+        },
+      ),
+      codeWritingStep(
+        "step-2",
+        "İlk print satırı",
+        "Migo'yu selamlayan bir print() satırı yaz.",
+        {
+          validation: {
+            mustIncludePrint: true,
+            requiredAnyIncludes: ["Migo", "Kodmigo"],
+            minLength: 10,
+            hints: {
+              missingPrint:
+                "Yaklaştın! Bu adımda Python'da ekrana yazdırmak için print(...) kullanmalısın. Mesajında Migo da geçsin.",
+              missingAnyKeyword:
+                "Güzel başlangıç! print kullandın — şimdi mesajında Migo veya Kodmigo kelimesi de geçsin.",
+            },
+          },
+          exampleSolution: 'print("Merhaba! Ben Migo.")',
+          migo: "Kısa ve sıcak bir selamlama yeterli.",
+        },
+      ),
+      codeWritingStep(
+        "step-3",
+        "Değişken kullan",
+        "Migo'nun adını bir değişkende sakla.",
+        {
+          validation: {
+            mustIncludeAssignment: true,
+            requiredAnyIncludes: ["Migo", "Kodmigo"],
+            minLength: 8,
+            hints: {
+              missingAssignment:
+                "Güzel deneme! Bu adımda Migo adını bir değişkende saklamanı istiyoruz. Değişken tanımlarken = işaretini kullanmayı düşün.",
+            },
+          },
+          exampleSolution: 'isim = "Migo"\nprint(isim)',
+          migo: "Önce değişkene ata, istersen print ile yazdır.",
+        },
+      ),
+      projectStep(
+        "step-4",
+        "Birkaç satırlık çıktı oluştur",
+        "En az birkaç print() satırıyla Migo'nun tanışma kartını tamamla.",
+        {
+          checklist: [
+            "print() kullanıldı",
+            "Migo veya Kodmigo kelimesi geçiyor",
+            "Birkaç satırlık tanışma çıktısı var",
+          ],
+          exampleSolution:
+            'print("Merhaba! Ben Migo.")\nprint("Ben Kodmigo\'nun tilki rehberiyim.")\nprint("Bugün Python öğrenmeye başladım.")\nprint("En sevdiğim şey: Her gün biraz kod!")',
+          validation: {
+            mustIncludePrint: true,
+            requiredAnyIncludes: ["Migo", "Kodmigo"],
+            minPrintCount: 2,
+            minLength: 25,
+            hints: {
+              missingPrintCount:
+                "Tanışma kartı biraz daha dolu olmalı. En az birkaç satır print kullanarak Migo'yu tanıtan bir çıktı oluşturmayı dene.",
+            },
+          },
+          migo: "Her print() yeni bir satır oluşturur — kartını satır satır inşa et.",
+        },
+      ),
+      completeStep("step-5", 25, "Boolean ve f-string", {
+        title: "İlk mini projen hazır!",
+        content:
+          "Harika! Migo'nun ilk tanışma kartını Python ile oluşturdun. Bu küçük proje, print ve değişkenleri gerçek bir amaç için kullandığın ilk adım oldu.",
+      }),
     ],
     "beginner",
   ),
@@ -526,9 +619,10 @@ export const beginnerLessons: Record<string, LessonContent> = {
         "Bir ad değişkeni ve f-string ile kendini tanıtan print() yaz.",
         {
           validation: {
-            requiredPatterns: ["f[\"']", "print\\s*\\(", "="],
+            mustIncludeAssignment: true,
+            mustIncludePrint: true,
+            requiredPatterns: ["f[\"']"],
             minLength: 20,
-            hint: 'ad = "..." ve print(f"...{ad}...") yapısını kullan.',
           },
           exampleSolution: 'ad = "Efe"\nprint(f"Merhaba, ben {ad}")',
         },
@@ -548,10 +642,11 @@ export const beginnerLessons: Record<string, LessonContent> = {
       infoStep(
         "step-1",
         "Profil kartı",
-        "Ad, meslek ve şehir bilgilerini değişkenlerde tutup f-string ile düzenli bir kart yazdır.",
+        "Değişkenler ve f-string kullanarak düzenli bir profil kartı oluşturacaksın.",
         {
-          code: 'ad = "Selin"\nmeslek = "Tasarımcı"\nprint(f"{ad} — {meslek}")',
-          migo: "Önce verileri değişkenlere koy, sonra tek bir print ile birleştir.",
+          expectedBehavior:
+            "Ad, meslek ve şehir bilgilerini değişkenlerde tutup f-string ile okunabilir bir profil çıktısı yazdır.",
+          migo: "Önce verileri değişkenlere koy, sonra print ile birleştir.",
         },
       ),
       codeWritingStep(
@@ -560,9 +655,9 @@ export const beginnerLessons: Record<string, LessonContent> = {
         "En az 2 değişken ve print() ile kısa profil çıktısı yaz.",
         {
           validation: {
-            requiredPatterns: ["=", "print\\s*\\("],
+            mustIncludeAssignment: true,
+            mustIncludePrint: true,
             minLength: 25,
-            hint: "En az iki değişken ata ve print() ile yazdır.",
           },
           checklist: [
             "En az 2 değişken tanımlı",
@@ -593,9 +688,10 @@ export const beginnerLessons: Record<string, LessonContent> = {
           exampleSolution:
             'ad = "Efe"\nyas = 28\naktif = True\nprint(f"Ad: {ad}")\nprint(f"Yaş: {yas}")\nprint(f"Aktif: {aktif}")',
           validation: {
-            requiredPatterns: ["True|False", "print\\s*\\(", "f[\"']"],
+            mustIncludePrint: true,
+            requiredPatterns: ["True|False", "f[\"']"],
+            minPrintCount: 3,
             minLength: 40,
-            hint: "aktif = True gibi boolean ekle ve f-string ile yazdır.",
           },
           migo: "Boolean değeri doğrudan f-string içinde yazdırabilirsin.",
         },
@@ -648,9 +744,9 @@ export const beginnerLessons: Record<string, LessonContent> = {
         'input() ile kullanıcıdan ad al ve print() ile yazdır.',
         {
           validation: {
-            requiredPatterns: ["input\\s*\\(", "print\\s*\\(", "="],
+            mustIncludePrint: true,
+            requiredPatterns: ["input\\s*\\(", "="],
             minLength: 20,
-            hint: 'isim = input("...") ve print(isim) yapısını kullan.',
           },
           exampleSolution: 'isim = input("Adın ne? ")\nprint(isim)',
         },
@@ -664,9 +760,9 @@ export const beginnerLessons: Record<string, LessonContent> = {
           exampleSolution:
             'ad = input("Adın: ")\nprint(f"Merhaba, {ad}!")',
           validation: {
-            requiredPatterns: ["input\\s*\\(", "f[\"']", "print\\s*\\("],
+            mustIncludePrint: true,
+            requiredPatterns: ["input\\s*\\(", "f[\"']"],
             minLength: 25,
-            hint: "input ile ad al, f-string ile Merhaba mesajı yazdır.",
           },
           migo: "Kullanıcıdan aldığın metni f-string ile birleştir.",
         },
@@ -782,10 +878,12 @@ export const beginnerLessons: Record<string, LessonContent> = {
       infoStep(
         "step-1",
         "Yaş formülü",
-        "Yaş ≈ bulunulan yıl − doğum yılı. input ile doğum yılını alıp int'e çevirirsin.",
+        "Doğum yılından yaş hesaplayan bir program yazacaksın.",
         {
-          code: 'dogum = int(input("Doğum yılın: "))\nyas = 2026 - dogum\nprint(f"Yaşın: {yas}")',
-          migo: "Sabit yıl yerine güncel yılı kullanabilirsin; burada 2026 örnek.",
+          expectedBehavior:
+            "Kullanıcıdan doğum yılını al, int'e çevir, bulunulan yıldan çıkar ve yaşı ekrana yazdır.",
+          taskNote: "Yaş ≈ bulunulan yıl − doğum yılı",
+          migo: "Sabit yıl yerine güncel yılı kullanabilirsin.",
         },
       ),
       miniTaskStep(
@@ -843,7 +941,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
         "Ne zaman çalışır?",
         ["yas >= 18 True ise", "Her zaman", "yas çift ise", "Hiçbir zaman"],
         "yas >= 18 True ise",
-        { code: "yas = 20\nif yas >= 18:\n    print(\"Reşitsin\")", migo: "Koşul True olmalı." },
+        { code: "yas = 20\nif yas >= 18:\n    print(\"Reşitsin\")", migo: "Koşul doğru olduğunda if bloğu çalışır. Girintiye dikkat et." },
       ),
       fillStep(
         "step-3",
@@ -859,7 +957,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
         'sicaklik = 30\nif sicaklik > 25:\n    print("Sıcak")',
         ["Sıcak", "Hiçbir şey", "Hata", "30"],
         "Sıcak",
-        { migo: "30 > 25 doğrudur, blok çalışır." },
+        { migo: "Karşılaştırma sonucunu düşün: koşul doğruysa hangi blok çalışır?" },
       ),
       completeStep("step-5", 10, "Karşılaştırmalar"),
     ],
@@ -903,7 +1001,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
         "notu = 45\nprint(notu >= 50)",
         ["False", "True", "45", "Hata"],
         "False",
-        { migo: "45, 50'den küçük — >= False döner." },
+        { migo: "Karşılaştırma operatörünün True veya False döndürdüğünü hatırla." },
       ),
       completeStep("step-5", 10, "else kullanımı"),
     ],
@@ -932,7 +1030,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
         'puan = 40\nif puan >= 50:\n    print("Geçti")\nelse:\n    print("Kaldı")',
         ["Kaldı", "Geçti", "40", "Hata"],
         "Kaldı",
-        { migo: "40 >= 50 False — else çalışır." },
+        { migo: "Koşul sağlanmazsa alternatif dal devreye girer. Hangi dalın çalışacağını düşün." },
       ),
       mcStep(
         "step-3",
@@ -981,7 +1079,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
         'notu = 82\nif notu >= 90:\n    print("A")\nelif notu >= 80:\n    print("B")\nelse:\n    print("C")',
         ["B", "A", "C", "82"],
         "B",
-        { migo: "82 >= 80 ama 90'dan küçük — elif dalı çalışır." },
+        { migo: "Koşulları sırayla kontrol et. İlk doğru olan dal çalışır, sonrakiler atlanır." },
       ),
       mcStep(
         "step-3",
@@ -996,7 +1094,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
         'sicaklik = 15\nif sicaklik >= 30:\n    print("Sıcak")\n____ sicaklik >= 20:\n    print("Ilık")\nelse:\n    print("Soğuk")',
         ["elif", "else", "if", "then"],
         "elif",
-        { content: "Orta sıcaklık için elif ekle.", migo: "İkinci koşul için elif yazılır." },
+        { content: "Orta sıcaklık için elif ekle.", migo: "Birden fazla koşul varsa if'ten sonra hangi anahtar kelimeyi kullanırsın?" },
       ),
       completeStep("step-5", 15, "Mini proje: Bilet fiyatı"),
     ],
@@ -1013,9 +1111,10 @@ export const beginnerLessons: Record<string, LessonContent> = {
       infoStep(
         "step-1",
         "Fiyat kuralları",
-        "Örnek: 0-12 yaş ücretsiz, 13-17 indirimli (50 TL), 18+ tam (100 TL). if/elif/else ile uygula.",
+        "Yaşa göre farklı bilet fiyatları uygulayan bir program yazacaksın.",
         {
-          code: 'yas = int(input("Yaş: "))\nif yas <= 12:\n    print("Ücretsiz")\nelif yas <= 17:\n    print("50 TL")\nelse:\n    print("100 TL")',
+          expectedBehavior:
+            "Örnek kurallar: 0–12 yaş ücretsiz, 13–17 indirimli, 18+ tam fiyat. input, int ve if/elif/else kullan.",
           migo: "Kuralları önce kağıda yaz, sonra koda çevir.",
         },
       ),
@@ -1198,9 +1297,10 @@ export const beginnerLessons: Record<string, LessonContent> = {
       infoStep(
         "step-1",
         "Alışveriş listesi",
-        "Başlangıç listesi oluştur, append ile ürün ekle, for veya print ile göster.",
+        "Python listesi ile alışveriş listesi oluşturacaksın.",
         {
-          code: 'liste = ["süt", "ekmek"]\nliste.append("peynir")\nprint(liste)\nprint(f"Toplam {len(liste)} ürün")',
+          expectedBehavior:
+            "Başlangıç listesi oluştur, append ile ürün ekle ve listeyi (veya özetini) ekrana yazdır.",
           migo: "Gerçek hayattaki liste mantığının aynısını kodluyorsun.",
         },
       ),
@@ -1390,10 +1490,11 @@ export const beginnerLessons: Record<string, LessonContent> = {
       infoStep(
         "step-1",
         "Görev yazdırıcı",
-        "Görevleri bir listede tut; range ve len ile numaralı çıktı üretebilirsin.",
+        "Görev listesini numaralı şekilde yazdıracaksın.",
         {
-          code: 'gorevler = ["Kod yaz", "Egzersiz", "Oku"]\nfor i in range(len(gorevler)):\n    print(f"{i+1}. {gorevler[i]}")',
-          migo: "i+1 kullanıcıya 1'den başlayan numara gösterir.",
+          expectedBehavior:
+            "Görevleri bir listede tut; for döngüsü veya range ile her görevi satır satır yazdır.",
+          migo: "Numaralı çıktı için range(len(...)) veya enumerate düşünebilirsin.",
         },
       ),
       miniTaskStep(
@@ -1560,7 +1661,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
         "def iki_kat(x):\n    return x * 2\n\nprint(iki_kat(5))",
         ["10", "5", "x", "Hata"],
         "10",
-        { migo: "5 * 2 = 10 döner ve print edilir." },
+        { migo: "Fonksiyonun döndürdüğü değeri print ile gösterebilirsin. Önce sonucu düşün." },
       ),
       mcStep(
         "step-4",
@@ -1589,9 +1690,10 @@ export const beginnerLessons: Record<string, LessonContent> = {
       infoStep(
         "step-1",
         "Selamlama modülü",
-        "Farklı selamlama fonksiyonları yaz: sabah/akşam mesajı, isimle kişiselleştirme.",
+        "Parametreli selamlama fonksiyonları yazacaksın.",
         {
-          code: 'def selamla(isim, saat):\n    if saat < 12:\n        return f"Günaydın, {isim}"\n    return f"İyi günler, {isim}"',
+          expectedBehavior:
+            "def ile fonksiyon tanımla; isim veya saat gibi parametrelerle farklı selamlama mesajları üret.",
           migo: "Koşul ve return bir arada kullanılabilir.",
         },
       ),

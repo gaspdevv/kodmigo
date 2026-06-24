@@ -112,12 +112,15 @@ export default function LessonCard({ lesson, isFocused = false }: LessonCardProp
   const isCurrent = lesson.status === "current";
   const isLocked = lesson.status === "locked";
   const isCompleted = lesson.status === "completed";
+  const isMiniProject = lesson.type === "Mini Proje";
 
   const cardClasses = isCurrent
     ? `border-2 ${theme.lessonCurrentBorder} ${theme.lessonCurrentCard} ${theme.cardShadow}`
     : isLocked
       ? `border ${theme.lessonLockedBorder} ${theme.lessonLockedCard}`
-      : `border ${theme.lessonCompletedBorder} ${theme.lessonCompletedCard}`;
+      : isMiniProject
+        ? `border ${theme.lessonCompletedBorder} ${theme.lessonCompletedCard} border-dashed`
+        : `border ${theme.lessonCompletedBorder} ${theme.lessonCompletedCard}`;
 
   const titleClass = isLocked
     ? theme.lessonLockedText
@@ -147,12 +150,21 @@ export default function LessonCard({ lesson, isFocused = false }: LessonCardProp
             )}
             <span
               className={`rounded-full px-2 py-0.5 text-xs font-medium ${
-                isLocked ? theme.lessonLockedBadge : theme.softBadge
+                isMiniProject && !isLocked
+                  ? theme.currentBadge
+                  : isLocked
+                    ? theme.lessonLockedBadge
+                    : theme.softBadge
               }`}
             >
               {lesson.type}
             </span>
             <span className={`text-xs ${metaClass}`}>{lesson.duration}</span>
+            {isMiniProject && !isLocked && (
+              <span className={`text-xs font-medium ${theme.sectionAccent}`}>
+                +{lesson.xpReward} XP
+              </span>
+            )}
           </div>
           <h3 className={`font-semibold leading-snug ${titleClass}`}>
             {lesson.title}

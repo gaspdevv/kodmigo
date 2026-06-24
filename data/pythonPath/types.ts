@@ -4,6 +4,7 @@ export type LessonStatus = "completed" | "current" | "locked";
 export type LessonType =
   | "Kısa ders"
   | "Mini görev"
+  | "Mini Proje"
   | "Pratik"
   | "Uygulama"
   | "Proje";
@@ -43,7 +44,7 @@ export function makeLesson(
   const xpReward =
     type === "Proje"
       ? 40
-      : type === "Mini görev"
+      : type === "Mini görev" || type === "Mini Proje"
         ? 25
         : type === "Pratik" || type === "Uygulama"
           ? 15

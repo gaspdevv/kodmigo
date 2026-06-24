@@ -34,7 +34,6 @@ Planlanan temel özellikler:
 - XP ve seri sistemi
 - Kullanıcı ilerleme takibi
 - Migo adlı tilki maskot ile rehberlik
-- İlerleyen aşamalarda AI destekli ipuçları
 - Mini projelerle öğrenilenleri uygulama
 
 ## Kullanılan Teknolojiler
@@ -49,9 +48,15 @@ Bu aşamada kullanılan teknolojiler:
 
 Henüz eklenmeyen ama ileride planlanan teknolojiler:
 
-- Supabase
-- OpenAI API veya benzeri AI servisleri
 - Pyodide veya benzeri tarayıcı içi Python çalıştırma çözümü
+
+## Ortam Değişkenleri
+
+`.env.local` dosyasına aşağıdaki değerleri ekleyin (örnek için `.env.example` dosyasına bakın):
+
+- `NEXT_PUBLIC_SUPABASE_URL` ve `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` — Supabase auth ve veri senkronizasyonu
+
+Deploy için Vercel Environment Variables içine de aynı değerleri ekleyin.
 
 ## Proje Yapısı
 

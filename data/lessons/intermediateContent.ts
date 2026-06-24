@@ -54,7 +54,7 @@ export const intermediateLessons: Record<string, LessonContent> = {
         "step-4",
         "Refactor sırası",
         ["def hesapla(): return 10", "def goster(): print(hesapla())", "goster()"],
-        { content: "Önce fonksiyonlar, sonra çağrı.", migo: "goster() en sonda çalışmalı." },
+        { content: "Önce fonksiyonlar, sonra çağrı.", migo: "Fonksiyonlar kullanılmadan önce tanımlanmalı. Çağrı en sonda mı olmalı?" },
       ),
       codeWritingStep(
         "step-5",
@@ -62,9 +62,9 @@ export const intermediateLessons: Record<string, LessonContent> = {
         "İki sayıyı toplayan kısa bir fonksiyon yaz.",
         {
           validation: {
-            requiredPatterns: ["def\\s+\\w+\\s*\\(", "return"],
+            mustIncludeDef: true,
+            requiredPatterns: ["return"],
             minLength: 20,
-            hint: "def topla(a, b): ve return a + b kullan.",
           },
           exampleSolution: "def topla(a, b):\n    return a + b",
         },
@@ -111,9 +111,10 @@ export const intermediateLessons: Record<string, LessonContent> = {
         "Negatif sayıyı pozitife çeviren kısa bir fonksiyon yaz.",
         {
           validation: {
-            requiredPatterns: ["def\\s+\\w+\\s*\\(", "return", "if"],
+            mustIncludeDef: true,
+            mustIncludeIf: true,
+            requiredPatterns: ["return"],
             minLength: 25,
-            hint: "if n < 0: return -n ve else return n yapısını kullan.",
           },
           exampleSolution:
             "def mutlak(n):\n    if n < 0:\n        return -n\n    return n",
@@ -161,9 +162,9 @@ export const intermediateLessons: Record<string, LessonContent> = {
         "notu >= 50 ise True dönen bir fonksiyon yaz.",
         {
           validation: {
-            requiredPatterns: ["def\\s+\\w+\\s*\\(", "return", ">="],
+            mustIncludeDef: true,
+            requiredPatterns: ["return", ">="],
             minLength: 25,
-            hint: "def gecildi_mi(notu): return notu >= 50 yapısını kullan.",
           },
           exampleSolution:
             "def gecildi_mi(notu):\n    return notu >= 50\nprint(gecildi_mi(55))",
@@ -181,8 +182,10 @@ export const intermediateLessons: Record<string, LessonContent> = {
     "8 dk",
     25,
     [
-      infoStep("step-1", "Puan formülü", "puan = dogru * 10 - yanlis * 2 gibi kurallar fonksiyonda.", {
-        code: "def hesapla_puan(dogru, yanlis):\n    return dogru * 10 - yanlis * 2",
+      infoStep("step-1", "Puan formülü", "Doğru ve yanlış sayısından puan hesaplayan bir fonksiyon yazacaksın.", {
+        expectedBehavior:
+          "dogru ve yanlis parametreleri al; puan = dogru * 10 - yanlis * 2 gibi bir kural uygula ve sonucu döndür.",
+        migo: "Negatif puanı engellemek için max veya if kullanabilirsin.",
       }),
       codeWritingStep(
         "step-2",
@@ -190,9 +193,9 @@ export const intermediateLessons: Record<string, LessonContent> = {
         "dogru sayısı * 10 dönen bir fonksiyon yaz.",
         {
           validation: {
-            requiredPatterns: ["def\\s+\\w+\\s*\\(", "return", "\\*\\s*10"],
+            mustIncludeDef: true,
+            requiredPatterns: ["return", "\\*\\s*10"],
             minLength: 20,
-            hint: "def puan(d): return d * 10 yapısını kullan.",
           },
           exampleSolution: "def puan(d):\n    return d * 10\nprint(puan(3))",
         },
@@ -221,9 +224,9 @@ export const intermediateLessons: Record<string, LessonContent> = {
         exampleSolution:
           "def puan(d, y):\n    p = d * 10 - y * 2\n    return max(0, p)\nprint(puan(5, 1))",
         validation: {
-          requiredPatterns: ["def\\s+\\w+\\s*\\(", "return", "max\\s*\\("],
+          mustIncludeDef: true,
+          requiredPatterns: ["return", "max\\s*\\("],
           minLength: 35,
-          hint: "max(0, p) ile negatif puanı engelle.",
         },
       }),
       completeStep("step-6", 25, "Liste ve dict pratikleri"),
@@ -270,9 +273,9 @@ export const intermediateLessons: Record<string, LessonContent> = {
         "ad ve not anahtarları olan bir öğrenci dict'i oluştur ve bir alanı yazdır.",
         {
           validation: {
-            requiredPatterns: ["\\{", ":", "print\\s*\\("],
+            mustIncludePrint: true,
+            requiredPatterns: ["\\{", ":"],
             minLength: 25,
-            hint: '{"ad": "...", "not": ...} ve print(ogrenci["ad"]) kullan.',
           },
           exampleSolution:
             'ogrenci = {"ad": "Ali", "not": 85}\nprint(ogrenci["ad"])',
@@ -347,8 +350,9 @@ export const intermediateLessons: Record<string, LessonContent> = {
     "8 dk",
     25,
     [
-      infoStep("step-1", "Not listesi", "Her öğrenci ad + not; ortalama hesapla.", {
-        code: 'ogr = [{"ad":"A","not":70},{"ad":"B","not":80}]\nnotlar = [x["not"] for x in ogr]  # veya döngü',
+      infoStep("step-1", "Not listesi", "Öğrenci dict listesi ve ortalama not hesaplayacaksın.", {
+        expectedBehavior:
+          "Her öğrenci için ad ve not alanları olan dict oluştur; for döngüsüyle notları yazdır ve sınıf ortalamasını hesapla.",
         migo: "List comprehension ileride; şimdilik döngü yeterli.",
       }),
       miniTaskStep("step-2", "Liste", "2 öğrencili dict listesi oluştur ve notları yazdır.", {
@@ -453,8 +457,9 @@ export const intermediateLessons: Record<string, LessonContent> = {
     "8 dk",
     25,
     [
-      infoStep("step-1", "Analiz", "dict listesi: kategori + tutar; kategoriye göre toplam.", {
-        code: 'h = [{"kat": "Yemek", "tutar": 50}, {"kat": "Yemek", "tutar": 30}]\n# Yemek toplamı 80',
+      infoStep("step-1", "Analiz", "Kategori bazlı harcama özeti oluşturacaksın.", {
+        expectedBehavior:
+          "dict listesi (kategori + tutar) oluştur; belirli kategorideki harcamaların toplamını hesapla ve yazdır.",
       }),
       miniTaskStep("step-2", "Toplam", "Harcama listesinden genel toplam.", {
         checklist: ["sum veya döngü", "print"],
@@ -540,8 +545,9 @@ export const intermediateLessons: Record<string, LessonContent> = {
     "8 dk",
     25,
     [
-      infoStep("step-1", "Kelime sayısı", "split() ile kelime listesi; len ile say.", {
-        code: 'metin = "Python öğrenmek eğlenceli"\nprint(len(metin.split()))',
+      infoStep("step-1", "Kelime sayısı", "Metindeki kelimeleri sayacak bir program yazacaksın.", {
+        expectedBehavior:
+          "split() ile kelime listesi oluştur; len ile say. İstersen uzun kelimeleri ayrıca filtrele.",
       }),
       miniTaskStep("step-2", "Say", "Bir cümledeki kelime sayısını yazdır.", {
         checklist: ["split", "len", "print"],
@@ -682,8 +688,9 @@ export const intermediateLessons: Record<string, LessonContent> = {
     "8 dk",
     40,
     [
-      infoStep("step-1", "Adım 1", "gorevler = [] ve ekle(ad) fonksiyonu.", {
-        code: 'def ekle(gorevler, ad):\n    gorevler.append({"ad": ad, "tamam": False})',
+      infoStep("step-1", "Adım 1", "Görev listesi ve ekleme fonksiyonu yazacaksın.", {
+        expectedBehavior:
+          "Boş görev listesi oluştur; ekle fonksiyonu ile ad ve tamam alanları olan dict ekle; listele fonksiyonu ile göster.",
       }),
       projectStep("step-2", "Liste + ekle", "Boş liste ve en az bir görev ekleme.", {
         checklist: ["liste", "append dict", "ad + tamam alanı"],
@@ -706,8 +713,9 @@ export const intermediateLessons: Record<string, LessonContent> = {
     "8 dk",
     40,
     [
-      infoStep("step-1", "Adım 2", "tamamla(gorevler, ad) ve ozet(gorevler).", {
-        code: "def tamamla(g, ad):\n    for x in g:\n        if x['ad']==ad: x['tamam']=True",
+      infoStep("step-1", "Adım 2", "Görev tamamlama ve özet rapor yazacaksın.", {
+        expectedBehavior:
+          "tamamla fonksiyonu ile görevi tamamlandı olarak işaretle; ozet fonksiyonu ile toplam ve tamamlanan sayısını göster.",
       }),
       projectStep("step-2", "Tamamla", "Görev adına göre tamam=True yap.", {
         checklist: ["for + if ad", "tamam güncelle", "test"],
