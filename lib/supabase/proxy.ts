@@ -1,5 +1,6 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
+import { isAuthRoute, isProtectedRoute } from "@/lib/auth/routes";
 import { getSupabaseKey, getSupabaseUrl } from "@/lib/supabase/env";
 
 export async function updateSession(request: NextRequest) {
@@ -31,7 +32,30 @@ export async function updateSession(request: NextRequest) {
     },
   });
 
-  await supabase.auth.getUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  const { pathname } = request.nextUrl;
+
+  if (isProtectedRoute(pathname) && !user) {
+    const signInUrl = request.nextUrl.clone();
+    signInUrl.pathname = "/auth/sign-in";
+    signInUrl.searchParams.set("redirect", pathname);
+    return NextResponse.redirect(signInUrl);
+  }
+
+  if (isAuthRoute(pathname) && user) {
+    const redirectTarget =
+      request.nextUrl.searchParams.get("redirect") || "/dashboard";
+    const safeRedirect = redirectTarget.startsWith("/")
+      ? redirectTarget
+      : "/dashboard";
+    const destination = request.nextUrl.clone();
+    destination.pathname = safeRedirect;
+    destination.search = "";
+    return NextResponse.redirect(destination);
+  }
 
   return supabaseResponse;
 }

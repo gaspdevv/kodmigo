@@ -1,3 +1,5 @@
+import { notifyAppStateLocalChanged } from "@/lib/appStateNotify";
+
 const STORAGE_KEY = "kodmigo_streak_progress";
 
 export type RescueDecision = "restored" | "new_streak" | "reset" | null;
@@ -152,6 +154,7 @@ export function saveStreakProgress(progress: StreakProgress): void {
 
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
+    notifyAppStateLocalChanged(true);
   } catch {
     // localStorage kullanılamıyorsa sessizce geç
   }

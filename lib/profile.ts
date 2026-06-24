@@ -1,3 +1,5 @@
+import { notifyAppStateLocalChanged } from "@/lib/appStateNotify";
+
 const STORAGE_KEY = "kodmigo_profile";
 
 export type ProfileData = {
@@ -68,6 +70,7 @@ export function saveProfile(profile: ProfileData): void {
       showcasedBadgeId: profile.showcasedBadgeId,
     };
     localStorage.setItem(STORAGE_KEY, JSON.stringify(normalized));
+    notifyAppStateLocalChanged(true);
   } catch {
     // localStorage kullanılamıyorsa sessizce geç
   }

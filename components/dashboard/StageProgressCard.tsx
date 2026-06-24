@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { getDashboardTheme } from "@/components/dashboard/getDashboardTheme";
 import {
   stageIcons,
@@ -21,6 +21,7 @@ import {
   type StreakProgress,
 } from "@/lib/streak";
 import { playCorrectSound } from "@/lib/sounds";
+import { useAppStateRefresh } from "@/lib/useAppStateRefresh";
 
 const ANIMATION_DURATION_MS = 900;
 const REWARD_NOTICE_DURATION_MS = 2800;
@@ -129,6 +130,17 @@ export default function StageProgressCard() {
       cancelAnimationFrame(frameId);
     };
   }, []);
+
+  const refreshProgress = useCallback(() => {
+    setStreakProgress(getStreakProgress());
+    const saved = getUserProgress();
+    setUserProgress(saved);
+    setDisplayXp(saved.currentXp);
+    setDisplayPercent(saved.progressPercent);
+    setIsReady(true);
+  }, []);
+
+  useAppStateRefresh(refreshProgress);
 
   if (!isReady) {
     return (

@@ -1,10 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
 import AuthShell from "@/components/auth/AuthShell";
 import { mapAuthErrorMessage } from "@/lib/auth/actions";
+import { completeAuthSession } from "@/lib/auth/completeAuthSession";
 import { useAuthUser } from "@/lib/auth/useAuthUser";
 import { createClient } from "@/lib/supabase/client";
 import { SUPABASE_ENV_HINT } from "@/lib/supabase/env";
@@ -12,6 +13,8 @@ import { validateUsername } from "@/lib/username";
 
 export default function SignUpForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirectTo = searchParams.get("redirect");
   const { user, loading: authLoading, isConfigured } = useAuthUser();
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -23,9 +26,9 @@ export default function SignUpForm() {
 
   useEffect(() => {
     if (!authLoading && user) {
-      router.replace("/dashboard");
+      router.replace(redirectTo || "/dashboard");
     }
-  }, [authLoading, user, router]);
+  }, [authLoading, user, router, redirectTo]);
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -73,8 +76,11 @@ export default function SignUpForm() {
       return;
     }
 
-    if (data.session) {
-      router.replace("/dashboard");
+    if (data.session?.user) {
+      setLoading(true);
+      await completeAuthSession(supabase);
+      setLoading(false);
+      router.replace(redirectTo || "/dashboard");
       return;
     }
 
@@ -97,7 +103,11 @@ export default function SignUpForm() {
         <>
           Zaten hesabın var mı?{" "}
           <Link
-            href="/auth/sign-in"
+            href={
+              redirectTo
+                ? `/auth/sign-in?redirect=${encodeURIComponent(redirectTo)}`
+                : "/auth/sign-in"
+            }
             className="font-semibold text-kodmigo-orange hover:underline"
           >
             Giriş yap

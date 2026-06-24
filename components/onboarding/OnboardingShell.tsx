@@ -19,6 +19,8 @@ import {
   saveOnboardingProfile,
   type OnboardingSelections,
 } from "@/lib/onboarding-data";
+import { completeAuthSession } from "@/lib/auth/completeAuthSession";
+import { createClient } from "@/lib/supabase/client";
 
 type Screen = "welcome" | "level" | "goal" | "time" | "result";
 
@@ -108,7 +110,7 @@ export default function OnboardingShell() {
     }
   }
 
-  function handleFinish() {
+  async function handleFinish() {
     if (
       selections.level === null ||
       selections.goal === null ||
@@ -126,7 +128,20 @@ export default function OnboardingShell() {
       completedAt: new Date().toISOString(),
     });
 
-    router.push("/dashboard");
+    const supabase = createClient();
+    if (supabase) {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      if (user) {
+        await completeAuthSession(supabase);
+        router.push("/dashboard");
+        return;
+      }
+    }
+
+    router.push("/auth/sign-up?redirect=/dashboard");
   }
 
   return (

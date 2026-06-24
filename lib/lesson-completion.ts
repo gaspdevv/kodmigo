@@ -8,6 +8,7 @@ import {
   saveLearningProgress,
 } from "@/lib/progress";
 import { saveLessonRewardsIfNew } from "@/lib/rewards";
+import { notifyAppStateLocalChanged } from "@/lib/appStateNotify";
 import { updateStreakOnLessonComplete } from "@/lib/streak";
 
 export function finalizeLessonCompletion(lessonId: string, xp: number): boolean {
@@ -25,6 +26,7 @@ export function finalizeLessonCompletion(lessonId: string, xp: number): boolean 
   }
 
   updateStreakOnLessonComplete();
+  notifyAppStateLocalChanged(true);
   return true;
 }
 

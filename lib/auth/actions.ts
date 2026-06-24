@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/client";
+import { resetLoginSyncState } from "@/lib/appStatePersist";
 
 export async function updateAuthUsername(username: string): Promise<string | null> {
   const supabase = createClient();
@@ -24,6 +25,7 @@ export async function signOutUser(): Promise<string | null> {
     return error.message || "Çıkış yapılamadı.";
   }
 
+  resetLoginSyncState();
   return null;
 }
 

@@ -1,3 +1,5 @@
+import { notifyAppStateLocalChanged } from "@/lib/appStateNotify";
+
 export type CodingLevel = "none" | "some" | "basic";
 export type PathLevel = "beginner" | "basic" | "intermediate";
 export type LearningGoal =
@@ -103,7 +105,7 @@ function normalizeLearningGoal(value: unknown): LearningGoal {
   return "start";
 }
 
-function parseOnboardingProfile(raw: unknown): OnboardingProfile | null {
+export function parseOnboardingProfile(raw: unknown): OnboardingProfile | null {
   if (!raw || typeof raw !== "object") return null;
   const data = raw as Record<string, unknown>;
 
@@ -187,6 +189,7 @@ export function saveOnboardingProfile(profile: OnboardingProfile): void {
         completedAt: profile.completedAt ?? new Date().toISOString(),
       }),
     );
+    notifyAppStateLocalChanged(true);
   } catch {
     // localStorage kullanılamıyorsa sessizce geç
   }

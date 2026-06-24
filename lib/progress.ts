@@ -8,6 +8,7 @@ import {
 } from "@/data/pythonPath";
 import { mockUser } from "@/lib/mockUser";
 import { getPendingLessonCompletion } from "@/lib/rewards";
+import { notifyAppStateLocalChanged } from "@/lib/appStateNotify";
 
 export type { Unit } from "@/data/pythonPath";
 export { normalizeLessonId } from "@/data/pythonPath";
@@ -112,6 +113,7 @@ export function saveUserProgress(progress: UserProgress): void {
       ),
     };
     localStorage.setItem(STORAGE_KEY, JSON.stringify(normalized));
+    notifyAppStateLocalChanged(true);
   } catch {
     // localStorage kullanılamıyorsa sessizce geç
   }
@@ -289,6 +291,7 @@ export function saveLearningProgress(progress: LearningProgressStore): void {
       ),
     };
     localStorage.setItem(LEARNING_PROGRESS_KEY, JSON.stringify(normalized));
+    notifyAppStateLocalChanged(true);
   } catch {
     // localStorage kullanılamıyorsa sessizce geç
   }

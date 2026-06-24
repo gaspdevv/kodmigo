@@ -27,6 +27,7 @@ type ProfileCardProps = {
   isAuthenticated: boolean;
   onProfileChange: (profile: ProfileData) => void;
   onAvatarChange: (dataUrl: string) => void;
+  onAvatarError?: (message: string) => void;
 };
 
 export default function ProfileCard({
@@ -37,6 +38,7 @@ export default function ProfileCard({
   isAuthenticated,
   onProfileChange,
   onAvatarChange,
+  onAvatarError,
 }: ProfileCardProps) {
   const [isEditingUsername, setIsEditingUsername] = useState(false);
   const [draftUsername, setDraftUsername] = useState(profile.username);
@@ -125,6 +127,7 @@ export default function ProfileCard({
           avatarDataUrl={profile.avatarDataUrl}
           theme={theme}
           onAvatarChange={onAvatarChange}
+          onAvatarError={onAvatarError}
         />
 
         <div className="min-w-0 flex-1">

@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
 import AuthShell from "@/components/auth/AuthShell";
 import { mapAuthErrorMessage } from "@/lib/auth/actions";
+import { completeAuthSession } from "@/lib/auth/completeAuthSession";
 import { useAuthUser } from "@/lib/auth/useAuthUser";
 import { createClient } from "@/lib/supabase/client";
 import { SUPABASE_ENV_HINT } from "@/lib/supabase/env";
@@ -42,12 +43,14 @@ export default function SignInForm() {
       password,
     });
 
-    setLoading(false);
-
     if (signInError) {
+      setLoading(false);
       setError(mapAuthErrorMessage(signInError.message));
       return;
     }
+
+    await completeAuthSession(supabase);
+    setLoading(false);
 
     router.replace(redirectTo || "/dashboard");
   };
@@ -68,7 +71,11 @@ export default function SignInForm() {
         <>
           Hesabın yok mu?{" "}
           <Link
-            href="/auth/sign-up"
+            href={
+              redirectTo
+                ? `/auth/sign-up?redirect=${encodeURIComponent(redirectTo)}`
+                : "/auth/sign-up"
+            }
             className="font-semibold text-kodmigo-orange hover:underline"
           >
             Kayıt ol

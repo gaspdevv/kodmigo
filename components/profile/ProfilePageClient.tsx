@@ -1,11 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import AchievementBadgeCard from "@/components/profile/AchievementBadgeCard";
 import ProfileCard from "@/components/profile/ProfileCard";
 import BottomNav from "@/components/dashboard/BottomNav";
 import { getDashboardTheme } from "@/components/dashboard/getDashboardTheme";
+import { useAppStateSync } from "@/components/providers/AppStateSyncProvider";
 import {
   getAchievements,
   getShowcasedAchievement,
@@ -35,10 +36,12 @@ import {
   type StreakProgress,
 } from "@/lib/streak";
 import { resolveDisplayUsername } from "@/lib/username";
+import { useAppStateRefresh } from "@/lib/useAppStateRefresh";
 
 export default function ProfilePageClient() {
   const theme = getDashboardTheme();
   const { user, username: authUsername, loading: authLoading } = useAuthUser();
+  const { syncing } = useAppStateSync();
   const defaultUserProgress = getDefaultUserProgress();
   const defaultLearningProgress = getDefaultLearningProgress().python;
   const defaultStreakProgress = getDefaultStreakProgress();
@@ -51,15 +54,27 @@ export default function ProfilePageClient() {
   const [streakProgress, setStreakProgress] =
     useState<StreakProgress>(defaultStreakProgress);
   const [profile, setProfile] = useState<ProfileData>(defaultProfile);
+  const [avatarError, setAvatarError] = useState<string | null>(null);
   const [isReady, setIsReady] = useState(false);
 
-  useEffect(() => {
+  const refreshProfileData = useCallback(() => {
     setUserProgress(getUserProgress());
     setLearningProgress(getLearningProgress().python);
     setStreakProgress(getStreakProgress());
     setProfile(getProfile());
     setIsReady(true);
   }, []);
+
+  useEffect(() => {
+    if (authLoading) return;
+    if (user && syncing) {
+      setIsReady(false);
+      return;
+    }
+    refreshProfileData();
+  }, [authLoading, user, syncing, refreshProfileData]);
+
+  useAppStateRefresh(refreshProfileData);
 
   const displayProfile = useMemo(
     () => ({
@@ -81,6 +96,7 @@ export default function ProfilePageClient() {
   );
 
   const handleAvatarChange = (avatarDataUrl: string) => {
+    setAvatarError(null);
     const updated = updateProfileAvatar(avatarDataUrl);
     setProfile(updated);
   };
@@ -89,7 +105,7 @@ export default function ProfilePageClient() {
     setProfile(updated);
   };
 
-  if (!isReady || authLoading) {
+  if (!isReady || authLoading || (user && syncing)) {
     return (
       <main
         className={`min-h-screen pb-24 ${theme.pageBackground}`}
@@ -129,7 +145,14 @@ export default function ProfilePageClient() {
           isAuthenticated={Boolean(user)}
           onProfileChange={handleProfileChange}
           onAvatarChange={handleAvatarChange}
+          onAvatarError={setAvatarError}
         />
+
+        {avatarError && (
+          <p className="mb-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+            {avatarError}
+          </p>
+        )}
 
         <section
           className={`mb-4 rounded-3xl border p-5 ${theme.cardBackground} ${theme.cardBorder} ${theme.cardShadow}`}
