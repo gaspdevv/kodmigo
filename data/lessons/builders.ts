@@ -26,6 +26,7 @@ export function infoStep(
   opts?: {
     code?: string;
     migo?: string;
+    migoAfterCorrect?: string;
     button?: string;
     targetOutput?: string;
     expectedBehavior?: string;
@@ -42,6 +43,7 @@ export function infoStep(
     expectedBehavior: opts?.expectedBehavior,
     taskNote: opts?.taskNote,
     migoMessage: opts?.migo,
+    migoMessageAfterCorrect: opts?.migoAfterCorrect,
     buttonLabel: opts?.button ?? "Devam et",
   };
 }
@@ -55,6 +57,7 @@ export function mcStep(
     content?: string;
     code?: string;
     migo?: string;
+    migoAfterCorrect?: string;
     correctFb?: string;
     incorrectFb?: string;
   },
@@ -68,6 +71,7 @@ export function mcStep(
     options,
     correctAnswer: correct,
     migoMessage: opts?.migo,
+    migoMessageAfterCorrect: opts?.migoAfterCorrect,
     feedback: {
       correct: opts?.correctFb ?? "Doğru!",
       incorrect: opts?.incorrectFb ?? "Tam değil. Bir daha dene.",
@@ -81,7 +85,7 @@ export function fillStep(
   fillBlankCode: string,
   options: string[],
   correct: string,
-  opts?: { content?: string; migo?: string },
+  opts?: { content?: string; migo?: string; migoAfterCorrect?: string },
 ): LessonStep {
   return {
     id,
@@ -92,6 +96,7 @@ export function fillStep(
     options,
     correctAnswer: correct,
     migoMessage: opts?.migo,
+    migoMessageAfterCorrect: opts?.migoAfterCorrect,
     feedback: {
       correct: "Harika!",
       incorrect: "Tam değil. Bir daha dene.",
@@ -105,7 +110,7 @@ export function outputStep(
   code: string,
   options: string[],
   correct: string,
-  opts?: { migo?: string },
+  opts?: { migo?: string; migoAfterCorrect?: string },
 ): LessonStep {
   return {
     id,
@@ -115,6 +120,7 @@ export function outputStep(
     options,
     correctAnswer: correct,
     migoMessage: opts?.migo,
+    migoMessageAfterCorrect: opts?.migoAfterCorrect,
     feedback: {
       correct: "Doğru tahmin!",
       incorrect: "Tam değil. Çıktıyı tekrar düşün.",
@@ -126,7 +132,7 @@ export function codeOrderLinesStep(
   id: string,
   title: string,
   lines: string[],
-  opts?: { content?: string; migo?: string },
+  opts?: { content?: string; migo?: string; migoAfterCorrect?: string },
 ): LessonStep {
   return {
     id,
@@ -136,6 +142,7 @@ export function codeOrderLinesStep(
     orderLines: lines,
     correctAnswer: lines.join("\n"),
     migoMessage: opts?.migo,
+    migoMessageAfterCorrect: opts?.migoAfterCorrect,
     feedback: {
       correct: "Satırlar doğru sırada!",
       incorrect: "Sıralama yanlış. Kodun akışını tekrar düşün.",
@@ -148,7 +155,7 @@ export function matchPairsStep(
   title: string,
   pairs: MatchPair[],
   distractors: string[],
-  opts?: { content?: string; migo?: string },
+  opts?: { content?: string; migo?: string; migoAfterCorrect?: string },
 ): LessonStep {
   const answers = pairs.map((pair) => pair.answer);
   const options = [...new Set([...answers, ...distractors])];
@@ -162,6 +169,7 @@ export function matchPairsStep(
     options,
     correctAnswer: answers.join("|"),
     migoMessage: opts?.migo,
+    migoMessageAfterCorrect: opts?.migoAfterCorrect,
     feedback: {
       correct: "Tüm eşleştirmeler doğru!",
       incorrect: "Bazı eşleştirmeler yanlış. Kavramları tekrar incele.",
@@ -174,7 +182,7 @@ export function codeOrderStep(
   title: string,
   options: string[],
   correct: string,
-  opts?: { content?: string; migo?: string },
+  opts?: { content?: string; migo?: string; migoAfterCorrect?: string },
 ): LessonStep {
   return {
     id,
@@ -184,6 +192,7 @@ export function codeOrderStep(
     options,
     correctAnswer: correct,
     migoMessage: opts?.migo,
+    migoMessageAfterCorrect: opts?.migoAfterCorrect,
     feedback: {
       correct: "Satırlar doğru sırada!",
       incorrect: "Sıralama yanlış. Kodun akışını tekrar düşün.",
@@ -197,7 +206,7 @@ export function debugStep(
   code: string,
   options: string[],
   correct: string,
-  opts?: { migo?: string },
+  opts?: { migo?: string; migoAfterCorrect?: string },
 ): LessonStep {
   return {
     id,
@@ -207,6 +216,7 @@ export function debugStep(
     options,
     correctAnswer: correct,
     migoMessage: opts?.migo,
+    migoMessageAfterCorrect: opts?.migoAfterCorrect,
     feedback: {
       correct: "Hatayı doğru buldun!",
       incorrect: "Bu hata değil. Kodu satır satır oku.",
@@ -220,7 +230,7 @@ export function matchStep(
   content: string,
   options: string[],
   correct: string,
-  opts?: { migo?: string; code?: string },
+  opts?: { migo?: string; migoAfterCorrect?: string; code?: string },
 ): LessonStep {
   return {
     id,
@@ -231,6 +241,7 @@ export function matchStep(
     options,
     correctAnswer: correct,
     migoMessage: opts?.migo,
+    migoMessageAfterCorrect: opts?.migoAfterCorrect,
     feedback: {
       correct: "Doğru eşleştirme!",
       incorrect: "Bu örnek bu kavrama uymuyor. Tekrar dene.",

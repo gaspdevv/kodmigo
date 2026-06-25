@@ -5,9 +5,9 @@ export const beginnerPathMeta: PathMeta = {
   levelLabel: "Başlangıç",
   title: "Python Başlangıç Yolu",
   description:
-    "Sıfırdan başlayarak print, değişkenler, koşullar, döngüler ve mini projelerle Python temellerini öğren.",
+    "Sıfırdan başlayarak print, değişkenler, koşullar, listeler, döngüler ve mini projelerle Python temellerini öğren.",
   migoTip:
-    "Her ders kısa ama yoğun. Anlamadığın bir adım olursa tekrar etmekten çekinme.",
+    "Her ders kısa ama yoğun. Anlamadığın bir adım olursa tekrar etmekten çekinme — Migo yanında.",
 };
 
 export const beginnerPathUnits: Unit[] = [
@@ -32,7 +32,7 @@ export const beginnerPathUnits: Unit[] = [
       makeLesson("beg-u2-l3", "beg-strings-numbers", "Metinler ve sayılar", "5 dk", "Kısa ders"),
       makeLesson("beg-u2-l4", "beg-migo-intro-card", "Migo'nun Tanışma Kartı", "6 dk", "Mini Proje"),
       makeLesson("beg-u2-l5", "beg-boolean-fstring", "Boolean ve f-string", "6 dk", "Kısa ders"),
-      makeLesson("beg-u2-l6", "beg-profile-card-project", "Mini proje: Profil kartı", "8 dk", "Mini görev"),
+      makeLesson("beg-u2-l6", "beg-profile-card-project", "Mini proje: Profil kartı", "7 dk", "Mini görev"),
     ],
   },
   {
@@ -43,7 +43,7 @@ export const beginnerPathUnits: Unit[] = [
       makeLesson("beg-u3-l1", "beg-input-basics", "input() mantığı", "5 dk", "Kısa ders"),
       makeLesson("beg-u3-l2", "beg-input-conversion", "Metin döndürür ve dönüşümler", "6 dk", "Kısa ders"),
       makeLesson("beg-u3-l3", "beg-calc-tasks", "Küçük hesaplama görevleri", "6 dk", "Pratik"),
-      makeLesson("beg-u3-l4", "beg-age-calculator", "Mini proje: Yaş hesaplayıcı", "8 dk", "Mini görev"),
+      makeLesson("beg-u3-l4", "beg-age-calculator", "Mini proje: Yaş hesaplayıcı", "7 dk", "Mini görev"),
     ],
   },
   {
@@ -55,7 +55,7 @@ export const beginnerPathUnits: Unit[] = [
       makeLesson("beg-u4-l2", "beg-comparisons", "Karşılaştırmalar", "5 dk", "Kısa ders"),
       makeLesson("beg-u4-l3", "beg-else", "else kullanımı", "5 dk", "Kısa ders"),
       makeLesson("beg-u4-l4", "beg-elif", "elif ile birden fazla durum", "6 dk", "Pratik"),
-      makeLesson("beg-u4-l5", "beg-ticket-price", "Mini proje: Bilet fiyatı", "8 dk", "Mini görev"),
+      makeLesson("beg-u4-l5", "beg-ticket-price", "Mini proje: Bilet fiyatı", "7 dk", "Mini görev"),
     ],
   },
   {
@@ -66,7 +66,7 @@ export const beginnerPathUnits: Unit[] = [
       makeLesson("beg-u5-l1", "beg-list-intro", "Liste nedir?", "5 dk", "Kısa ders"),
       makeLesson("beg-u5-l2", "beg-list-access", "Elemanlara erişme ve ekleme", "5 dk", "Kısa ders"),
       makeLesson("beg-u5-l3", "beg-list-length", "Liste uzunluğu", "5 dk", "Pratik"),
-      makeLesson("beg-u5-l4", "beg-shopping-list", "Mini proje: Alışveriş listesi", "8 dk", "Mini görev"),
+      makeLesson("beg-u5-l4", "beg-shopping-list", "Mini proje: Alışveriş listesi", "7 dk", "Mini görev"),
     ],
   },
   {
@@ -77,7 +77,7 @@ export const beginnerPathUnits: Unit[] = [
       makeLesson("beg-u6-l1", "beg-for-loop", "for döngüsü", "5 dk", "Kısa ders"),
       makeLesson("beg-u6-l2", "beg-range", "range() kullanımı", "5 dk", "Kısa ders"),
       makeLesson("beg-u6-l3", "beg-loop-list", "Liste üzerinde dönme", "6 dk", "Pratik"),
-      makeLesson("beg-u6-l4", "beg-daily-tasks", "Mini proje: Günlük görev yazdırıcı", "8 dk", "Mini görev"),
+      makeLesson("beg-u6-l4", "beg-daily-tasks", "Mini proje: Günlük görev yazdırıcı", "7 dk", "Mini görev"),
     ],
   },
   {
@@ -88,7 +88,7 @@ export const beginnerPathUnits: Unit[] = [
       makeLesson("beg-u7-l1", "beg-why-functions", "Fonksiyon neden kullanılır?", "5 dk", "Kısa ders"),
       makeLesson("beg-u7-l2", "beg-def-function", "def ile fonksiyon yazma", "6 dk", "Kısa ders"),
       makeLesson("beg-u7-l3", "beg-params-return", "Parametre ve return", "6 dk", "Pratik"),
-      makeLesson("beg-u7-l4", "beg-greeting-functions", "Mini proje: Selamlama fonksiyonları", "8 dk", "Mini görev"),
+      makeLesson("beg-u7-l4", "beg-greeting-functions", "Mini proje: Selamlama fonksiyonları", "7 dk", "Mini görev"),
     ],
   },
   {

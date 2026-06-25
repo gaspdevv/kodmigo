@@ -20,7 +20,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
   "python-what-is-python": buildLesson(
     "python-what-is-python",
     "Python ile ne yapılır?",
-    "Python'un ne olduğunu sade şekilde öğren.",
+    "Python'un ne olduğunu öğren. Programlamaya başlamanın ilk adımı burada.",
     "5 dk",
     10,
     [
@@ -38,7 +38,9 @@ export const beginnerLessons: Record<string, LessonContent> = {
         ["Programlama dili", "Resim düzenleme programı", "Oyun konsolu", "İşletim sistemi"],
         "Programlama dili",
         {
-          migo: "Programlama dili, bilgisayara talimat vermek için kullanılır.",
+          migo: "Python'un bilgisayara talimat vermek için kullanılan bir araç türü olduğunu düşün.",
+          migoAfterCorrect:
+            "Programlama dili, bilgisayara talimat vermek için kullanılır. Python da böyle bir dildir.",
         },
       ),
       matchStep(
@@ -60,10 +62,14 @@ export const beginnerLessons: Record<string, LessonContent> = {
         'print("Merhaba Kodmigo")',
         ["Merhaba Kodmigo", "print", "Hata", "Kodmigo Merhaba"],
         "Merhaba Kodmigo",
-        { migo: "print() parantez içindeki metni ekrana yazar." },
+        {
+          migo: "print(...) gördüğünde ekrana ne yazdırılacağını tahmin etmeye çalış.",
+          migoAfterCorrect: "print() parantez içindeki metni olduğu gibi ekrana yazar.",
+        },
       ),
       completeStep("step-5", 10, "print() ile çıktı üretme", {
-        content: "Python'un ne olduğunu ve neden öğrenmeye değer olduğunu öğrendin.",
+        content:
+          "Python'un ne olduğunu öğrendin. Artık basit bir print örneğinin çıktısını tahmin edebilirsin.",
       }),
     ],
     "beginner",
@@ -72,7 +78,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
   "python-print": buildLesson(
     "python-print",
     "print() ile çıktı üretme",
-    "Python'da ekrana yazı yazdırmayı öğren.",
+    "print() ile ekrana metin yazdırmayı öğren. Python'da ilk görünür sonucunu almanın en basit yolu budur.",
     "5 dk",
     10,
     [
@@ -106,13 +112,21 @@ export const beginnerLessons: Record<string, LessonContent> = {
         '____("Selam")',
         ["show", "print", "write", "display"],
         "print",
-        { content: "Boşluğu tamamlayarak ekrana Selam yazdır.", migo: "Ekrana yazdırmak için hangi komutu kullanıyorduk?" },
+        {
+          content: "Boşluğu tamamlayarak ekrana Selam yazdır.",
+          migo: "Ekrana yazdırmak için daha önce hangi komutu kullanmıştık?",
+          migoAfterCorrect: "Ekrana çıktı vermek için print() komutunu kullanırız.",
+        },
       ),
       codeOrderLinesStep(
         "step-4",
         "Değişken ve print sırası",
         ['name = "Migo"', "print(name)"],
-        { content: "Önce değişkeni ata, sonra yazdır.", migo: "Atama her zaman print'ten önce gelir." },
+        {
+          content: "Önce değişkeni ata, sonra yazdır.",
+          migo: "Kod satırlarını yukarıdan aşağıya takip et — önce ne tanımlanıyor?",
+          migoAfterCorrect: "Değişken atanmadan print ile kullanılamaz; atama her zaman önce gelir.",
+        },
       ),
       outputStep(
         "step-5",
@@ -120,7 +134,10 @@ export const beginnerLessons: Record<string, LessonContent> = {
         'print("Python öğreniyorum")',
         ["Hata", "Kodmigo", "print", "Python öğreniyorum"],
         "Python öğreniyorum",
-        { migo: "print() parantez içindeki metni ekrana yazar." },
+        {
+          migo: "Tırnak içindeki metne dikkat et — ekranda tam olarak ne görünür?",
+          migoAfterCorrect: "print() parantez içindeki metni olduğu gibi ekrana yazar.",
+        },
       ),
       codeWritingStep(
         "step-6",
@@ -145,7 +162,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
   "beg-output-prediction": buildLesson(
     "beg-output-prediction",
     "Kodun çıktısını tahmin et",
-    "Kodu çalıştırmadan önce çıktıyı tahmin etmeyi pratik et.",
+    "Kodu çalıştırmadan önce çıktıyı tahmin etmeyi öğren. Bu alışkanlık ileride hata ayıklamayı kolaylaştırır.",
     "5 dk",
     15,
     [
@@ -164,7 +181,10 @@ export const beginnerLessons: Record<string, LessonContent> = {
         'print("Kodmigo")\nprint("Python")',
         ["Kodmigo\nPython", "Python\nKodmigo", "Kodmigo Python", "Hata"],
         "Kodmigo\nPython",
-        { migo: "Her print() yeni bir satıra yazar." },
+        {
+          migo: "Kodu satır satır takip et — her print ayrı bir satır mı oluşturur?",
+          migoAfterCorrect: "Her print() yeni bir satıra yazar; sırayla Kodmigo sonra Python görünür.",
+        },
       ),
       debugStep(
         "step-3",
@@ -177,7 +197,10 @@ export const beginnerLessons: Record<string, LessonContent> = {
           "Kodda hata yok",
         ],
         "İlk satırda kapanmayan parantez",
-        { migo: "Her açılan parantez kapanmalıdır." },
+        {
+          migo: "Hata ayıklarken önce parantezlere ve tırnaklara bakmak iyi bir başlangıçtır.",
+          migoAfterCorrect: "Her açılan parantez kapanmalıdır — ilk satırda bir parantez eksik.",
+        },
       ),
       matchPairsStep(
         "step-4",
@@ -212,7 +235,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
   "python-intro-task": buildLesson(
     "python-intro-task",
     "Mini görev: Kendini tanıtan çıktı",
-    "print() ile kendini tanıtan bir çıktı oluştur.",
+    "print() ile kendini tanıtan bir çıktı oluştur. Öğrendiklerini küçük bir görevde bir araya getir.",
     "7 dk",
     25,
     [
@@ -279,13 +302,13 @@ export const beginnerLessons: Record<string, LessonContent> = {
             "Çıktı profil bilgisi içeriyor",
           ],
           exampleSolution:
-            'ad = "Efe"\nsehir = "İstanbul"\nprint(f"Ad: {ad}")\nprint(f"Şehir: {sehir}")',
+            'ad = "Efe"\nsehir = "İstanbul"\nprint("Ad:", ad)\nprint("Şehir:", sehir)',
           validation: {
             mustIncludeAssignment: true,
             mustIncludePrint: true,
             minLength: 30,
           },
-          migo: "f-string kullanmak çıktıyı düzenli gösterir.",
+          migo: "Her print satırında farklı bir bilgi paylaş — kartın okunaklı olsun.",
         },
       ),
       completeStep("step-6", 25, "Değişken mantığı", {
@@ -298,7 +321,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
   "beg-variables-intro": buildLesson(
     "beg-variables-intro",
     "Değişken mantığı",
-    "Verileri isimlerle saklamayı öğren.",
+    "Verileri isimlerle saklamayı öğren. Aynı değeri tekrar yazmak yerine değişken kullanırsın.",
     "5 dk",
     10,
     [
@@ -341,7 +364,10 @@ export const beginnerLessons: Record<string, LessonContent> = {
         'puan = 90\nprint(puan)',
         ["Hata", "print", "puan", "90"],
         "90",
-        { migo: "print() değişkenin içindeki değeri yazar, adını değil." },
+        {
+          migo: "Bir değişken gördüğünde önce içinde hangi değerin saklandığını düşün.",
+          migoAfterCorrect: "print() değişkenin içindeki değeri yazar, değişken adını değil.",
+        },
       ),
       codeWritingStep(
         "step-5",
@@ -364,7 +390,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
   "beg-naming-rules": buildLesson(
     "beg-naming-rules",
     "İsimlendirme kuralları",
-    "Geçerli ve okunabilir değişken adları seç.",
+    "Geçerli ve okunabilir değişken adları seç. İyi isimler kodunu anlaşılır kılar.",
     "5 dk",
     10,
     [
@@ -410,7 +436,11 @@ export const beginnerLessons: Record<string, LessonContent> = {
         "____ = 19.99",
         ["urun_fiyati", "urun-fiyati", "urun fiyati", "19.99"],
         "urun_fiyati",
-        { content: "Fiyat bilgisini saklayacak geçerli bir değişken adı seç.", migo: "Boşluk ve tire kullanılamaz; alt çizgi kullanılır." },
+        {
+          content: "Fiyat bilgisini saklayacak geçerli bir değişken adı seç.",
+          migo: "Python'da değişken adlarında boşluk ve tire kullanılamaz — hangi karakter uygun?",
+          migoAfterCorrect: "Geçerli adlarda boşluk yerine alt çizgi kullanılır: urun_fiyati.",
+        },
       ),
       completeStep("step-6", 10, "Metinler ve sayılar"),
     ],
@@ -420,7 +450,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
   "beg-strings-numbers": buildLesson(
     "beg-strings-numbers",
     "Metinler ve sayılar",
-    "String ve sayı türlerini ayırt et.",
+    "Metin (str) ve sayı (int/float) türlerini ayırt et. Karıştırmak sık yapılan bir hatadır.",
     "5 dk",
     10,
     [
@@ -450,7 +480,10 @@ export const beginnerLessons: Record<string, LessonContent> = {
         'print("5" + "3")',
         ["53", "8", "Hata", "5 3"],
         "53",
-        { migo: "Metinlerde + birleştirme yapar, toplama değil." },
+        {
+          migo: "Tırnak içindeki değerler metin sayılır — + işlemi ne yapabilir?",
+          migoAfterCorrect: "Metinlerde + birleştirme yapar; sayısal toplama değil.",
+        },
       ),
       debugStep(
         "step-4",
@@ -487,7 +520,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
   "beg-migo-intro-card": buildLesson(
     "beg-migo-intro-card",
     "Migo'nun Tanışma Kartı",
-    "Print ve değişkenleri kullanarak Migo için küçük bir tanışma çıktısı hazırla.",
+    "print ve değişkenleri kullanarak Migo için küçük bir tanışma kartı oluştur. İlk mini projen burada.",
     "6 dk",
     25,
     [
@@ -569,7 +602,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
       completeStep("step-5", 25, "Boolean ve f-string", {
         title: "İlk mini projen hazır!",
         content:
-          "Harika! Migo'nun ilk tanışma kartını Python ile oluşturdun. Bu küçük proje, print ve değişkenleri gerçek bir amaç için kullandığın ilk adım oldu.",
+          "Harika! Migo'nun ilk tanışma kartını Python ile oluşturdun. Bu küçük projede print ve değişkenleri gerçek bir amaç için kullandın.",
       }),
     ],
     "beginner",
@@ -578,7 +611,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
   "beg-boolean-fstring": buildLesson(
     "beg-boolean-fstring",
     "Boolean ve f-string",
-    "True/False değerleri ve f-string ile metin oluştur.",
+    "True/False değerleri ve f-string ile düzenli metin oluşturmayı öğren.",
     "6 dk",
     10,
     [
@@ -597,7 +630,10 @@ export const beginnerLessons: Record<string, LessonContent> = {
         "Hangisi boolean türündedir?",
         ["False", '"False"', "0", '"True"'],
         "False",
-        { migo: "Tırnaksız True/False boolean'dır." },
+        {
+          migo: "Tırnak işareti olan ve olmayan değerleri karşılaştır.",
+          migoAfterCorrect: "Tırnaksız True ve False boolean değerleridir; tırnaklı olanlar metindir.",
+        },
       ),
       codeOrderLinesStep(
         "step-3",
@@ -635,8 +671,8 @@ export const beginnerLessons: Record<string, LessonContent> = {
   "beg-profile-card-project": buildLesson(
     "beg-profile-card-project",
     "Mini proje: Profil kartı",
-    "Değişkenler ve f-string ile profil kartı oluştur.",
-    "8 dk",
+    "Değişkenler ve f-string ile düzenli bir profil kartı oluştur.",
+    "7 dk",
     25,
     [
       infoStep(
@@ -706,7 +742,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
   "beg-input-basics": buildLesson(
     "beg-input-basics",
     "input() mantığı",
-    "Kullanıcıdan veri almayı öğren.",
+    "Kullanıcıdan klavye ile veri almayı öğren. Programlar böyle kişiselleşir.",
     "5 dk",
     10,
     [
@@ -716,7 +752,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
         "input() kullanıcıdan klavye ile veri alır. Program durur, kullanıcı yazıp Enter'a basana kadar bekler.",
         {
           code: 'isim = input("Adın: ")\nprint(isim)',
-          migo: "Parantez içindeki metin kullanıcıya gösterilen istektir (prompt).",
+          migo: "Parantez içindeki metin, kullanıcıya gösterilen soru veya istektir.",
         },
       ),
       codeOrderLinesStep(
@@ -775,7 +811,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
   "beg-input-conversion": buildLesson(
     "beg-input-conversion",
     "Metin döndürür ve dönüşümler",
-    "input() sonucunu sayıya çevir.",
+    "input() her zaman metin döndürür. Sayısal işlem için int() veya float() kullanırsın.",
     "6 dk",
     10,
     [
@@ -801,7 +837,11 @@ export const beginnerLessons: Record<string, LessonContent> = {
         'fiyat = float(____("Fiyat: "))',
         ["input", "print", "str", "int"],
         "input",
-        { content: "Kullanıcıdan ondalıklı fiyat al ve float'a çevir.", migo: "Önce input(), sonra float()." },
+        {
+          content: "Kullanıcıdan ondalıklı fiyat al ve float'a çevir.",
+          migo: "Önce kullanıcıdan veri alman, sonra tür dönüşümü yapman gerekir.",
+          migoAfterCorrect: "Kullanıcıdan veri almak için input(), ondalığa çevirmek için float() kullanılır.",
+        },
       ),
       outputStep(
         "step-4",
@@ -809,7 +849,10 @@ export const beginnerLessons: Record<string, LessonContent> = {
         'a = int("10")\nb = int("5")\nprint(a + b)',
         ["15", "105", "Hata", "10 5"],
         "15",
-        { migo: "int'e çevrilince + toplama yapar." },
+        {
+          migo: "Önce int dönüşümünü düşün, sonra + işleminin ne yapacağını tahmin et.",
+          migoAfterCorrect: "Sayıya çevrilmiş değerlerle + toplama yapar.",
+        },
       ),
       completeStep("step-5", 10, "Küçük hesaplama görevleri"),
     ],
@@ -819,7 +862,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
   "beg-calc-tasks": buildLesson(
     "beg-calc-tasks",
     "Küçük hesaplama görevleri",
-    "input ve dönüşümle basit hesaplamalar yap.",
+    "input ve tür dönüşümüyle basit hesaplamalar yap. Gerçek programlarda sık kullanılan bir kalıp.",
     "6 dk",
     15,
     [
@@ -871,8 +914,8 @@ export const beginnerLessons: Record<string, LessonContent> = {
   "beg-age-calculator": buildLesson(
     "beg-age-calculator",
     "Mini proje: Yaş hesaplayıcı",
-    "Doğum yılından yaş hesaplayan mini program yaz.",
-    "8 dk",
+    "Doğum yılından yaş hesaplayan mini program yaz. input, int ve print bir arada.",
+    "7 dk",
     25,
     [
       infoStep(
@@ -923,7 +966,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
   "beg-if-basics": buildLesson(
     "beg-if-basics",
     "if mantığı",
-    "Koşula göre kod çalıştırmayı öğren.",
+    "Koşul doğruysa belirli kodun çalışmasını sağla. Programların karar vermesi böyle başlar.",
     "5 dk",
     10,
     [
@@ -949,7 +992,10 @@ export const beginnerLessons: Record<string, LessonContent> = {
         'puan = 85\nif puan ____ 50:\n    print("Geçti")',
         [">=", "<", "==", "="],
         ">=",
-        { migo: "50 ve üzeri geçer — hangi operatör uygun?" },
+        {
+          migo: "50 ve üzeri geçer sayılır — hangi karşılaştırma operatörü uygun?",
+          migoAfterCorrect: ">= operatörü 'büyük veya eşit' anlamına gelir; 85 >= 50 doğrudur.",
+        },
       ),
       outputStep(
         "step-4",
@@ -967,7 +1013,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
   "beg-comparisons": buildLesson(
     "beg-comparisons",
     "Karşılaştırmalar",
-    "==, !=, <, >, <=, >= operatörlerini kullan.",
+    "==, !=, <, > gibi operatörlerle değerleri karşılaştır. Koşulların temelini oluşturur.",
     "5 dk",
     10,
     [
@@ -1011,7 +1057,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
   "beg-else": buildLesson(
     "beg-else",
     "else kullanımı",
-    "Koşul sağlanmazsa alternatif kod çalıştır.",
+    "Koşul sağlanmazsa alternatif kod çalıştır. İki yollu kararlar için idealdir.",
     "5 dk",
     10,
     [
@@ -1050,7 +1096,10 @@ export const beginnerLessons: Record<string, LessonContent> = {
         'if bakiye >= fiyat:\n    print("Alındı")\n____:\n    print("Yetersiz bakiye")',
         ["else", "elif", "then", "if"],
         "else",
-        { migo: "Alternatif dal için else kullanılır." },
+        {
+          migo: "if koşulu sağlanmazsa hangi anahtar kelime alternatif dalı açar?",
+          migoAfterCorrect: "Koşul yanlışsa else bloğu çalışır.",
+        },
       ),
       completeStep("step-5", 10, "elif ile birden fazla durum"),
     ],
@@ -1060,7 +1109,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
   "beg-elif": buildLesson(
     "beg-elif",
     "elif ile birden fazla durum",
-    "Üç veya daha fazla durumu elif ile yönet.",
+    "Üç veya daha fazla durumu elif ile yönet. Not, sıcaklık gibi çoklu kurallar için kullanılır.",
     "6 dk",
     15,
     [
@@ -1086,7 +1135,10 @@ export const beginnerLessons: Record<string, LessonContent> = {
         "Kaç dal çalışır?",
         ["Yalnızca ilk doğru dal", "Tüm doğru dallar", "Her zaman else", "Hiçbiri"],
         "Yalnızca ilk doğru dal",
-        { migo: "if/elif zincirinde yalnızca bir blok çalışır." },
+        {
+          migo: "Koşulları sırayla kontrol ettiğini düşün — birden fazla dal aynı anda çalışır mı?",
+          migoAfterCorrect: "if/elif zincirinde yalnızca ilk doğru dal çalışır; diğerleri atlanır.",
+        },
       ),
       fillStep(
         "step-4",
@@ -1094,7 +1146,11 @@ export const beginnerLessons: Record<string, LessonContent> = {
         'sicaklik = 15\nif sicaklik >= 30:\n    print("Sıcak")\n____ sicaklik >= 20:\n    print("Ilık")\nelse:\n    print("Soğuk")',
         ["elif", "else", "if", "then"],
         "elif",
-        { content: "Orta sıcaklık için elif ekle.", migo: "Birden fazla koşul varsa if'ten sonra hangi anahtar kelimeyi kullanırsın?" },
+        {
+          content: "Orta sıcaklık için elif ekle.",
+          migo: "Birden fazla koşul varsa if'ten sonra hangi anahtar kelimeyi kullanırsın?",
+          migoAfterCorrect: "if ve else arasına ek koşullar için elif kullanılır.",
+        },
       ),
       completeStep("step-5", 15, "Mini proje: Bilet fiyatı"),
     ],
@@ -1104,8 +1160,8 @@ export const beginnerLessons: Record<string, LessonContent> = {
   "beg-ticket-price": buildLesson(
     "beg-ticket-price",
     "Mini proje: Bilet fiyatı",
-    "Yaşa göre bilet fiyatı hesaplayan program yaz.",
-    "8 dk",
+    "Yaşa göre farklı bilet fiyatı uygulayan program yaz. if/elif/else pratiği.",
+    "7 dk",
     25,
     [
       infoStep(
@@ -1155,7 +1211,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
   "beg-list-intro": buildLesson(
     "beg-list-intro",
     "Liste nedir?",
-    "Birden fazla değeri tek değişkende tut.",
+    "Birden fazla değeri tek bir değişkende tut. Alışveriş listesi gibi düşünebilirsin.",
     "5 dk",
     10,
     [
@@ -1181,7 +1237,11 @@ export const beginnerLessons: Record<string, LessonContent> = {
         "gorevler = ____",
         ["[]", "{}", "()", '""'],
         "[]",
-        { content: "Boş bir görev listesi oluştur.", migo: "Boş liste [] ile yazılır." },
+        {
+          content: "Boş bir görev listesi oluştur.",
+          migo: "Python'da liste oluşturmak için hangi parantez türü kullanılır?",
+          migoAfterCorrect: "Boş liste köşeli parantezle yazılır: [].",
+        },
       ),
       outputStep(
         "step-4",
@@ -1199,7 +1259,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
   "beg-list-access": buildLesson(
     "beg-list-access",
     "Elemanlara erişme ve ekleme",
-    "İndeks ve append ile liste üzerinde çalış.",
+    "İndeks ile elemana eriş ve append ile sona ekle. Listeleri güncellemenin temel yolları.",
     "5 dk",
     10,
     [
@@ -1217,7 +1277,11 @@ export const beginnerLessons: Record<string, LessonContent> = {
         "notlar[1] ne döner?",
         ["85", "70", "90", "1"],
         "85",
-        { code: "notlar = [70, 85, 90]", migo: "İndeks 1 ikinci elemanı verir." },
+        {
+          code: "notlar = [70, 85, 90]",
+          migo: "Python'da indeks 0'dan başlar — 1 numaralı indeks hangi elemana denk gelir?",
+          migoAfterCorrect: "İndeks 1 ikinci elemanı verir; bu listede 85.",
+        },
       ),
       fillStep(
         "step-3",
@@ -1225,7 +1289,10 @@ export const beginnerLessons: Record<string, LessonContent> = {
         'alisveris = ["süt", "ekmek"]\nalisveris.____("yumurta")',
         ["append", "add", "push", "insert"],
         "append",
-        { migo: "Sona eklemek için append() kullanılır." },
+        {
+          migo: "Listenin sonuna eleman eklemek için hangi yöntem kullanılır?",
+          migoAfterCorrect: "Sona eklemek için append() kullanılır.",
+        },
       ),
       outputStep(
         "step-4",
@@ -1243,7 +1310,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
   "beg-list-length": buildLesson(
     "beg-list-length",
     "Liste uzunluğu",
-    "len() ile listedeki eleman sayısını bul.",
+    "len() ile listedeki eleman sayısını bul. Liste boş mu dolu mu kontrol etmek için kullanılır.",
     "5 dk",
     15,
     [
@@ -1262,7 +1329,10 @@ export const beginnerLessons: Record<string, LessonContent> = {
         'sayilar = [10, 20, 30, 40]\nprint(len(sayilar))',
         ["4", "40", "3", "Hata"],
         "4",
-        { migo: "Dört eleman var — len 4 döner." },
+        {
+          migo: "Listedeki elemanları say — len() kaç eleman olduğunu verir.",
+          migoAfterCorrect: "Dört eleman var; len() 4 döner.",
+        },
       ),
       mcStep(
         "step-3",
@@ -1271,7 +1341,8 @@ export const beginnerLessons: Record<string, LessonContent> = {
         "3",
         {
           code: 'liste = ["a", "b"]\nliste.append("c")\nprint(len(liste))',
-          migo: "append bir eleman ekledi.",
+          migo: "append sonrası listede kaç eleman olduğunu düşün.",
+          migoAfterCorrect: "append bir eleman ekledi; toplam 3 eleman oldu.",
         },
       ),
       fillStep(
@@ -1290,8 +1361,8 @@ export const beginnerLessons: Record<string, LessonContent> = {
   "beg-shopping-list": buildLesson(
     "beg-shopping-list",
     "Mini proje: Alışveriş listesi",
-    "Liste oluştur, eleman ekle ve listeyi yazdır.",
-    "8 dk",
+    "Liste oluştur, eleman ekle ve listeyi yazdır. Gerçek hayattaki liste mantığını koda taşı.",
+    "7 dk",
     25,
     [
       infoStep(
@@ -1341,7 +1412,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
   "beg-for-loop": buildLesson(
     "beg-for-loop",
     "for döngüsü",
-    "Aynı işlemi birden fazla kez tekrarla.",
+    "Aynı işlemi birden fazla kez tekrarla. Listeler ve tekrar eden görevler için temel araç.",
     "5 dk",
     10,
     [
@@ -1377,7 +1448,8 @@ export const beginnerLessons: Record<string, LessonContent> = {
         "3",
         {
           code: 'for x in ["a", "b", "c"]:\n    print(x)',
-          migo: "Üç eleman — üç iterasyon.",
+          migo: "Döngü değişkeni listedeki her eleman için bir kez çalışır — kaç eleman var?",
+          migoAfterCorrect: "Üç eleman olduğu için döngü üç kez çalışır.",
         },
       ),
       completeStep("step-5", 10, "range() kullanımı"),
@@ -1388,7 +1460,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
   "beg-range": buildLesson(
     "beg-range",
     "range() kullanımı",
-    "Sayı dizileri üretmek için range kullan.",
+    "Sayı dizileri üretmek için range kullan. for döngüsüyle birlikte sık çalışır.",
     "5 dk",
     10,
     [
@@ -1407,7 +1479,10 @@ export const beginnerLessons: Record<string, LessonContent> = {
         "for n in range(4):\n    print(n)",
         ["0\n1\n2\n3", "1\n2\n3\n4", "4", "Hata"],
         "0\n1\n2\n3",
-        { migo: "Başlangıç 0, bitiş hariç 4." },
+        {
+          migo: "range() üst sınırı dahil etmez — hangi sayılar üretilir?",
+          migoAfterCorrect: "range(4) sıfırdan başlar ve 4 hariç sayıları üretir: 0, 1, 2, 3.",
+        },
       ),
       mcStep(
         "step-3",
@@ -1422,7 +1497,11 @@ export const beginnerLessons: Record<string, LessonContent> = {
         "for i in range(____, 4):\n    print(i)",
         ["1", "0", "4", "3"],
         "1",
-        { content: "1, 2, 3 yazdırmak için range'i tamamla.", migo: "4 dahil değil — üst sınır 4 olmalı." },
+        {
+          content: "1, 2, 3 yazdırmak için range'i tamamla.",
+          migo: "1'den başlayıp 3'e kadar yazdırmak için başlangıç değerini düşün.",
+          migoAfterCorrect: "range(1, 4) bir dahil üç hariç sayıları verir: 1, 2, 3.",
+        },
       ),
       completeStep("step-5", 10, "Liste üzerinde dönme"),
     ],
@@ -1432,7 +1511,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
   "beg-loop-list": buildLesson(
     "beg-loop-list",
     "Liste üzerinde dönme",
-    "for ile liste elemanlarını işle.",
+    "for ile liste elemanlarını işle. Toplama ve filtreleme gibi işlemler için kullanılır.",
     "6 dk",
     15,
     [
@@ -1483,8 +1562,8 @@ export const beginnerLessons: Record<string, LessonContent> = {
   "beg-daily-tasks": buildLesson(
     "beg-daily-tasks",
     "Mini proje: Günlük görev yazdırıcı",
-    "Görev listesini numaralı şekilde yazdır.",
-    "8 dk",
+    "Görev listesini numaralı şekilde yazdır. for döngüsünü gerçek bir çıktıda kullan.",
+    "7 dk",
     25,
     [
       infoStep(
@@ -1534,7 +1613,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
   "beg-why-functions": buildLesson(
     "beg-why-functions",
     "Fonksiyon neden kullanılır?",
-    "Tekrar eden kodu organize etmenin yollarını keşfet.",
+    "Tekrar eden kodu organize et. Fonksiyonlar kodunu daha okunur ve yönetilebilir kılar.",
     "5 dk",
     10,
     [
@@ -1557,7 +1636,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
           "İnterneti kapatmak",
         ],
         "Kod tekrarını azaltmak",
-        { migo: "DRY: Don't Repeat Yourself." },
+        { migo: "Aynı mantığı birçok yerde yazmak yerine ne yapabilirsin?" },
       ),
       mcStep(
         "step-3",
@@ -1577,7 +1656,10 @@ export const beginnerLessons: Record<string, LessonContent> = {
         "____ mesaj_yaz():\n    print(\"Tamam\")",
         ["def", "function", "fn", "fun"],
         "def",
-        { migo: "Python'da fonksiyon def ile başlar." },
+        {
+          migo: "Python'da fonksiyon tanımlamak için hangi anahtar kelime kullanılır?",
+          migoAfterCorrect: "Python'da fonksiyon def ile tanımlanır.",
+        },
       ),
       completeStep("step-5", 10, "def ile fonksiyon yazma"),
     ],
@@ -1587,7 +1669,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
   "beg-def-function": buildLesson(
     "beg-def-function",
     "def ile fonksiyon yazma",
-    "Kendi fonksiyonlarını tanımla ve çağır.",
+    "Kendi fonksiyonlarını tanımla ve çağır. def sözdizimini öğren.",
     "6 dk",
     10,
     [
@@ -1606,7 +1688,10 @@ export const beginnerLessons: Record<string, LessonContent> = {
         "____ topla():\n    print(2 + 3)",
         ["def", "function", "return", "call"],
         "def",
-        { migo: "Tanım def ile başlar." },
+        {
+          migo: "Fonksiyon tanımı hangi kelimeyle başlar?",
+          migoAfterCorrect: "Fonksiyon tanımı def ile başlar.",
+        },
       ),
       outputStep(
         "step-3",
@@ -1614,7 +1699,10 @@ export const beginnerLessons: Record<string, LessonContent> = {
         'def yaz():\n    print("OK")\n\nyaz()\nyaz()',
         ["OK\nOK", "OK", "yaz", "Hata"],
         "OK\nOK",
-        { migo: "İki kez çağrıldı — iki kez OK." },
+        {
+          migo: "Fonksiyon kaç kez çağrıldıysa içindeki kod o kadar çalışır.",
+          migoAfterCorrect: "yaz() iki kez çağrıldığı için OK iki kez yazdırılır.",
+        },
       ),
       mcStep(
         "step-4",
@@ -1634,7 +1722,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
   "beg-params-return": buildLesson(
     "beg-params-return",
     "Parametre ve return",
-    "Fonksiyona veri gönder ve sonuç al.",
+    "Fonksiyona veri gönder ve sonuç al. Parametre ve return ile fonksiyonları güçlendir.",
     "6 dk",
     15,
     [
@@ -1673,7 +1761,10 @@ export const beginnerLessons: Record<string, LessonContent> = {
           "def topla: return a+b",
         ],
         "def topla(a, b):\n    return a + b",
-        { migo: "Sonucu kullanmak için return tercih edilir." },
+        {
+          migo: "Fonksiyonun sonucunu başka yerde kullanmak istiyorsan hangi yaklaşım daha uygun?",
+          migoAfterCorrect: "Sonucu geri döndürmek için return kullanılır; print yalnızca ekrana yazar.",
+        },
       ),
       completeStep("step-5", 15, "Mini proje: Selamlama fonksiyonları"),
     ],
@@ -1683,8 +1774,8 @@ export const beginnerLessons: Record<string, LessonContent> = {
   "beg-greeting-functions": buildLesson(
     "beg-greeting-functions",
     "Mini proje: Selamlama fonksiyonları",
-    "Parametreli selamlama fonksiyonları yaz.",
-    "8 dk",
+    "Parametreli selamlama fonksiyonları yaz. def, parametre ve return bir arada.",
+    "7 dk",
     25,
     [
       infoStep(
@@ -1734,7 +1825,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
   "beg-quiz-project-1": buildLesson(
     "beg-quiz-project-1",
     "Proje: Quiz uygulaması — Bölüm 1",
-    "Tek soruluk quiz uygulamasının temelini kur.",
+    "Tek soruluk quiz uygulamasının temelini kur. input ve if ile cevap kontrolü.",
     "10 dk",
     40,
     [
@@ -1784,7 +1875,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
   "beg-quiz-project-2": buildLesson(
     "beg-quiz-project-2",
     "Proje: Quiz uygulaması — Bölüm 2",
-    "Çok soruluk quiz ve toplam puan hesabı.",
+    "Çok soruluk quiz ve toplam puan hesabı. Başlangıç yolunun son büyük projesi.",
     "10 dk",
     40,
     [
@@ -1827,7 +1918,8 @@ export const beginnerLessons: Record<string, LessonContent> = {
         },
       ),
       completeStep("step-4", 40, "Python Temel Yolu", {
-        content: "Quiz projeni bitirdin. Başlangıç yolundaki tüm temel konuları tamamladın!",
+        content:
+          "Quiz projeni bitirdin. Başlangıç yolundaki tüm temel konuları tamamladın — harika iş çıkardın!",
       }),
     ],
     "beginner",
