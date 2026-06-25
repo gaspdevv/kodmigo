@@ -6,17 +6,21 @@ import type { Achievement } from "@/lib/achievements";
 type AchievementBadgeCardProps = {
   achievement: Achievement;
   theme: StageTheme;
+  compact?: boolean;
 };
 
 export default function AchievementBadgeCard({
   achievement,
   theme,
+  compact = false,
 }: AchievementBadgeCardProps) {
   const { unlocked, icon, title, description } = achievement;
 
   return (
     <div
-      className={`group relative rounded-2xl border p-3 text-center transition ${
+      className={`group relative rounded-2xl border text-center transition ${
+        compact ? "p-2.5" : "p-3"
+      } ${
         unlocked
           ? `border-orange-200/80 bg-gradient-to-br from-white via-orange-50/40 to-amber-50/60 shadow-md shadow-orange-100/50 ${theme.cardBorder}`
           : "border-slate-200/60 bg-slate-50/60 opacity-55"
@@ -42,7 +46,7 @@ export default function AchievementBadgeCard({
       </p>
 
       <div
-        className="pointer-events-none absolute bottom-full left-1/2 z-20 mb-2 hidden w-44 -translate-x-1/2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-left text-[11px] leading-snug text-slate-600 opacity-0 shadow-lg transition-opacity group-hover:opacity-100 md:block"
+        className="pointer-events-none absolute bottom-full left-1/2 z-20 mb-2 hidden max-w-[calc(100vw-2rem)] -translate-x-1/2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-left text-[11px] leading-snug text-slate-600 opacity-0 shadow-lg transition-opacity group-hover:opacity-100 sm:block sm:w-44"
         role="tooltip"
       >
         {description}

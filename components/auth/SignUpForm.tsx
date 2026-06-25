@@ -136,7 +136,7 @@ export default function SignUpForm() {
             onChange={(event) => setUsername(event.target.value)}
             autoComplete="username"
             required
-            className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none transition focus:border-kodmigo-orange/50 focus:ring-2 focus:ring-kodmigo-orange/20"
+            className="w-full min-w-0 rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none transition focus:border-kodmigo-orange/50 focus:ring-2 focus:ring-kodmigo-orange/20"
             placeholder="Örn. Efe"
           />
         </div>
@@ -155,7 +155,7 @@ export default function SignUpForm() {
             onChange={(event) => setEmail(event.target.value)}
             autoComplete="email"
             required
-            className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none transition focus:border-kodmigo-orange/50 focus:ring-2 focus:ring-kodmigo-orange/20"
+            className="w-full min-w-0 rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none transition focus:border-kodmigo-orange/50 focus:ring-2 focus:ring-kodmigo-orange/20"
             placeholder="ornek@email.com"
           />
         </div>
@@ -174,7 +174,7 @@ export default function SignUpForm() {
             onChange={(event) => setPassword(event.target.value)}
             autoComplete="new-password"
             required
-            className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none transition focus:border-kodmigo-orange/50 focus:ring-2 focus:ring-kodmigo-orange/20"
+            className="w-full min-w-0 rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none transition focus:border-kodmigo-orange/50 focus:ring-2 focus:ring-kodmigo-orange/20"
             placeholder="En az 6 karakter"
           />
         </div>
@@ -193,7 +193,7 @@ export default function SignUpForm() {
             onChange={(event) => setConfirmPassword(event.target.value)}
             autoComplete="new-password"
             required
-            className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none transition focus:border-kodmigo-orange/50 focus:ring-2 focus:ring-kodmigo-orange/20"
+            className="w-full min-w-0 rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none transition focus:border-kodmigo-orange/50 focus:ring-2 focus:ring-kodmigo-orange/20"
             placeholder="Şifreni tekrar gir"
           />
         </div>

@@ -145,7 +145,7 @@ export default function OnboardingShell() {
   }
 
   return (
-    <div className="relative flex min-h-full flex-col bg-gradient-to-b from-kodmigo-orange-light/50 via-background to-background">
+    <div className="relative flex min-h-screen flex-col bg-gradient-to-b from-kodmigo-orange-light/50 via-background to-background">
       <div className="pointer-events-none absolute -right-16 top-0 h-48 w-48 rounded-full bg-kodmigo-orange/10 blur-3xl" />
       <div className="pointer-events-none absolute -left-12 bottom-32 h-40 w-40 rounded-full bg-kodmigo-amber/10 blur-3xl" />
 
@@ -255,19 +255,19 @@ export default function OnboardingShell() {
                     <dl className="space-y-3">
                       <div className="flex items-start justify-between gap-4 border-b border-slate-100 pb-3">
                         <dt className="text-sm text-slate-500">Seviye</dt>
-                        <dd className="text-right text-sm font-semibold text-kodmigo-navy">
+                        <dd className="break-words text-right text-sm font-semibold text-kodmigo-navy">
                           {getLevelLabel(selections.level)}
                         </dd>
                       </div>
                       <div className="flex items-start justify-between gap-4 border-b border-slate-100 pb-3">
                         <dt className="text-sm text-slate-500">Hedef</dt>
-                        <dd className="text-right text-sm font-semibold text-kodmigo-navy">
+                        <dd className="break-words text-right text-sm font-semibold text-kodmigo-navy">
                           {getGoalLabel(selections.goal)}
                         </dd>
                       </div>
                       <div className="flex items-start justify-between gap-4">
                         <dt className="text-sm text-slate-500">Günlük hedef</dt>
-                        <dd className="text-right text-sm font-semibold text-kodmigo-navy">
+                        <dd className="break-words text-right text-sm font-semibold text-kodmigo-navy">
                           {getDailyTimeLabel(selections.dailyTime)}
                         </dd>
                       </div>

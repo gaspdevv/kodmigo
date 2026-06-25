@@ -15,7 +15,7 @@ export default function AuthShell({
   footer,
 }: AuthShellProps) {
   return (
-    <main className="relative min-h-screen overflow-hidden bg-gradient-to-b from-kodmigo-orange-light/70 via-kodmigo-cream/50 to-background px-4 py-8 sm:px-6">
+    <main className="relative min-h-screen overflow-x-hidden bg-gradient-to-b from-kodmigo-orange-light/70 via-kodmigo-cream/50 to-background px-4 py-8 sm:px-6">
       <div className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full bg-kodmigo-orange/15 blur-3xl" />
       <div className="pointer-events-none absolute -left-16 bottom-0 h-48 w-48 rounded-full bg-kodmigo-amber/10 blur-3xl" />
 
@@ -34,7 +34,7 @@ export default function AuthShell({
           </span>
         </header>
 
-        <section className="rounded-3xl border border-kodmigo-orange/20 bg-white p-6 shadow-xl shadow-kodmigo-orange/10 sm:p-8">
+        <section className="min-w-0 rounded-3xl border border-kodmigo-orange/20 bg-white p-6 shadow-xl shadow-kodmigo-orange/10 sm:p-8">
           <div className="mb-6">
             <h1 className="text-2xl font-bold text-kodmigo-navy">{title}</h1>
             <p className="mt-2 text-sm leading-relaxed text-slate-600">

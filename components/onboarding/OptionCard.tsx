@@ -42,13 +42,7 @@ export default function OptionCard({
           )}
         </span>
         <div className="min-w-0 flex-1">
-          <p
-            className={`font-semibold ${
-              selected ? "text-kodmigo-navy" : "text-kodmigo-navy"
-            }`}
-          >
-            {label}
-          </p>
+          <p className="break-words font-semibold text-kodmigo-navy">{label}</p>
           {description && (
             <p className="mt-1 text-sm leading-relaxed text-slate-500">{description}</p>
           )}

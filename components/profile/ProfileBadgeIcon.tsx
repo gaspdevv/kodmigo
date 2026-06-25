@@ -4,15 +4,15 @@ import { useEffect, useRef, useState } from "react";
 import type { StageTheme } from "@/components/dashboard/stageThemes";
 import type { Achievement } from "@/lib/achievements";
 
-type ShowcasedBadgeIconProps = {
+type ProfileBadgeIconProps = {
   achievement: Achievement;
   theme: StageTheme;
 };
 
-export default function ShowcasedBadgeIcon({
+export default function ProfileBadgeIcon({
   achievement,
   theme,
-}: ShowcasedBadgeIconProps) {
+}: ProfileBadgeIconProps) {
   const [showMobileTooltip, setShowMobileTooltip] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -49,18 +49,19 @@ export default function ShowcasedBadgeIcon({
   );
 
   return (
-    <div ref={containerRef} className="group relative mt-2 w-fit">
+    <div ref={containerRef} className="group relative">
       <button
         type="button"
         onClick={handleTap}
+        title={`${achievement.title}: ${achievement.description}`}
         aria-label={`${achievement.title}: ${achievement.description}`}
-        className={`flex h-9 w-9 cursor-pointer items-center justify-center rounded-xl border text-lg shadow-sm transition hover:scale-105 active:scale-95 ${theme.currentBadge}`}
+        className={`flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg border text-base shadow-sm transition hover:scale-105 active:scale-95 sm:h-9 sm:w-9 sm:rounded-xl sm:text-lg ${theme.currentBadge}`}
       >
         <span aria-hidden="true">{achievement.icon}</span>
       </button>
 
       <div
-        className={`absolute left-0 top-full z-10 mt-2 w-44 rounded-xl border border-slate-200 bg-white px-3 py-2 text-left shadow-lg md:hidden ${
+        className={`absolute left-0 top-full z-10 mt-1.5 w-44 rounded-xl border border-slate-200 bg-white px-3 py-2 text-left shadow-lg sm:hidden ${
           showMobileTooltip ? "block" : "hidden"
         }`}
         role="tooltip"
@@ -69,7 +70,7 @@ export default function ShowcasedBadgeIcon({
       </div>
 
       <div
-        className="pointer-events-none absolute bottom-full left-0 z-10 mb-2 hidden w-44 rounded-xl border border-slate-200 bg-white px-3 py-2 text-left opacity-0 shadow-lg transition-opacity group-hover:opacity-100 md:block"
+        className="pointer-events-none absolute bottom-full left-1/2 z-10 mb-1.5 hidden w-44 -translate-x-1/2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-left opacity-0 shadow-lg transition-opacity group-hover:opacity-100 sm:block"
         role="tooltip"
       >
         {tooltipContent}

@@ -30,8 +30,8 @@ export default function DashboardHeader() {
   );
 
   return (
-    <header className="mb-6">
-      <h1 className={`text-2xl font-bold ${theme.primaryText}`}>
+    <header className="mb-6 min-w-0">
+      <h1 className={`break-words text-2xl font-bold ${theme.primaryText}`}>
         {isReady && !authLoading ? greeting : "Merhaba!"}
         {isReady && !authLoading ? " 👋" : ""}
       </h1>

@@ -33,7 +33,7 @@ export default function StreakRescuePage() {
 
   return (
     <main
-      className="flex min-h-screen items-center justify-center bg-gradient-to-b from-kodmigo-cream via-orange-50 to-amber-50 px-4 py-8"
+      className="flex min-h-screen items-center justify-center overflow-x-hidden bg-gradient-to-b from-kodmigo-cream via-orange-50 to-amber-50 px-4 py-8"
     >
       <StreakRescueCard />
     </main>

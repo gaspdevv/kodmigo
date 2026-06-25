@@ -56,7 +56,7 @@ export default function LessonComplete({
       >
         {isRepeatCompletion ? "🔁" : "🏆"}
       </div>
-      <h2 className={`mb-2 text-2xl font-bold ${theme.primaryText}`}>
+      <h2 className={`mb-2 break-words text-2xl font-bold ${theme.primaryText}`}>
         {isRepeatCompletion ? "Dersi tekrar ettin" : `🎉 ${step.title}`}
       </h2>
       {step.content && (

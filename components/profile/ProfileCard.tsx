@@ -7,7 +7,7 @@ import {
   stageNames,
 } from "@/components/dashboard/stageThemes";
 import ProfileAvatar from "@/components/profile/ProfileAvatar";
-import ShowcasedBadgeIcon from "@/components/profile/ShowcasedBadgeIcon";
+import ProfileEarnedBadgeIcons from "@/components/profile/ProfileEarnedBadgeIcons";
 import { updateAuthUsername } from "@/lib/auth/actions";
 import type { Achievement } from "@/lib/achievements";
 import {
@@ -22,7 +22,7 @@ import { validateUsername } from "@/lib/username";
 type ProfileCardProps = {
   profile: ProfileData;
   userProgress: UserProgress;
-  showcasedBadge: Achievement | null;
+  earnedBadges: Achievement[];
   theme: StageTheme;
   isAuthenticated: boolean;
   onProfileChange: (profile: ProfileData) => void;
@@ -33,7 +33,7 @@ type ProfileCardProps = {
 export default function ProfileCard({
   profile,
   userProgress,
-  showcasedBadge,
+  earnedBadges,
   theme,
   isAuthenticated,
   onProfileChange,
@@ -120,7 +120,7 @@ export default function ProfileCard({
 
   return (
     <section
-      className={`mb-4 overflow-visible rounded-3xl border p-5 ${theme.stageCardBackground} ${theme.cardBorder} ${theme.cardShadow}`}
+      className={`mb-4 overflow-hidden rounded-3xl border p-5 ${theme.stageCardBackground} ${theme.cardBorder} ${theme.cardShadow}`}
     >
       <div className="flex items-start gap-4">
         <ProfileAvatar
@@ -168,9 +168,9 @@ export default function ProfileCard({
               )}
             </div>
           ) : (
-            <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5">
+            <div className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1.5">
               <h1
-                className={`max-w-[10rem] truncate text-xl font-bold sm:max-w-[12rem] ${theme.primaryText}`}
+                className={`min-w-0 max-w-full break-words text-xl font-bold sm:max-w-[12rem] sm:truncate ${theme.primaryText}`}
               >
                 {profile.username}
               </h1>
@@ -190,8 +190,11 @@ export default function ProfileCard({
             </div>
           )}
 
-          {showcasedBadge && (
-            <ShowcasedBadgeIcon achievement={showcasedBadge} theme={theme} />
+          {!isEditingUsername && (
+            <ProfileEarnedBadgeIcons
+              earnedBadges={earnedBadges}
+              theme={theme}
+            />
           )}
         </div>
       </div>

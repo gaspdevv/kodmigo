@@ -166,7 +166,7 @@ export default function LessonCard({ lesson, isFocused = false }: LessonCardProp
               </span>
             )}
           </div>
-          <h3 className={`font-semibold leading-snug ${titleClass}`}>
+          <h3 className={`font-semibold leading-snug break-words ${titleClass}`}>
             {lesson.title}
           </h3>
         </div>

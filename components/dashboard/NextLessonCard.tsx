@@ -58,7 +58,7 @@ export default function NextLessonCard() {
         >
           Sıradaki ders
         </p>
-        <h2 className={`mb-2 text-xl font-bold ${theme.primaryText}`}>
+        <h2 className={`mb-2 break-words text-xl font-bold ${theme.primaryText}`}>
           {pathTitle} tamamlandı
         </h2>
         <p className={`mb-4 text-sm ${theme.mutedText}`}>
@@ -95,7 +95,7 @@ export default function NextLessonCard() {
       >
         Sıradaki ders
       </p>
-      <h2 className={`mb-2 text-xl font-bold ${theme.primaryText}`}>
+      <h2 className={`mb-2 break-words text-xl font-bold ${theme.primaryText}`}>
         {nextLesson.title}
       </h2>
       <p className={`mb-4 text-sm ${theme.mutedText}`}>

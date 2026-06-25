@@ -2,14 +2,13 @@
 
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import AchievementBadgeCard from "@/components/profile/AchievementBadgeCard";
+import EarnedBadgesSection from "@/components/profile/EarnedBadgesSection";
 import ProfileCard from "@/components/profile/ProfileCard";
 import BottomNav from "@/components/dashboard/BottomNav";
 import { getDashboardTheme } from "@/components/dashboard/getDashboardTheme";
 import { useAppStateSync } from "@/components/providers/AppStateSyncProvider";
 import {
   getAchievements,
-  getShowcasedAchievement,
 } from "@/lib/achievements";
 import { useAuthUser } from "@/lib/auth/useAuthUser";
 import {
@@ -89,11 +88,7 @@ export default function ProfilePageClient() {
     learningProgress,
     streakProgress,
   );
-  const unlockedCount = achievements.filter((a) => a.unlocked).length;
-  const showcasedBadge = getShowcasedAchievement(
-    achievements,
-    profile.showcasedBadgeId,
-  );
+  const earnedBadges = achievements.filter((a) => a.unlocked);
 
   const handleAvatarChange = (avatarDataUrl: string) => {
     setAvatarError(null);
@@ -108,7 +103,7 @@ export default function ProfilePageClient() {
   if (!isReady || authLoading || (user && syncing)) {
     return (
       <main
-        className={`min-h-screen pb-24 ${theme.pageBackground}`}
+        className={`min-h-screen overflow-x-hidden pb-24 ${theme.pageBackground}`}
         aria-busy="true"
       >
         <div className="mx-auto max-w-lg px-4 pb-6 pt-6 sm:px-6">
@@ -124,7 +119,7 @@ export default function ProfilePageClient() {
   }
 
   return (
-    <main className={`min-h-screen pb-24 ${theme.pageBackground}`}>
+    <main className={`min-h-screen overflow-x-hidden pb-24 ${theme.pageBackground}`}>
       <div className="mx-auto max-w-lg px-4 pb-6 pt-6 sm:px-6">
         <div className="mb-4 flex items-center justify-end">
           <Link
@@ -140,7 +135,7 @@ export default function ProfilePageClient() {
         <ProfileCard
           profile={displayProfile}
           userProgress={userProgress}
-          showcasedBadge={showcasedBadge}
+          earnedBadges={earnedBadges}
           theme={theme}
           isAuthenticated={Boolean(user)}
           onProfileChange={handleProfileChange}
@@ -197,28 +192,7 @@ export default function ProfilePageClient() {
           )}
         </section>
 
-        <section
-          className={`rounded-3xl border p-5 ${theme.cardBackground} ${theme.cardBorder} ${theme.cardShadow}`}
-        >
-          <div className="mb-4 flex items-center justify-between gap-2">
-            <h2 className={`text-lg font-bold ${theme.primaryText}`}>
-              Başarılar
-            </h2>
-            <span className={`text-xs font-medium ${theme.mutedText}`}>
-              {unlockedCount} / {achievements.length}
-            </span>
-          </div>
-
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-            {achievements.map((achievement) => (
-              <AchievementBadgeCard
-                key={achievement.id}
-                achievement={achievement}
-                theme={theme}
-              />
-            ))}
-          </div>
-        </section>
+        <EarnedBadgesSection achievements={achievements} theme={theme} />
       </div>
 
       <BottomNav activeTab="Profil" />

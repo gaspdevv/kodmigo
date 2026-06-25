@@ -32,7 +32,7 @@ export default function SettingsPageClient() {
   };
 
   return (
-    <main className={`min-h-screen ${theme.pageBackground}`}>
+    <main className={`min-h-screen overflow-x-hidden ${theme.pageBackground}`}>
       <div className="mx-auto max-w-lg px-4 py-6 sm:px-6">
         <div className="mb-6 flex items-center gap-3">
           <Link
@@ -57,7 +57,7 @@ export default function SettingsPageClient() {
             <p className={`text-sm ${theme.mutedText}`}>Yükleniyor...</p>
           ) : user ? (
             <div className="space-y-4">
-              <p className={`text-sm leading-relaxed ${theme.mutedText}`}>
+              <p className={`break-all text-sm leading-relaxed ${theme.mutedText}`}>
                 {user.email}
               </p>
               <button

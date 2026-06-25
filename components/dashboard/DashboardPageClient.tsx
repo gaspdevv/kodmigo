@@ -57,7 +57,7 @@ export default function DashboardPageClient() {
   if (!isReady || authLoading || waitingForSync) {
     return (
       <main
-        className={`min-h-screen pb-24 ${theme.pageBackground}`}
+        className={`min-h-screen overflow-x-hidden pb-24 ${theme.pageBackground}`}
         aria-busy="true"
       >
         <div className="mx-auto max-w-lg px-4 pb-6 pt-6 sm:px-6">
@@ -75,7 +75,7 @@ export default function DashboardPageClient() {
   }
 
   return (
-    <main className={`min-h-screen pb-24 ${theme.pageBackground}`}>
+    <main className={`min-h-screen overflow-x-hidden pb-24 ${theme.pageBackground}`}>
       <div className="mx-auto max-w-lg px-4 pb-6 pt-6 sm:px-6">
         <DashboardHeader />
         <StageProgressCard />

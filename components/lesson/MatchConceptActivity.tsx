@@ -28,26 +28,35 @@ export default function MatchConceptActivity({
   if (pairs.length > 0) {
     return (
       <div className="mb-4 space-y-3">
-        <div className="grid grid-cols-2 gap-2 text-xs font-semibold uppercase tracking-wide">
+        <div className="grid grid-cols-1 gap-2 text-xs font-semibold uppercase tracking-wide sm:grid-cols-2">
           <span className={theme.mutedText}>Kavram</span>
-          <span className={theme.mutedText}>Açıklama</span>
+          <span className={`hidden sm:block ${theme.mutedText}`}>Açıklama</span>
         </div>
         {pairs.map((pair) => (
           <div
             key={pair.concept}
-            className={`grid grid-cols-2 gap-3 rounded-2xl border p-3 ${theme.cardBorder} ${theme.cardBackground}`}
+            className={`grid grid-cols-1 gap-3 rounded-2xl border p-3 sm:grid-cols-2 ${theme.cardBorder} ${theme.cardBackground}`}
           >
-            <div
-              className={`flex items-center rounded-xl border px-3 py-2 text-sm font-semibold ${theme.cardBorder} bg-orange-50/80 ${theme.primaryText}`}
-            >
-              {pair.concept}
+            <div>
+              <p className={`mb-1 text-xs font-semibold uppercase tracking-wide sm:hidden ${theme.mutedText}`}>
+                Kavram
+              </p>
+              <div
+                className={`flex min-w-0 items-center rounded-xl border px-3 py-2 text-sm font-semibold break-words ${theme.cardBorder} bg-orange-50/80 ${theme.primaryText}`}
+              >
+                {pair.concept}
+              </div>
             </div>
-            <select
-              value={selections[pair.concept] ?? ""}
-              disabled={feedbackState === "correct"}
-              onChange={(event) => onSelectPair(pair.concept, event.target.value)}
-              className={`w-full rounded-xl border px-3 py-2 text-sm outline-none transition focus:ring-2 focus:ring-orange-400/50 ${theme.cardBorder} ${theme.cardBackground} ${theme.primaryText}`}
-            >
+            <div className="min-w-0">
+              <p className={`mb-1 text-xs font-semibold uppercase tracking-wide sm:hidden ${theme.mutedText}`}>
+                Açıklama
+              </p>
+              <select
+                value={selections[pair.concept] ?? ""}
+                disabled={feedbackState === "correct"}
+                onChange={(event) => onSelectPair(pair.concept, event.target.value)}
+                className={`w-full min-w-0 rounded-xl border px-3 py-2 text-sm outline-none transition focus:ring-2 focus:ring-orange-400/50 ${theme.cardBorder} ${theme.cardBackground} ${theme.primaryText}`}
+              >
               <option value="">Seç...</option>
               {options.map((option) => (
                 <option key={option} value={option}>
@@ -55,6 +64,7 @@ export default function MatchConceptActivity({
                 </option>
               ))}
             </select>
+            </div>
           </div>
         ))}
       </div>
@@ -70,7 +80,7 @@ export default function MatchConceptActivity({
           <p className={`mb-2 text-xs font-bold uppercase tracking-wide ${theme.migoAccent}`}>
             Kavram
           </p>
-          <p className={`text-sm font-semibold leading-relaxed ${theme.primaryText}`}>
+          <p className={`text-sm font-semibold leading-relaxed break-words ${theme.primaryText}`}>
             {step.content ?? step.title}
           </p>
         </div>
@@ -89,7 +99,7 @@ export default function MatchConceptActivity({
                 type="button"
                 disabled={feedbackState === "correct"}
                 onClick={() => onSelectSingle(option)}
-                className={`w-full rounded-xl border px-3 py-2.5 text-left text-sm transition ${
+                className={`w-full break-words rounded-xl border px-3 py-2.5 text-left text-sm transition ${
                   selected
                     ? `border-orange-400 bg-orange-50/80 font-semibold ${theme.primaryText}`
                     : `${theme.cardBorder} ${theme.cardBackground} ${theme.mutedText} hover:border-orange-300`

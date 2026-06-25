@@ -345,7 +345,7 @@ export default function LessonShell({ lesson, theme }: LessonShellProps) {
       : "incorrect";
 
   return (
-    <div className="mx-auto flex min-h-screen max-w-lg flex-col px-4 py-5 sm:px-6">
+    <div className="mx-auto flex min-h-screen max-w-lg flex-col overflow-x-hidden px-4 py-5 sm:px-6">
       {!isCompleteStep && (
         <header className="mb-4">
           <div className="mb-4 flex items-center gap-3">
@@ -389,7 +389,7 @@ export default function LessonShell({ lesson, theme }: LessonShellProps) {
       )}
 
       <article
-        className={`flex flex-1 flex-col rounded-3xl border p-5 ${theme.cardBackground} ${theme.cardBorder} ${theme.cardShadow}`}
+        className={`flex min-w-0 flex-1 flex-col rounded-3xl border p-5 ${theme.cardBackground} ${theme.cardBorder} ${theme.cardShadow}`}
       >
         {isCompleteStep ? (
           <LessonComplete

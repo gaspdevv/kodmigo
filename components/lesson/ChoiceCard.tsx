@@ -34,7 +34,7 @@ export default function ChoiceCard({
       type="button"
       onClick={onSelect}
       disabled={disabled}
-      className={`w-full rounded-xl border px-4 py-3 text-left text-sm font-medium transition-all duration-200 ${stateClasses} ${
+      className={`w-full break-words rounded-xl border px-4 py-3 text-left text-sm font-medium transition-all duration-200 ${stateClasses} ${
         disabled && !selected
           ? "cursor-not-allowed opacity-60"
           : "cursor-pointer"

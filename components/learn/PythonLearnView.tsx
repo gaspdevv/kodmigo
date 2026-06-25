@@ -71,7 +71,7 @@ export default function PythonLearnView() {
   const visibleUnits = useMemo(() => units, [units]);
 
   return (
-    <main className={`min-h-screen pb-24 ${theme.pageBackground}`}>
+    <main className={`min-h-screen overflow-x-hidden pb-24 ${theme.pageBackground}`}>
       <div className="mx-auto max-w-lg px-4 pb-6 pt-6 sm:px-6">
         <LearningPathHeader pathMeta={pathMeta} />
         <MigoPathTip migoTip={pathMeta.migoTip} />

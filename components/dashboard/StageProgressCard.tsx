@@ -168,16 +168,16 @@ export default function StageProgressCard() {
         </div>
       )}
 
-      <div className="mb-3 flex items-center justify-between gap-2">
-        <h2 className={`text-base font-bold ${theme.primaryText}`}>
+      <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+        <h2 className={`min-w-0 flex-1 text-base font-bold ${theme.primaryText}`}>
           Aşama ilerlemen
         </h2>
         {streakProgress && hasActiveStreak(streakProgress) && (
           <span
-            className={`inline-flex shrink-0 items-center gap-1.5 rounded-full px-4 py-2 text-sm font-semibold shadow-sm sm:text-base ${theme.streakBg}`}
+            className={`inline-flex shrink-0 items-center gap-1 rounded-full px-3 py-1.5 text-xs font-semibold shadow-sm sm:gap-1.5 sm:px-4 sm:py-2 sm:text-sm ${theme.streakBg}`}
           >
             <span
-              className={`text-xl leading-none sm:text-2xl ${
+              className={`text-lg leading-none sm:text-xl ${
                 isStreakDimmed(streakProgress)
                   ? "flame-emoji-dim"
                   : "flame-emoji"
@@ -191,7 +191,7 @@ export default function StageProgressCard() {
         )}
       </div>
 
-      <p className={`mb-3 text-sm font-semibold ${theme.primaryText}`}>
+      <p className={`mb-3 flex flex-wrap items-center gap-y-1 text-sm font-semibold ${theme.primaryText}`}>
         {isMaxStage ? (
           <span
             className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs ${theme.currentBadge}`}

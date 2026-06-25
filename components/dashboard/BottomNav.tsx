@@ -20,7 +20,7 @@ export default function BottomNav({ activeTab = "Yol" }: BottomNavProps) {
     <nav
       className={`fixed bottom-0 left-0 right-0 z-50 border-t backdrop-blur-sm ${theme.navBorder} ${theme.navBackground}`}
     >
-      <div className="mx-auto flex max-w-lg items-center justify-around px-4 py-3">
+      <div className="mx-auto flex max-w-lg items-center justify-around px-4 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
         {navItems.map((item) => {
           const isActive = item.label === activeTab;
 
