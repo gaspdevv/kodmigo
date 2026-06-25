@@ -52,11 +52,60 @@ Henüz eklenmeyen ama ileride planlanan teknolojiler:
 
 ## Ortam Değişkenleri
 
-`.env.local` dosyasına aşağıdaki değerleri ekleyin (örnek için `.env.example` dosyasına bakın):
+Yerel geliştirme için proje kökünde `.env.local` oluşturun (şablon: `.env.example`):
 
-- `NEXT_PUBLIC_SUPABASE_URL` ve `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` — Supabase auth ve veri senkronizasyonu
+| Değişken | Açıklama |
+|----------|----------|
+| `NEXT_PUBLIC_SUPABASE_URL` | Supabase proje URL |
+| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Supabase publishable (anon) key |
 
-Deploy için Vercel Environment Variables içine de aynı değerleri ekleyin.
+**Gerekmez / kullanılmaz:**
+
+- `OPENAI_API_KEY`, `OPENAI_MODEL`, `NEXT_PUBLIC_OPENAI_API_KEY` — AI chat kaldırıldı
+- `SUPABASE_SERVICE_ROLE_KEY`, `SUPABASE_SECRET_KEY` — frontend'e eklenmemeli
+
+`.env.local` dosyasını Git'e commit etmeyin (`.gitignore` ile hariç tutulur).
+
+## Production Deploy Notları
+
+### Vercel Environment Variables
+
+Vercel proje ayarları → **Settings** → **Environment Variables**:
+
+1. `NEXT_PUBLIC_SUPABASE_URL` — Supabase Dashboard → Project Settings → API
+2. `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` — aynı sayfadaki publishable key
+
+Production, Preview ve Development ortamlarına ekleyin. Deploy sonrası yeniden build gerekir.
+
+### Güvenlik
+
+- `.env.local` GitHub'a gönderilmemeli.
+- OpenAI API key gerekmez; ücretli AI chat sistemi kaldırıldı.
+- Service role / secret key yalnızca güvenli sunucu ortamında kullanılmalı; bu projede frontend'de kullanılmaz.
+
+### Supabase Auth — redirect checklist
+
+Supabase Dashboard → **Authentication** → **URL Configuration**:
+
+| Ayar | Değer |
+|------|-------|
+| **Site URL** | Production Vercel URL (ör. `https://your-vercel-domain.vercel.app`) |
+| **Redirect URLs** | `http://localhost:3000`, `http://localhost:3000/**` |
+| **Redirect URLs** | `https://your-vercel-domain.vercel.app`, `https://your-vercel-domain.vercel.app/**` |
+
+Production domain henüz bilinmiyorsa placeholder kullanın; kod içine sabit domain yazmayın.
+
+### Build komutu
+
+```bash
+npm run build
+```
+
+Başarılı build sonrası Vercel otomatik deploy edebilir veya `npm run start` ile yerelde production modunu test edebilirsiniz.
+
+### Deploy sonrası test
+
+Detaylı manuel test listesi: [`PRODUCTION_CHECKLIST.md`](./PRODUCTION_CHECKLIST.md)
 
 ## Proje Yapısı
 
