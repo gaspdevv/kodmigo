@@ -38,7 +38,7 @@ export default function SettingsPageClient() {
           <Link
             href="/profile"
             onClick={playClickSound}
-            aria-label="Profile dön"
+            aria-label="Profil'e dön"
             className={`flex h-10 w-10 cursor-pointer items-center justify-center rounded-xl text-lg transition hover:scale-105 active:scale-95 ${theme.softBadge}`}
           >
             ←

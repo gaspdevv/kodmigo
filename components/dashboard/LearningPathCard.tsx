@@ -172,10 +172,10 @@ export default function LearningPathCard() {
         </div>
 
         <div
-          className={`flex items-center justify-between text-xs ${theme.mutedText}`}
+          className={`flex flex-wrap items-center justify-between gap-x-2 gap-y-1 text-xs ${theme.mutedText}`}
         >
-          <span>%{roundedPercent} tamamlandı</span>
-          <span>
+          <span className="shrink-0">%{roundedPercent} tamamlandı</span>
+          <span className="min-w-0 text-right break-words">
             {displayCount} / {learningProgress.totalLessons} ders tamamlandı
           </span>
         </div>

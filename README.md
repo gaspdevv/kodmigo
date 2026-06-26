@@ -8,6 +8,12 @@ Amaç; kullanıcıların uzun ve karmaşık kaynaklar arasında kaybolmadan, kı
 
 Kodmigo şu anda MVP geliştirme aşamasındadır.
 
+## İlk Kullanıcı Testi
+
+- Kodmigo şu an MVP/beta aşamasındadır.
+- Test amacı: onboarding, auth, ders akışı, XP/progress/streak, profil ve mobil deneyimi doğrulamak.
+- Detaylı test listesi için [`USER_TEST_CHECKLIST.md`](./USER_TEST_CHECKLIST.md) dosyasına bakılabilir.
+
 Tamamlanan ilk aşama:
 
 - Mobil uyumlu landing page

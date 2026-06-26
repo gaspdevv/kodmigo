@@ -64,5 +64,23 @@ export function mapAuthErrorMessage(message: string): string {
     return "Giriş yapmadan önce e-postanı doğrulamalısın.";
   }
 
+  if (
+    normalized.includes("rate limit") ||
+    normalized.includes("too many requests")
+  ) {
+    return "Çok fazla deneme yaptın. Biraz bekleyip tekrar dene.";
+  }
+
+  if (
+    normalized.includes("network") ||
+    normalized.includes("fetch failed")
+  ) {
+    return "Bağlantı sorunu oluştu. İnternetini kontrol edip tekrar dene.";
+  }
+
+  if (/^[a-z]/.test(message.trim())) {
+    return "Bir sorun oluştu. Bilgilerini kontrol edip tekrar dene.";
+  }
+
   return message;
 }

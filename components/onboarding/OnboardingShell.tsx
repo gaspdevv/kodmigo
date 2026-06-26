@@ -300,7 +300,7 @@ export default function OnboardingShell() {
               onClick={handleFinish}
               className="inline-flex h-12 flex-1 cursor-pointer items-center justify-center rounded-2xl bg-kodmigo-orange px-4 text-base font-semibold text-white shadow-lg shadow-kodmigo-orange/25 transition hover:bg-orange-600"
             >
-              Dashboard&apos;a geç
+              Ana Sayfa&apos;ya geç
             </button>
           ) : (
             <button

@@ -539,7 +539,7 @@ export default function LessonShell({ lesson, theme }: LessonShellProps) {
                     }}
                     placeholder={step.placeholder ?? "Kodunu yaz..."}
                     rows={isProjectStep ? 8 : 5}
-                    className={`w-full resize-y rounded-xl border px-4 py-3 font-mono text-sm leading-relaxed outline-none transition focus:ring-2 focus:ring-orange-400/50 ${
+                    className={`box-border max-w-full w-full resize-y rounded-xl border px-4 py-3 font-mono text-sm leading-relaxed outline-none transition focus:ring-2 focus:ring-orange-400/50 ${
                       isCodeWriting
                         ? "border-slate-600 bg-slate-950 text-emerald-100 placeholder:text-slate-500"
                         : `${theme.cardBorder} ${theme.cardBackground} ${theme.primaryText}`

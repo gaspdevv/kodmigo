@@ -2,6 +2,8 @@
 
 Deploy öncesi ve sonrası manuel kontrol listesi.
 
+**Production URL:** https://kodmigo.vercel.app
+
 ## Vercel ve ortam
 
 - [ ] Vercel Environment Variables içine `NEXT_PUBLIC_SUPABASE_URL` eklendi
@@ -14,15 +16,14 @@ Deploy öncesi ve sonrası manuel kontrol listesi.
 
 Supabase Dashboard → **Authentication** → **URL Configuration**
 
-- [ ] **Site URL:** production Vercel URL (ör. `https://your-vercel-domain.vercel.app`)
+- [ ] **Site URL:** `https://kodmigo.vercel.app`
 - [ ] **Redirect URLs** — localhost geliştirme:
   - `http://localhost:3000`
   - `http://localhost:3000/**`
 - [ ] **Redirect URLs** — production:
-  - `https://your-vercel-domain.vercel.app`
-  - `https://your-vercel-domain.vercel.app/**`
-
-> Gerçek production domain bilinmiyorsa placeholder kullanın; kod içine sabit domain yazmayın.
+  - `https://kodmigo.vercel.app`
+  - `https://kodmigo.vercel.app/**`
+- [ ] Supabase Auth redirect ayarları production URL ile kontrol edildi
 
 ## Auth ve sayfalar
 
@@ -38,6 +39,7 @@ Supabase Dashboard → **Authentication** → **URL Configuration**
 - [ ] Profil avatar ve username çalışıyor
 - [ ] `localStorage.clear()` sonrası tekrar girişte veriler Supabase'den geri geliyor
 - [ ] Aynı ders tekrarında XP tekrar verilmiyor
+- [ ] Hesap karışması bug fix test edildi (farklı hesaplar birbirinin verisini almıyor)
 
 ## Mobil kısa kontrol
 
@@ -45,6 +47,11 @@ Supabase Dashboard → **Authentication** → **URL Configuration**
 - [ ] `/learn/python` — taşma yok
 - [ ] `/lesson/[lessonId]` — taşma yok
 - [ ] `/profile` — taşma yok
+- [ ] Mobil bottom navigation yazıları kontrol edildi (Ana Sayfa, Yol, Profil)
+
+## İlk kullanıcı testi
+
+- [ ] İlk kullanıcı testi için [`USER_TEST_CHECKLIST.md`](./USER_TEST_CHECKLIST.md) kullanılacak
 
 ## Güvenlik ve kalıntı
 

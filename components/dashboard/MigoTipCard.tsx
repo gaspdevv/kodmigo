@@ -14,11 +14,11 @@ export default function MigoTipCard() {
         >
           🦊
         </div>
-        <div>
+        <div className="min-w-0 flex-1">
           <h2 className={`mb-1 text-sm font-bold ${theme.migoAccent}`}>
             Migo&apos;dan ipucu
           </h2>
-          <p className={`text-sm leading-relaxed ${theme.mutedText}`}>
+          <p className={`break-words text-sm leading-relaxed ${theme.mutedText}`}>
             {dashboardMock.migoTip}
           </p>
         </div>
