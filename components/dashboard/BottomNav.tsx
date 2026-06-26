@@ -20,7 +20,7 @@ export default function BottomNav({ activeTab = "Yol" }: BottomNavProps) {
     <nav
       className={`fixed bottom-0 left-0 right-0 z-50 border-t backdrop-blur-sm ${theme.navBorder} ${theme.navBackground}`}
     >
-      <div className="mx-auto flex max-w-lg items-center justify-around px-4 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
+      <div className="mx-auto flex max-w-lg items-stretch justify-around px-2 pt-2 pb-[max(0.5rem,env(safe-area-inset-bottom))]">
         {navItems.map((item) => {
           const isActive = item.label === activeTab;
 
@@ -28,14 +28,16 @@ export default function BottomNav({ activeTab = "Yol" }: BottomNavProps) {
             <Link
               key={item.label}
               href={item.href}
-              className={`flex flex-col items-center gap-0.5 rounded-xl px-4 py-1 transition ${
+              className={`flex min-w-0 flex-1 flex-col items-center justify-center gap-1 rounded-xl px-2 py-1.5 transition ${
                 isActive
                   ? `${theme.activeNav} ${theme.activeNavText}`
-                  : "text-slate-400 hover:text-slate-600"
+                  : "text-slate-600 hover:text-slate-800"
               }`}
             >
-              <span className="text-lg">{item.icon}</span>
-              <span className="text-xs font-medium">{item.label}</span>
+              <span className="text-lg leading-none">{item.icon}</span>
+              <span className="block max-w-full truncate text-center text-[11px] font-semibold leading-tight">
+                {item.label}
+              </span>
             </Link>
           );
         })}

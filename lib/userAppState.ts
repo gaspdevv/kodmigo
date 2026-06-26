@@ -28,6 +28,7 @@ import {
   type StreakProgress,
 } from "@/lib/streak";
 import { APP_STATE_STORAGE_KEYS } from "@/lib/appStateEvents";
+import { getStoredCurrentUserId } from "@/lib/appStateStorage";
 import { withSuppressedPersist } from "@/lib/appStateFlags";
 import { normalizeLessonId } from "@/lib/progress";
 import {
@@ -306,6 +307,23 @@ export function getDefaultAppState(): AppState {
   };
 }
 
+function createFreshUserState(
+  authUsername?: string | null,
+  onboardingProfile?: OnboardingProfile | null,
+): AppState {
+  const defaults = getDefaultAppState();
+  const username = authUsername?.trim() || defaults.profile.username;
+
+  return {
+    ...defaults,
+    profile: {
+      ...defaults.profile,
+      username,
+    },
+    onboardingProfile: onboardingProfile ?? null,
+  };
+}
+
 export function getLocalAppState(): AppState {
   if (!isBrowser()) return getDefaultAppState();
 
@@ -546,24 +564,43 @@ export async function syncLocalToRemote(userId: string): Promise<string | null> 
 export async function syncRemoteToLocal(
   userId: string,
   authUsername?: string | null,
+  options?: { previousUserId?: string | null },
 ): Promise<AppState> {
+  const previousUserId =
+    options?.previousUserId !== undefined
+      ? options.previousUserId
+      : getStoredCurrentUserId();
+  const isSameUser = previousUserId === userId;
+
   const local = getLocalAppState();
   const { row, state: remoteState } = await loadRemoteAppState(userId);
+  const hasRemote = Boolean(row && remoteState && !isRemoteAppStateEmpty(row));
 
   let merged: AppState;
 
-  if (!row || isRemoteAppStateEmpty(row) || !remoteState) {
-    merged = local;
-  } else if (!hasAnyLocalAppState()) {
-    merged = remoteState;
-    if (authUsername) {
-      merged = {
-        ...merged,
-        profile: mergeProfile(merged.profile, merged.profile, authUsername),
-      };
+  if (hasRemote && remoteState) {
+    if (isSameUser && hasAnyLocalAppState()) {
+      merged = mergeAppState(local, remoteState, authUsername);
+    } else {
+      merged = { ...remoteState };
+      if (authUsername) {
+        merged.profile = mergeProfile(
+          merged.profile,
+          merged.profile,
+          authUsername,
+        );
+      }
+      if (!merged.onboardingProfile && local.onboardingProfile) {
+        merged.onboardingProfile = local.onboardingProfile;
+      }
     }
+  } else if (isSameUser && hasAnyLocalAppState()) {
+    merged = {
+      ...local,
+      profile: mergeProfile(local.profile, getDefaultProfile(), authUsername),
+    };
   } else {
-    merged = mergeAppState(local, remoteState, authUsername);
+    merged = createFreshUserState(authUsername, local.onboardingProfile);
   }
 
   writeLocalAppState(merged);

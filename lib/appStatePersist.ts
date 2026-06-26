@@ -1,6 +1,11 @@
 import {
   APP_STATE_SYNCED_EVENT,
 } from "@/lib/appStateEvents";
+import {
+  clearAppStateLocalStorage,
+  getStoredCurrentUserId,
+  setStoredCurrentUserId,
+} from "@/lib/appStateStorage";
 import { getAuthUsername } from "@/lib/username";
 import {
   getLocalAppState,
@@ -22,6 +27,13 @@ export function wasLoginSyncCompleted(userId: string): boolean {
 export function resetLoginSyncState(): void {
   lastSyncedLoginUserId = null;
   cachedUserId = null;
+}
+
+export function cancelScheduledPersist(): void {
+  if (persistTimer) {
+    clearTimeout(persistTimer);
+    persistTimer = null;
+  }
 }
 
 export function dispatchAppStateSynced(): void {
@@ -65,6 +77,7 @@ export async function persistAppStateIfAuthed(
     }
 
     cachedUserId = session.user.id;
+    setStoredCurrentUserId(session.user.id);
     const state = getLocalAppState();
     const error = await upsertRemoteAppState(session.user.id, state);
 
@@ -84,8 +97,17 @@ export async function syncAppStateAfterLogin(
   user: User,
 ): Promise<void> {
   const authUsername = getAuthUsername(user.user_metadata);
+  const previousUserId = getStoredCurrentUserId();
+  const isAccountSwitch =
+    previousUserId !== null && previousUserId !== user.id;
+
+  if (isAccountSwitch) {
+    clearAppStateLocalStorage({ preserveOnboarding: true });
+  }
+
   cachedUserId = user.id;
-  await syncRemoteToLocal(user.id, authUsername);
+  await syncRemoteToLocal(user.id, authUsername, { previousUserId });
+  setStoredCurrentUserId(user.id);
   lastSyncedLoginUserId = user.id;
   dispatchAppStateSynced();
 }
@@ -94,8 +116,17 @@ export async function syncAppStateOnLogin(
   userId: string,
   authUsername?: string | null,
 ): Promise<void> {
+  const previousUserId = getStoredCurrentUserId();
+  const isAccountSwitch =
+    previousUserId !== null && previousUserId !== userId;
+
+  if (isAccountSwitch) {
+    clearAppStateLocalStorage({ preserveOnboarding: true });
+  }
+
   cachedUserId = userId;
-  await syncRemoteToLocal(userId, authUsername);
+  await syncRemoteToLocal(userId, authUsername, { previousUserId });
+  setStoredCurrentUserId(userId);
   lastSyncedLoginUserId = userId;
   dispatchAppStateSynced();
 }

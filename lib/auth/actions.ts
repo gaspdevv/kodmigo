@@ -1,5 +1,9 @@
+import {
+  cancelScheduledPersist,
+  resetLoginSyncState,
+} from "@/lib/appStatePersist";
+import { clearAllKodmigoLocalState } from "@/lib/appStateStorage";
 import { createClient } from "@/lib/supabase/client";
-import { resetLoginSyncState } from "@/lib/appStatePersist";
 
 export async function updateAuthUsername(username: string): Promise<string | null> {
   const supabase = createClient();
@@ -25,6 +29,8 @@ export async function signOutUser(): Promise<string | null> {
     return error.message || "Çıkış yapılamadı.";
   }
 
+  cancelScheduledPersist();
+  clearAllKodmigoLocalState();
   resetLoginSyncState();
   return null;
 }
