@@ -5,13 +5,13 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { getDashboardTheme } from "@/components/dashboard/getDashboardTheme";
 import { signOutUser } from "@/lib/auth/actions";
-import { useAuthUser } from "@/lib/auth/useAuthUser";
+import { useRequireAuth } from "@/lib/auth/useRequireAuth";
 import { playClickSound } from "@/lib/sounds";
 
 export default function SettingsPageClient() {
   const theme = getDashboardTheme();
   const router = useRouter();
-  const { user, loading: authLoading } = useAuthUser();
+  const { user, loading: authLoading, isAuthenticated } = useRequireAuth();
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -30,6 +30,16 @@ export default function SettingsPageClient() {
 
     router.replace("/auth/sign-in");
   };
+
+  if (authLoading || !isAuthenticated) {
+    return (
+      <main className={`min-h-screen overflow-x-hidden ${theme.pageBackground}`}>
+        <div className="mx-auto max-w-lg px-4 py-6 sm:px-6">
+          <p className={`text-sm ${theme.mutedText}`}>Yükleniyor...</p>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main className={`min-h-screen overflow-x-hidden ${theme.pageBackground}`}>
@@ -53,9 +63,7 @@ export default function SettingsPageClient() {
             Hesap
           </h2>
 
-          {authLoading ? (
-            <p className={`text-sm ${theme.mutedText}`}>Yükleniyor...</p>
-          ) : user ? (
+          {user ? (
             <div className="space-y-4">
               <p className={`break-all text-sm leading-relaxed ${theme.mutedText}`}>
                 {user.email}
@@ -69,30 +77,7 @@ export default function SettingsPageClient() {
                 {loading ? "Çıkış yapılıyor..." : "Çıkış yap"}
               </button>
             </div>
-          ) : (
-            <div className="space-y-3">
-              <p className={`text-sm leading-relaxed ${theme.mutedText}`}>
-                Hesabın yoksa kayıt olabilir veya mevcut hesabınla giriş
-                yapabilirsin.
-              </p>
-              <div className="flex flex-col gap-2 sm:flex-row">
-                <Link
-                  href="/auth/sign-in"
-                  onClick={playClickSound}
-                  className={`inline-flex h-11 flex-1 items-center justify-center rounded-2xl px-4 text-sm font-semibold transition ${theme.primaryButton}`}
-                >
-                  Giriş yap
-                </Link>
-                <Link
-                  href="/auth/sign-up"
-                  onClick={playClickSound}
-                  className={`inline-flex h-11 flex-1 items-center justify-center rounded-2xl px-4 text-sm font-semibold transition ${theme.secondaryButton}`}
-                >
-                  Yeni hesap oluştur
-                </Link>
-              </div>
-            </div>
-          )}
+          ) : null}
 
           {error && (
             <p className="mt-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">

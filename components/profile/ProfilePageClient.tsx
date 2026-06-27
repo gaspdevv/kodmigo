@@ -10,7 +10,7 @@ import { useAppStateSync } from "@/components/providers/AppStateSyncProvider";
 import {
   getAchievements,
 } from "@/lib/achievements";
-import { useAuthUser } from "@/lib/auth/useAuthUser";
+import { useRequireAuth } from "@/lib/auth/useRequireAuth";
 import {
   getDefaultLearningProgress,
   getDefaultUserProgress,
@@ -39,7 +39,12 @@ import { useAppStateRefresh } from "@/lib/useAppStateRefresh";
 
 export default function ProfilePageClient() {
   const theme = getDashboardTheme();
-  const { user, username: authUsername, loading: authLoading } = useAuthUser();
+  const {
+    user,
+    username: authUsername,
+    loading: authLoading,
+    isAuthenticated,
+  } = useRequireAuth();
   const { syncing } = useAppStateSync();
   const defaultUserProgress = getDefaultUserProgress();
   const defaultLearningProgress = getDefaultLearningProgress().python;
@@ -65,13 +70,13 @@ export default function ProfilePageClient() {
   }, []);
 
   useEffect(() => {
-    if (authLoading) return;
-    if (user && syncing) {
+    if (!isAuthenticated) return;
+    if (syncing) {
       setIsReady(false);
       return;
     }
     refreshProfileData();
-  }, [authLoading, user, syncing, refreshProfileData]);
+  }, [isAuthenticated, syncing, refreshProfileData]);
 
   useAppStateRefresh(refreshProfileData);
 
@@ -100,7 +105,7 @@ export default function ProfilePageClient() {
     setProfile(updated);
   };
 
-  if (!isReady || authLoading || (user && syncing)) {
+  if (!isReady || authLoading || !isAuthenticated || (user && syncing)) {
     return (
       <main
         className={`min-h-screen overflow-x-hidden pb-24 ${theme.pageBackground}`}

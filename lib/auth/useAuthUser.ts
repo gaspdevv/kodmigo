@@ -32,8 +32,8 @@ export function useAuthUser(): AuthState {
       setLoading(false);
     };
 
-    supabase.auth.getUser().then(({ data }) => {
-      syncUser(data.user);
+    void supabase.auth.getSession().then(({ data: { session } }) => {
+      syncUser(session?.user ?? null);
     });
 
     const {

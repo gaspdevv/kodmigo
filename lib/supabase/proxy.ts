@@ -16,6 +16,26 @@ function isOnboardingRoute(pathname: string): boolean {
   return pathname === ONBOARDING_PATH;
 }
 
+function copyResponseCookies(from: NextResponse, to: NextResponse): void {
+  from.cookies.getAll().forEach(({ name, value }) => {
+    to.cookies.set(name, value);
+  });
+}
+
+function redirectWithSessionCookies(
+  request: NextRequest,
+  supabaseResponse: NextResponse,
+  pathname: string,
+  search = "",
+): NextResponse {
+  const url = request.nextUrl.clone();
+  url.pathname = pathname;
+  url.search = search;
+  const redirectResponse = NextResponse.redirect(url);
+  copyResponseCookies(supabaseResponse, redirectResponse);
+  return redirectResponse;
+}
+
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request });
 
@@ -52,17 +72,20 @@ export async function updateSession(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   if (isOnboardingRoute(pathname) && !user) {
-    const signUpUrl = request.nextUrl.clone();
-    signUpUrl.pathname = AUTH_SIGN_UP_PATH;
-    signUpUrl.search = "";
-    return NextResponse.redirect(signUpUrl);
+    return redirectWithSessionCookies(
+      request,
+      supabaseResponse,
+      AUTH_SIGN_UP_PATH,
+    );
   }
 
   if (isProtectedRoute(pathname) && !user) {
     const signInUrl = request.nextUrl.clone();
     signInUrl.pathname = "/auth/sign-in";
     signInUrl.searchParams.set("redirect", pathname);
-    return NextResponse.redirect(signInUrl);
+    const redirectResponse = NextResponse.redirect(signInUrl);
+    copyResponseCookies(supabaseResponse, redirectResponse);
+    return redirectResponse;
   }
 
   if (user) {
@@ -71,18 +94,32 @@ export async function updateSession(request: NextRequest) {
       user.id,
     );
 
+    if (pathname === "/") {
+      const destinationPath = resolvePostLoginPath(
+        "/dashboard",
+        hasOnboardingProfile,
+      );
+      return redirectWithSessionCookies(
+        request,
+        supabaseResponse,
+        destinationPath,
+      );
+    }
+
     if (isOnboardingRoute(pathname) && hasOnboardingProfile) {
-      const dashboardUrl = request.nextUrl.clone();
-      dashboardUrl.pathname = "/dashboard";
-      dashboardUrl.search = "";
-      return NextResponse.redirect(dashboardUrl);
+      return redirectWithSessionCookies(
+        request,
+        supabaseResponse,
+        "/dashboard",
+      );
     }
 
     if (isProtectedRoute(pathname) && !hasOnboardingProfile) {
-      const onboardingUrl = request.nextUrl.clone();
-      onboardingUrl.pathname = ONBOARDING_PATH;
-      onboardingUrl.search = "";
-      return NextResponse.redirect(onboardingUrl);
+      return redirectWithSessionCookies(
+        request,
+        supabaseResponse,
+        ONBOARDING_PATH,
+      );
     }
 
     if (shouldRedirectLoggedInUserFromAuth(pathname)) {
@@ -91,10 +128,11 @@ export async function updateSession(request: NextRequest) {
         redirectTarget,
         hasOnboardingProfile,
       );
-      const destination = request.nextUrl.clone();
-      destination.pathname = destinationPath;
-      destination.search = "";
-      return NextResponse.redirect(destination);
+      return redirectWithSessionCookies(
+        request,
+        supabaseResponse,
+        destinationPath,
+      );
     }
   }
 

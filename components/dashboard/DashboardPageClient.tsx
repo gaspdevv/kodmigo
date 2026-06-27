@@ -11,7 +11,7 @@ import MigoTipCard from "@/components/dashboard/MigoTipCard";
 import NextLessonCard from "@/components/dashboard/NextLessonCard";
 import StageProgressCard from "@/components/dashboard/StageProgressCard";
 import { useAppStateSync } from "@/components/providers/AppStateSyncProvider";
-import { useAuthUser } from "@/lib/auth/useAuthUser";
+import { useRequireAuth } from "@/lib/auth/useRequireAuth";
 import {
   getMissedDaysCount,
   getRemainingRestores,
@@ -23,7 +23,7 @@ import {
 export default function DashboardPageClient() {
   const theme = getDashboardTheme();
   const router = useRouter();
-  const { user, loading: authLoading } = useAuthUser();
+  const { user, loading: authLoading, isAuthenticated } = useRequireAuth();
   const { syncing } = useAppStateSync();
   const [isReady, setIsReady] = useState(false);
 
@@ -46,15 +46,15 @@ export default function DashboardPageClient() {
   }, [router]);
 
   useEffect(() => {
-    if (authLoading) return;
-    if (user && syncing) return;
+    if (!isAuthenticated) return;
+    if (syncing) return;
 
     initializeDashboard();
-  }, [authLoading, user, syncing, initializeDashboard]);
+  }, [isAuthenticated, syncing, initializeDashboard]);
 
   const waitingForSync = Boolean(user && syncing);
 
-  if (!isReady || authLoading || waitingForSync) {
+  if (!isReady || authLoading || !isAuthenticated || waitingForSync) {
     return (
       <main
         className={`min-h-screen overflow-x-hidden pb-24 ${theme.pageBackground}`}

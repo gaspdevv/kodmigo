@@ -32,6 +32,7 @@ import {
   getSafeQuizIncorrectFeedback,
 } from "@/lib/lesson-migo-safety";
 import { playCorrectSound, playClickSound, playWrongSound } from "@/lib/sounds";
+import { useRequireAuth } from "@/lib/auth/useRequireAuth";
 
 type LessonShellProps = {
   lesson: LessonContent;
@@ -68,6 +69,7 @@ function MigoTip({
 
 export default function LessonShell({ lesson, theme }: LessonShellProps) {
   const router = useRouter();
+  const { loading: authLoading, isAuthenticated } = useRequireAuth();
   const [stepIndex, setStepIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [feedbackState, setFeedbackState] = useState<FeedbackState>("none");
@@ -343,6 +345,17 @@ export default function LessonShell({ lesson, theme }: LessonShellProps) {
     : feedbackState === "correct"
       ? "correct"
       : "incorrect";
+
+  if (authLoading || !isAuthenticated) {
+    return (
+      <div
+        className="mx-auto flex min-h-screen max-w-lg flex-col items-center justify-center px-4 py-5 sm:px-6"
+        aria-busy="true"
+      >
+        <div className="h-8 w-8 animate-pulse rounded-full bg-slate-200/60" />
+      </div>
+    );
+  }
 
   return (
     <div className="mx-auto flex min-h-screen max-w-lg flex-col overflow-x-hidden px-4 py-5 sm:px-6">

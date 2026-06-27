@@ -4,6 +4,12 @@ import { getSupabaseKey, getSupabaseUrl } from "@/lib/supabase/env";
 
 let browserClient: SupabaseClient | null = null;
 
+const browserAuthOptions = {
+  persistSession: true,
+  autoRefreshToken: true,
+  detectSessionInUrl: true,
+} as const;
+
 export function createClient(): SupabaseClient | null {
   const url = getSupabaseUrl();
   const key = getSupabaseKey();
@@ -18,7 +24,9 @@ export function createClient(): SupabaseClient | null {
   }
 
   if (!browserClient) {
-    browserClient = createBrowserClient(url, key);
+    browserClient = createBrowserClient(url, key, {
+      auth: browserAuthOptions,
+    });
   }
 
   return browserClient;
