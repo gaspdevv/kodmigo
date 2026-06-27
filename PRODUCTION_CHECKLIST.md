@@ -25,11 +25,28 @@ Supabase Dashboard → **Authentication** → **URL Configuration**
   - `https://kodmigo.vercel.app/**`
 - [ ] Supabase Auth redirect ayarları production URL ile kontrol edildi
 
+## Supabase E-posta doğrulama (MVP — Custom SMTP yok)
+
+- [ ] Email template özelleştirmesi yapılmıyor (Custom SMTP gerekir; MVP'de kullanılmıyor)
+- [ ] Varsayılan Supabase confirmation e-postası kullanılıyor
+- [ ] Kayıtta `emailRedirectTo` → `/auth/confirmed` ayarlı
+- [ ] **Site URL** production domain (`https://kodmigo.vercel.app`)
+- [ ] **Redirect URLs** içinde production ve localhost URL'leri var
+- [ ] Doğrulama linki tıklanınca `/auth/confirmed` başarı ekranı açılıyor (ana sayfaya değil)
+
+## Auth ve onboarding akışı
+
+- [ ] Landing CTA → `/auth/start`
+- [ ] Var olan kullanıcı `/auth/start` → giriş → dashboard (onboarding atlanır)
+- [ ] Yeni kullanıcı `/auth/start` → onboarding → sign-up
+- [ ] Onboarding tamamlanmadan `/auth/sign-up` formu açılmıyor
+
 ## Auth ve sayfalar
 
 - [ ] Landing (`/`) açılıyor
 - [ ] Sign-up (`/auth/sign-up`) çalışıyor
-- [ ] E-posta doğrulama yönlendirmesi çalışıyor (e-posta onayı açıksa)
+- [ ] Kayıt sonrası e-posta doğrulama mesajı net görünüyor
+- [ ] Doğrulama sonrası `/auth/confirmed` ekranı görünüyor
 - [ ] Sign-in (`/auth/sign-in`) çalışıyor
 - [ ] Dashboard (`/dashboard`) açılıyor
 
@@ -63,7 +80,7 @@ Supabase Dashboard → **Authentication** → **URL Configuration**
 
 Aşağıdakiler deploy sonrası da çalışmalı:
 
-- `/`, `/onboarding`, `/auth/sign-in`, `/auth/sign-up`
+- `/`, `/auth/start`, `/onboarding`, `/auth/sign-in`, `/auth/sign-up`, `/auth/confirmed`
 - `/dashboard`, `/learn/python`, `/lesson/[lessonId]`, `/profile`, `/settings`, `/streak-rescue`
 - Supabase Auth, `user_app_state` sync, XP, streak, streak rescue
 - Profil fotoğrafı, username, rozet sistemi

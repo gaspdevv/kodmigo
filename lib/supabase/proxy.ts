@@ -1,7 +1,20 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
-import { isAuthRoute, isProtectedRoute } from "@/lib/auth/routes";
+import {
+  fetchUserHasOnboardingProfile,
+  ONBOARDING_PATH,
+  resolvePostLoginPath,
+} from "@/lib/auth/postLoginRedirect";
+import {
+  AUTH_SIGN_UP_PATH,
+  isProtectedRoute,
+  shouldRedirectLoggedInUserFromAuth,
+} from "@/lib/auth/routes";
 import { getSupabaseKey, getSupabaseUrl } from "@/lib/supabase/env";
+
+function isOnboardingRoute(pathname: string): boolean {
+  return pathname === ONBOARDING_PATH;
+}
 
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request });
@@ -38,6 +51,13 @@ export async function updateSession(request: NextRequest) {
 
   const { pathname } = request.nextUrl;
 
+  if (isOnboardingRoute(pathname) && !user) {
+    const signUpUrl = request.nextUrl.clone();
+    signUpUrl.pathname = AUTH_SIGN_UP_PATH;
+    signUpUrl.search = "";
+    return NextResponse.redirect(signUpUrl);
+  }
+
   if (isProtectedRoute(pathname) && !user) {
     const signInUrl = request.nextUrl.clone();
     signInUrl.pathname = "/auth/sign-in";
@@ -45,16 +65,37 @@ export async function updateSession(request: NextRequest) {
     return NextResponse.redirect(signInUrl);
   }
 
-  if (isAuthRoute(pathname) && user) {
-    const redirectTarget =
-      request.nextUrl.searchParams.get("redirect") || "/dashboard";
-    const safeRedirect = redirectTarget.startsWith("/")
-      ? redirectTarget
-      : "/dashboard";
-    const destination = request.nextUrl.clone();
-    destination.pathname = safeRedirect;
-    destination.search = "";
-    return NextResponse.redirect(destination);
+  if (user) {
+    const hasOnboardingProfile = await fetchUserHasOnboardingProfile(
+      supabase,
+      user.id,
+    );
+
+    if (isOnboardingRoute(pathname) && hasOnboardingProfile) {
+      const dashboardUrl = request.nextUrl.clone();
+      dashboardUrl.pathname = "/dashboard";
+      dashboardUrl.search = "";
+      return NextResponse.redirect(dashboardUrl);
+    }
+
+    if (isProtectedRoute(pathname) && !hasOnboardingProfile) {
+      const onboardingUrl = request.nextUrl.clone();
+      onboardingUrl.pathname = ONBOARDING_PATH;
+      onboardingUrl.search = "";
+      return NextResponse.redirect(onboardingUrl);
+    }
+
+    if (shouldRedirectLoggedInUserFromAuth(pathname)) {
+      const redirectTarget = request.nextUrl.searchParams.get("redirect");
+      const destinationPath = resolvePostLoginPath(
+        redirectTarget,
+        hasOnboardingProfile,
+      );
+      const destination = request.nextUrl.clone();
+      destination.pathname = destinationPath;
+      destination.search = "";
+      return NextResponse.redirect(destination);
+    }
   }
 
   return supabaseResponse;

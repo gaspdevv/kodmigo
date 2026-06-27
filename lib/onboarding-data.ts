@@ -167,6 +167,10 @@ export function getActivePathLevel(): PathLevel {
   return getOnboardingProfile()?.codingLevel ?? "beginner";
 }
 
+export function hasCompletedOnboarding(): boolean {
+  return getOnboardingProfile() !== null;
+}
+
 export function saveOnboardingProfile(profile: OnboardingProfile): void {
   if (typeof window === "undefined") return;
 

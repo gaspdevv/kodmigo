@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
 import AuthShell from "@/components/auth/AuthShell";
 import { mapAuthErrorMessage } from "@/lib/auth/actions";
-import { completeAuthSession } from "@/lib/auth/completeAuthSession";
+import { completeAuthSessionAndResolveRedirect } from "@/lib/auth/completeAuthSession";
 import { useAuthUser } from "@/lib/auth/useAuthUser";
 import { createClient } from "@/lib/supabase/client";
 import { SUPABASE_ENV_HINT } from "@/lib/supabase/env";
@@ -21,13 +21,23 @@ export default function SignInForm() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (!authLoading && user) {
-      router.replace(redirectTo || "/dashboard");
-    }
+    if (authLoading || !user) return;
+
+    const supabase = createClient();
+    if (!supabase) return;
+
+    void completeAuthSessionAndResolveRedirect(supabase, redirectTo).then(
+      (destination) => {
+        router.replace(destination);
+      },
+    );
   }, [authLoading, user, router, redirectTo]);
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    if (loading) return;
+
     setError(null);
 
     const supabase = createClient();
@@ -45,14 +55,19 @@ export default function SignInForm() {
 
     if (signInError) {
       setLoading(false);
-      setError(mapAuthErrorMessage(signInError.message));
+      setError(
+        mapAuthErrorMessage(signInError.message, { status: signInError.status }),
+      );
       return;
     }
 
-    await completeAuthSession(supabase);
+    const destination = await completeAuthSessionAndResolveRedirect(
+      supabase,
+      redirectTo,
+    );
     setLoading(false);
 
-    router.replace(redirectTo || "/dashboard");
+    router.replace(destination);
   };
 
   if (authLoading) {
@@ -68,19 +83,15 @@ export default function SignInForm() {
       title="Tekrar hoş geldin"
       subtitle="Yolculuğuna kaldığın yerden devam et."
       footer={
-        <>
-          Hesabın yok mu?{" "}
+        <span className="text-slate-500">
+          Kodmigo&apos;ya yeni misin?{" "}
           <Link
-            href={
-              redirectTo
-                ? `/auth/sign-up?redirect=${encodeURIComponent(redirectTo)}`
-                : "/auth/sign-up"
-            }
-            className="font-semibold text-kodmigo-orange hover:underline"
+            href="/auth/sign-up"
+            className="text-slate-600 hover:text-kodmigo-orange hover:underline"
           >
-            Kayıt ol
+            Python yoluna başla
           </Link>
-        </>
+        </span>
       }
     >
       {!isConfigured && (
@@ -104,7 +115,8 @@ export default function SignInForm() {
             onChange={(event) => setEmail(event.target.value)}
             autoComplete="email"
             required
-            className="w-full min-w-0 rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none transition focus:border-kodmigo-orange/50 focus:ring-2 focus:ring-kodmigo-orange/20"
+            disabled={loading}
+            className="w-full min-w-0 rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none transition focus:border-kodmigo-orange/50 focus:ring-2 focus:ring-kodmigo-orange/20 disabled:opacity-60"
             placeholder="ornek@email.com"
           />
         </div>
@@ -123,7 +135,8 @@ export default function SignInForm() {
             onChange={(event) => setPassword(event.target.value)}
             autoComplete="current-password"
             required
-            className="w-full min-w-0 rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none transition focus:border-kodmigo-orange/50 focus:ring-2 focus:ring-kodmigo-orange/20"
+            disabled={loading}
+            className="w-full min-w-0 rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none transition focus:border-kodmigo-orange/50 focus:ring-2 focus:ring-kodmigo-orange/20 disabled:opacity-60"
             placeholder="Şifren"
           />
         </div>

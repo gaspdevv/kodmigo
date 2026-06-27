@@ -35,8 +35,31 @@ export async function signOutUser(): Promise<string | null> {
   return null;
 }
 
-export function mapAuthErrorMessage(message: string): string {
+export function mapAuthErrorMessage(
+  message: string,
+  options?: { status?: number },
+): string {
   const normalized = message.toLowerCase();
+
+  if (
+    options?.status === 429 ||
+    normalized.includes("over_email_send_rate_limit") ||
+    (normalized.includes("email") &&
+      (normalized.includes("rate limit") ||
+        normalized.includes("too many") ||
+        normalized.includes("once every")))
+  ) {
+    return "Çok fazla doğrulama e-postası istedin. Lütfen birkaç dakika sonra tekrar dene.";
+  }
+
+  if (
+    options?.status === 429 ||
+    normalized.includes("rate limit") ||
+    normalized.includes("too many requests") ||
+    normalized.includes("too many attempts")
+  ) {
+    return "Çok fazla deneme yaptın. Güvenlik nedeniyle kısa bir süre bekleyip tekrar denemelisin.";
+  }
 
   if (
     normalized.includes("invalid login credentials") ||
@@ -62,13 +85,6 @@ export function mapAuthErrorMessage(message: string): string {
 
   if (normalized.includes("email not confirmed")) {
     return "Giriş yapmadan önce e-postanı doğrulamalısın.";
-  }
-
-  if (
-    normalized.includes("rate limit") ||
-    normalized.includes("too many requests")
-  ) {
-    return "Çok fazla deneme yaptın. Biraz bekleyip tekrar dene.";
   }
 
   if (

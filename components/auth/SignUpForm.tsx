@@ -5,11 +5,20 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
 import AuthShell from "@/components/auth/AuthShell";
 import { mapAuthErrorMessage } from "@/lib/auth/actions";
-import { completeAuthSession } from "@/lib/auth/completeAuthSession";
+import { completeAuthSessionAndResolveRedirect } from "@/lib/auth/completeAuthSession";
+import { buildEmailConfirmationRedirectUrl } from "@/lib/auth/routes";
 import { useAuthUser } from "@/lib/auth/useAuthUser";
 import { createClient } from "@/lib/supabase/client";
 import { SUPABASE_ENV_HINT } from "@/lib/supabase/env";
 import { validateUsername } from "@/lib/username";
+
+const SIGN_IN_LINK = "/auth/sign-in?redirect=/dashboard";
+
+const EMAIL_VERIFICATION_MESSAGE =
+  "Kaydını tamamlamak için e-posta adresine gönderdiğimiz doğrulama bağlantısına tıkla.";
+
+const EMAIL_VERIFICATION_HINT =
+  "E-postayı göremiyorsan spam/gereksiz klasörünü kontrol et.";
 
 export default function SignUpForm() {
   const router = useRouter();
@@ -21,19 +30,29 @@ export default function SignUpForm() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<string | null>(null);
+  const [awaitingEmailVerification, setAwaitingEmailVerification] =
+    useState(false);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (!authLoading && user) {
-      router.replace(redirectTo || "/dashboard");
-    }
-  }, [authLoading, user, router, redirectTo]);
+    if (authLoading || awaitingEmailVerification || !user) return;
+
+    const supabase = createClient();
+    if (!supabase) return;
+
+    void completeAuthSessionAndResolveRedirect(supabase, redirectTo).then(
+      (destination) => {
+        router.replace(destination);
+      },
+    );
+  }, [authLoading, user, router, redirectTo, awaitingEmailVerification]);
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    if (loading) return;
+
     setError(null);
-    setSuccess(null);
 
     const usernameError = validateUsername(username);
     if (usernameError) {
@@ -63,28 +82,35 @@ export default function SignUpForm() {
       email: email.trim(),
       password,
       options: {
+        emailRedirectTo: buildEmailConfirmationRedirectUrl(
+          window.location.origin,
+        ),
         data: {
           username: username.trim(),
         },
       },
     });
 
-    setLoading(false);
-
     if (signUpError) {
-      setError(mapAuthErrorMessage(signUpError.message));
+      setLoading(false);
+      setError(
+        mapAuthErrorMessage(signUpError.message, { status: signUpError.status }),
+      );
       return;
     }
 
     if (data.session?.user) {
-      setLoading(true);
-      await completeAuthSession(supabase);
+      const destination = await completeAuthSessionAndResolveRedirect(
+        supabase,
+        redirectTo,
+      );
       setLoading(false);
-      router.replace(redirectTo || "/dashboard");
+      router.replace(destination);
       return;
     }
 
-    setSuccess("Hesabını tamamlamak için e-postanı kontrol et.");
+    setLoading(false);
+    setAwaitingEmailVerification(true);
   };
 
   if (authLoading) {
@@ -92,6 +118,49 @@ export default function SignUpForm() {
       <main className="flex min-h-screen items-center justify-center bg-background">
         <p className="text-sm text-slate-500">Yükleniyor...</p>
       </main>
+    );
+  }
+
+  if (awaitingEmailVerification) {
+    return (
+      <AuthShell
+        title="E-postanı doğrula"
+        subtitle="Hesabını aktifleştirmek için son bir adım kaldı."
+        footer={
+          <>
+            Zaten hesabın var mı?{" "}
+            <Link
+              href={SIGN_IN_LINK}
+              className="font-semibold text-kodmigo-orange hover:underline"
+            >
+              Giriş yap
+            </Link>
+          </>
+        }
+      >
+        <div className="space-y-4">
+          <div className="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-4">
+            <p className="text-sm font-semibold leading-relaxed text-emerald-900">
+              {EMAIL_VERIFICATION_MESSAGE}
+            </p>
+            <p className="mt-2 text-sm leading-relaxed text-emerald-800/90">
+              {EMAIL_VERIFICATION_HINT}
+            </p>
+          </div>
+
+          <p className="text-center text-sm text-slate-500">
+            <span className="font-medium text-slate-700">{email}</span> adresine
+            gönderildi.
+          </p>
+
+          <Link
+            href={SIGN_IN_LINK}
+            className="inline-flex h-12 w-full items-center justify-center rounded-2xl bg-kodmigo-orange text-base font-semibold text-white shadow-lg shadow-kodmigo-orange/25 transition hover:bg-orange-600"
+          >
+            Giriş sayfasına git
+          </Link>
+        </div>
+      </AuthShell>
     );
   }
 
@@ -103,11 +172,7 @@ export default function SignUpForm() {
         <>
           Zaten hesabın var mı?{" "}
           <Link
-            href={
-              redirectTo
-                ? `/auth/sign-in?redirect=${encodeURIComponent(redirectTo)}`
-                : "/auth/sign-in"
-            }
+            href={SIGN_IN_LINK}
             className="font-semibold text-kodmigo-orange hover:underline"
           >
             Giriş yap
@@ -136,8 +201,9 @@ export default function SignUpForm() {
             onChange={(event) => setUsername(event.target.value)}
             autoComplete="username"
             required
-            className="w-full min-w-0 rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none transition focus:border-kodmigo-orange/50 focus:ring-2 focus:ring-kodmigo-orange/20"
-            placeholder="Örn. Efe"
+            disabled={loading}
+            className="w-full min-w-0 rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none transition focus:border-kodmigo-orange/50 focus:ring-2 focus:ring-kodmigo-orange/20 disabled:opacity-60"
+            placeholder="Kullanıcı adı"
           />
         </div>
 
@@ -155,7 +221,8 @@ export default function SignUpForm() {
             onChange={(event) => setEmail(event.target.value)}
             autoComplete="email"
             required
-            className="w-full min-w-0 rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none transition focus:border-kodmigo-orange/50 focus:ring-2 focus:ring-kodmigo-orange/20"
+            disabled={loading}
+            className="w-full min-w-0 rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none transition focus:border-kodmigo-orange/50 focus:ring-2 focus:ring-kodmigo-orange/20 disabled:opacity-60"
             placeholder="ornek@email.com"
           />
         </div>
@@ -174,7 +241,8 @@ export default function SignUpForm() {
             onChange={(event) => setPassword(event.target.value)}
             autoComplete="new-password"
             required
-            className="w-full min-w-0 rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none transition focus:border-kodmigo-orange/50 focus:ring-2 focus:ring-kodmigo-orange/20"
+            disabled={loading}
+            className="w-full min-w-0 rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none transition focus:border-kodmigo-orange/50 focus:ring-2 focus:ring-kodmigo-orange/20 disabled:opacity-60"
             placeholder="En az 6 karakter"
           />
         </div>
@@ -193,7 +261,8 @@ export default function SignUpForm() {
             onChange={(event) => setConfirmPassword(event.target.value)}
             autoComplete="new-password"
             required
-            className="w-full min-w-0 rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none transition focus:border-kodmigo-orange/50 focus:ring-2 focus:ring-kodmigo-orange/20"
+            disabled={loading}
+            className="w-full min-w-0 rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none transition focus:border-kodmigo-orange/50 focus:ring-2 focus:ring-kodmigo-orange/20 disabled:opacity-60"
             placeholder="Şifreni tekrar gir"
           />
         </div>
@@ -201,12 +270,6 @@ export default function SignUpForm() {
         {error && (
           <p className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
             {error}
-          </p>
-        )}
-
-        {success && (
-          <p className="rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-700">
-            {success}
           </p>
         )}
 

@@ -21,7 +21,7 @@ export default function HeroSection() {
               Yazılım öğrenmenin en eğlenceli yolu.
             </span>
             <Link
-              href="/auth/sign-in"
+              href="/auth/sign-in?redirect=/dashboard"
               className="text-sm font-medium text-slate-600 transition hover:text-kodmigo-orange"
             >
               Giriş yap
@@ -46,7 +46,7 @@ export default function HeroSection() {
 
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
               <Link
-                href="/onboarding"
+                href="/auth/sign-up"
                 className="inline-flex h-12 items-center justify-center rounded-2xl bg-kodmigo-orange px-6 text-base font-semibold text-white shadow-lg shadow-kodmigo-orange/25 transition hover:bg-orange-600"
               >
                 Python yoluna başla

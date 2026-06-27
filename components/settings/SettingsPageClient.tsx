@@ -88,7 +88,7 @@ export default function SettingsPageClient() {
                   onClick={playClickSound}
                   className={`inline-flex h-11 flex-1 items-center justify-center rounded-2xl px-4 text-sm font-semibold transition ${theme.secondaryButton}`}
                 >
-                  Kayıt ol
+                  Yeni hesap oluştur
                 </Link>
               </div>
             </div>

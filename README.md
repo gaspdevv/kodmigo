@@ -95,11 +95,26 @@ Supabase Dashboard → **Authentication** → **URL Configuration**:
 
 | Ayar | Değer |
 |------|-------|
-| **Site URL** | Production Vercel URL (ör. `https://your-vercel-domain.vercel.app`) |
+| **Site URL** | `https://kodmigo.vercel.app` (production) |
 | **Redirect URLs** | `http://localhost:3000`, `http://localhost:3000/**` |
-| **Redirect URLs** | `https://your-vercel-domain.vercel.app`, `https://your-vercel-domain.vercel.app/**` |
+| **Redirect URLs** | `https://kodmigo.vercel.app`, `https://kodmigo.vercel.app/**` |
 
-Production domain henüz bilinmiyorsa placeholder kullanın; kod içine sabit domain yazmayın.
+### Supabase E-posta doğrulama (MVP — Custom SMTP yok)
+
+Supabase Dashboard'da **Email template** düzenlemek için Custom SMTP gerekir; MVP aşamasında kullanılmıyor. Varsayılan Supabase confirmation e-postası kullanılır.
+
+Doğrulama sonrası yönlendirme, kayıt sırasında `signUp` içindeki `emailRedirectTo` ile yapılır:
+
+```text
+{origin}/auth/confirmed
+```
+
+Örnek production: `https://kodmigo.vercel.app/auth/confirmed`
+
+- **Site URL** production domain olmalı (`https://kodmigo.vercel.app`).
+- **Redirect URLs** listesinde hem production hem `localhost` adresleri bulunmalı.
+- E-posta şablonu özelleştirilmez; MVP'de Custom SMTP kullanılmaz.
+- Kullanıcı varsayılan Supabase doğrulama linkine tıklayınca `/auth/confirmed` başarı ekranına yönlendirilir.
 
 ### Build komutu
 

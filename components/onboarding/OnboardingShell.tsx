@@ -2,11 +2,12 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import MigoMessage from "@/components/onboarding/MigoMessage";
 import OnboardingProgress from "@/components/onboarding/OnboardingProgress";
 import OnboardingStep from "@/components/onboarding/OnboardingStep";
 import OptionCard from "@/components/onboarding/OptionCard";
+import { useAuthUser } from "@/lib/auth/useAuthUser";
 import {
   dailyTimeOptions,
   getDailyTimeLabel,
@@ -14,6 +15,7 @@ import {
   getLevelLabel,
   getPathLevelLabel,
   goalOptions,
+  hasCompletedOnboarding,
   levelOptions,
   pathLevelFromCodingLevel,
   saveOnboardingProfile,
@@ -81,12 +83,26 @@ function getPreviousScreen(screen: Screen): Screen | null {
 
 export default function OnboardingShell() {
   const router = useRouter();
+  const { user, loading: authLoading } = useAuthUser();
   const [screen, setScreen] = useState<Screen>("welcome");
   const [selections, setSelections] = useState<OnboardingSelections>({
     level: null,
     goal: null,
     dailyTime: null,
   });
+
+  useEffect(() => {
+    if (authLoading) return;
+
+    if (!user) {
+      router.replace("/auth/sign-up");
+      return;
+    }
+
+    if (hasCompletedOnboarding()) {
+      router.replace("/dashboard");
+    }
+  }, [authLoading, user, router]);
 
   const progressStep = getProgressStep(screen);
   const showProgress = progressStep !== null;
@@ -130,18 +146,18 @@ export default function OnboardingShell() {
 
     const supabase = createClient();
     if (supabase) {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-
-      if (user) {
-        await completeAuthSession(supabase);
-        router.push("/dashboard");
-        return;
-      }
+      await completeAuthSession(supabase);
     }
 
-    router.push("/auth/sign-up?redirect=/dashboard");
+    router.push("/dashboard");
+  }
+
+  if (authLoading || !user) {
+    return (
+      <main className="flex min-h-screen items-center justify-center bg-background">
+        <p className="text-sm text-slate-500">Yükleniyor...</p>
+      </main>
+    );
   }
 
   return (
