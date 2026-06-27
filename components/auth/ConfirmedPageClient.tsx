@@ -5,7 +5,9 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import AuthShell from "@/components/auth/AuthShell";
 import { completeAuthSessionAndResolveRedirect } from "@/lib/auth/completeAuthSession";
-import { resolvePostLoginPathFromLocalState } from "@/lib/auth/postLoginRedirect";
+import {
+  ONBOARDING_PATH,
+} from "@/lib/auth/postLoginRedirect";
 import { useAuthUser } from "@/lib/auth/useAuthUser";
 import { createClient } from "@/lib/supabase/client";
 
@@ -57,7 +59,7 @@ export default function ConfirmedPageClient() {
   const { user, loading: authLoading } = useAuthUser();
   const showError = hasSupabaseConfirmationError(searchParams);
   const authCode = searchParams.get("code");
-  const [signedInDestination, setSignedInDestination] = useState("/dashboard");
+  const [continueLoading, setContinueLoading] = useState(false);
 
   useEffect(() => {
     if (showError || !authCode) return;
@@ -69,13 +71,7 @@ export default function ConfirmedPageClient() {
     void supabase.auth.exchangeCodeForSession(authCode).then(async ({ error }) => {
       if (cancelled || error) return;
 
-      const destination = await completeAuthSessionAndResolveRedirect(
-        supabase,
-        "/onboarding",
-      );
-      if (!cancelled) {
-        setSignedInDestination(destination);
-      }
+      await completeAuthSessionAndResolveRedirect(supabase, ONBOARDING_PATH);
       router.replace("/auth/confirmed");
     });
 
@@ -84,28 +80,38 @@ export default function ConfirmedPageClient() {
     };
   }, [authCode, showError, router]);
 
-  useEffect(() => {
-    if (authLoading || !user) return;
+  const handleContinue = async () => {
+    if (continueLoading) return;
 
-    const supabase = createClient();
-    if (!supabase) {
-      setSignedInDestination(resolvePostLoginPathFromLocalState("/onboarding"));
+    if (!user) {
+      router.push(SIGN_IN_AFTER_CONFIRM_LINK);
       return;
     }
 
-    void completeAuthSessionAndResolveRedirect(supabase, "/onboarding").then(
-      (destination) => {
-        setSignedInDestination(destination);
-      },
-    );
-  }, [authLoading, user]);
+    const supabase = createClient();
+    if (!supabase) {
+      router.push(ONBOARDING_PATH);
+      return;
+    }
+
+    setContinueLoading(true);
+
+    try {
+      const destination = await completeAuthSessionAndResolveRedirect(
+        supabase,
+        ONBOARDING_PATH,
+      );
+      router.push(destination);
+    } finally {
+      setContinueLoading(false);
+    }
+  };
 
   if (showError) {
     return <ConfirmedErrorView />;
   }
 
   const isSignedIn = !authLoading && Boolean(user);
-  const ctaHref = isSignedIn ? signedInDestination : SIGN_IN_AFTER_CONFIRM_LINK;
   const ctaLabel = isSignedIn ? "Devam et" : "Giriş yap";
   const subtitle = isSignedIn
     ? "Kodmigo hesabın başarıyla doğrulandı. Python yolculuğuna devam etmek için bir sonraki adıma geçebilirsin."
@@ -137,17 +143,28 @@ export default function ConfirmedPageClient() {
             🦊
           </span>
           <p className="text-sm leading-relaxed text-slate-600">
-            Migo seni bekliyor! Giriş yaptıktan sonra kaldığın yerden devam
-            edebilirsin.
+            Migo seni bekliyor! Devam ettikten sonra kısa tanışma adımlarıyla
+            Python yoluna başlayacaksın.
           </p>
         </div>
 
-        <Link
-          href={ctaHref}
-          className="inline-flex h-12 w-full items-center justify-center rounded-2xl bg-kodmigo-orange text-base font-semibold text-white shadow-lg shadow-kodmigo-orange/25 transition hover:bg-orange-600"
-        >
-          {authLoading ? "Yükleniyor..." : ctaLabel}
-        </Link>
+        {isSignedIn ? (
+          <button
+            type="button"
+            onClick={handleContinue}
+            disabled={continueLoading}
+            className="inline-flex h-12 w-full items-center justify-center rounded-2xl bg-kodmigo-orange text-base font-semibold text-white shadow-lg shadow-kodmigo-orange/25 transition hover:bg-orange-600 disabled:cursor-not-allowed disabled:opacity-60"
+          >
+            {continueLoading ? "Yönlendiriliyor..." : ctaLabel}
+          </button>
+        ) : (
+          <Link
+            href={SIGN_IN_AFTER_CONFIRM_LINK}
+            className="inline-flex h-12 w-full items-center justify-center rounded-2xl bg-kodmigo-orange text-base font-semibold text-white shadow-lg shadow-kodmigo-orange/25 transition hover:bg-orange-600"
+          >
+            {authLoading ? "Yükleniyor..." : ctaLabel}
+          </Link>
+        )}
       </div>
     </AuthShell>
   );

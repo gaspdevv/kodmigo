@@ -102,7 +102,7 @@ export async function syncAppStateAfterLogin(
     previousUserId !== null && previousUserId !== user.id;
 
   if (isAccountSwitch) {
-    clearAppStateLocalStorage({ preserveOnboarding: true });
+    clearAppStateLocalStorage();
   }
 
   cachedUserId = user.id;
@@ -121,7 +121,7 @@ export async function syncAppStateOnLogin(
     previousUserId !== null && previousUserId !== userId;
 
   if (isAccountSwitch) {
-    clearAppStateLocalStorage({ preserveOnboarding: true });
+    clearAppStateLocalStorage();
   }
 
   cachedUserId = userId;

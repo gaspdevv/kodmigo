@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { completeAuthSessionAndResolveRedirect } from "@/lib/auth/completeAuthSession";
-import { resolvePostLoginPathFromLocalState } from "@/lib/auth/postLoginRedirect";
+import { ONBOARDING_PATH } from "@/lib/auth/postLoginRedirect";
 import { useAuthUser } from "@/lib/auth/useAuthUser";
 import { createClient } from "@/lib/supabase/client";
 
@@ -16,7 +16,7 @@ export default function LandingAuthRedirect() {
 
     const supabase = createClient();
     if (!supabase) {
-      router.replace(resolvePostLoginPathFromLocalState("/dashboard"));
+      router.replace(ONBOARDING_PATH);
       return;
     }
 

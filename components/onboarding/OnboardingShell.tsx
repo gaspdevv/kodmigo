@@ -7,6 +7,7 @@ import MigoMessage from "@/components/onboarding/MigoMessage";
 import OnboardingProgress from "@/components/onboarding/OnboardingProgress";
 import OnboardingStep from "@/components/onboarding/OnboardingStep";
 import OptionCard from "@/components/onboarding/OptionCard";
+import { useAppStateSync } from "@/components/providers/AppStateSyncProvider";
 import { useAuthUser } from "@/lib/auth/useAuthUser";
 import {
   dailyTimeOptions,
@@ -15,12 +16,13 @@ import {
   getLevelLabel,
   getPathLevelLabel,
   goalOptions,
-  hasCompletedOnboarding,
+  isOnboardingProfileComplete,
   levelOptions,
   pathLevelFromCodingLevel,
   saveOnboardingProfile,
   type OnboardingSelections,
 } from "@/lib/onboarding-data";
+import { getLocalAppState } from "@/lib/userAppState";
 import { completeAuthSession } from "@/lib/auth/completeAuthSession";
 import { createClient } from "@/lib/supabase/client";
 
@@ -84,6 +86,7 @@ function getPreviousScreen(screen: Screen): Screen | null {
 export default function OnboardingShell() {
   const router = useRouter();
   const { user, loading: authLoading } = useAuthUser();
+  const { syncing } = useAppStateSync();
   const [screen, setScreen] = useState<Screen>("welcome");
   const [selections, setSelections] = useState<OnboardingSelections>({
     level: null,
@@ -99,10 +102,12 @@ export default function OnboardingShell() {
       return;
     }
 
-    if (hasCompletedOnboarding()) {
+    if (syncing) return;
+
+    if (isOnboardingProfileComplete(getLocalAppState().onboardingProfile)) {
       router.replace("/dashboard");
     }
-  }, [authLoading, user, router]);
+  }, [authLoading, user, syncing, router]);
 
   const progressStep = getProgressStep(screen);
   const showProgress = progressStep !== null;
@@ -152,7 +157,7 @@ export default function OnboardingShell() {
     router.push("/dashboard");
   }
 
-  if (authLoading || !user) {
+  if (authLoading || syncing || !user) {
     return (
       <main className="flex min-h-screen items-center justify-center bg-background">
         <p className="text-sm text-slate-500">Yükleniyor...</p>

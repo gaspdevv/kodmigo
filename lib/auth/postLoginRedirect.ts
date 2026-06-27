@@ -1,21 +1,21 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
-import { hasCompletedOnboarding, parseOnboardingProfile } from "@/lib/onboarding-data";
+import { isOnboardingProfileComplete } from "@/lib/onboarding-data";
 
 export const ONBOARDING_PATH = "/onboarding";
 
 export function isEmptyOnboardingProfile(raw: unknown): boolean {
-  if (raw === null || raw === undefined) return true;
-  if (typeof raw === "object" && !Array.isArray(raw) && Object.keys(raw).length === 0) {
-    return true;
-  }
-  return parseOnboardingProfile(raw) === null;
+  return !isOnboardingProfileComplete(raw);
+}
+
+export function hasOnboardingProfile(raw: unknown): boolean {
+  return isOnboardingProfileComplete(raw);
 }
 
 export function resolvePostLoginPath(
   redirectTo: string | null,
-  hasOnboardingProfile: boolean,
+  onboardingComplete: boolean,
 ): string {
-  if (!hasOnboardingProfile) {
+  if (!onboardingComplete) {
     return ONBOARDING_PATH;
   }
 
@@ -27,12 +27,6 @@ export function resolvePostLoginPath(
   }
 
   return "/dashboard";
-}
-
-export function resolvePostLoginPathFromLocalState(
-  redirectTo: string | null,
-): string {
-  return resolvePostLoginPath(redirectTo, hasCompletedOnboarding());
 }
 
 export async function fetchUserHasOnboardingProfile(
@@ -49,5 +43,25 @@ export async function fetchUserHasOnboardingProfile(
     return false;
   }
 
-  return !isEmptyOnboardingProfile(data.onboarding_profile);
+  return hasOnboardingProfile(data.onboarding_profile);
+}
+
+export async function resolvePostLoginPathAfterSync(
+  supabase: SupabaseClient,
+  redirectTo: string | null,
+): Promise<string> {
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+
+  if (!session?.user) {
+    return ONBOARDING_PATH;
+  }
+
+  const onboardingComplete = await fetchUserHasOnboardingProfile(
+    supabase,
+    session.user.id,
+  );
+
+  return resolvePostLoginPath(redirectTo, onboardingComplete);
 }

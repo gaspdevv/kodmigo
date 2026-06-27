@@ -106,8 +106,10 @@ function normalizeLearningGoal(value: unknown): LearningGoal {
 }
 
 export function parseOnboardingProfile(raw: unknown): OnboardingProfile | null {
-  if (!raw || typeof raw !== "object") return null;
+  if (!raw || typeof raw !== "object" || Array.isArray(raw)) return null;
   const data = raw as Record<string, unknown>;
+
+  if (Object.keys(data).length === 0) return null;
 
   if (data.codingLevel !== undefined || data.pathLevel !== undefined) {
     return {
@@ -131,6 +133,25 @@ export function parseOnboardingProfile(raw: unknown): OnboardingProfile | null {
   }
 
   return null;
+}
+
+export function isOnboardingProfileComplete(raw: unknown): boolean {
+  const parsed = parseOnboardingProfile(raw);
+  if (!parsed) return false;
+
+  if (parsed.completedAt) return true;
+
+  if (!raw || typeof raw !== "object" || Array.isArray(raw)) return false;
+  const data = raw as Record<string, unknown>;
+
+  const hasLevel =
+    data.codingLevel !== undefined ||
+    data.pathLevel !== undefined ||
+    data.level !== undefined;
+  const hasGoal = data.learningGoal !== undefined || data.goal !== undefined;
+  const hasTime = data.dailyTime !== undefined || data.time !== undefined;
+
+  return hasLevel && hasGoal && hasTime;
 }
 
 export function getOnboardingProfile(): OnboardingProfile | null {
@@ -168,7 +189,7 @@ export function getActivePathLevel(): PathLevel {
 }
 
 export function hasCompletedOnboarding(): boolean {
-  return getOnboardingProfile() !== null;
+  return isOnboardingProfileComplete(getOnboardingProfile());
 }
 
 export function saveOnboardingProfile(profile: OnboardingProfile): void {

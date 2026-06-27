@@ -10,6 +10,7 @@ import {
 } from "@/lib/progress";
 import {
   getOnboardingProfile,
+  isOnboardingProfileComplete,
   parseOnboardingProfile,
   saveOnboardingProfile,
   type OnboardingProfile,
@@ -253,7 +254,9 @@ function parseRemoteStreakProgress(raw: unknown): StreakProgress | null {
 
 function parseRemoteOnboardingProfile(raw: unknown): OnboardingProfile | null {
   if (isEmptyJson(raw)) return null;
-  return parseOnboardingProfile(raw);
+  const parsed = parseOnboardingProfile(raw);
+  if (!parsed || !isOnboardingProfileComplete(raw)) return null;
+  return parsed;
 }
 
 export function parseRemoteAppState(row: RemoteAppStateRow | null): AppState | null {
@@ -437,7 +440,14 @@ function mergeOnboardingProfile(
   local: OnboardingProfile | null,
   remote: OnboardingProfile | null,
 ): OnboardingProfile | null {
-  return remote ?? local;
+  const remoteComplete =
+    remote !== null && isOnboardingProfileComplete(remote);
+  const localComplete = local !== null && isOnboardingProfileComplete(local);
+
+  if (remoteComplete) return remote;
+  if (localComplete && remote === null) return local;
+
+  return null;
 }
 
 export function mergeAppState(
@@ -590,17 +600,17 @@ export async function syncRemoteToLocal(
           authUsername,
         );
       }
-      if (!merged.onboardingProfile && local.onboardingProfile) {
-        merged.onboardingProfile = local.onboardingProfile;
-      }
     }
   } else if (isSameUser && hasAnyLocalAppState()) {
     merged = {
       ...local,
       profile: mergeProfile(local.profile, getDefaultProfile(), authUsername),
+      onboardingProfile: isOnboardingProfileComplete(local.onboardingProfile)
+        ? local.onboardingProfile
+        : null,
     };
   } else {
-    merged = createFreshUserState(authUsername, local.onboardingProfile);
+    merged = createFreshUserState(authUsername, null);
   }
 
   writeLocalAppState(merged);

@@ -1,29 +1,58 @@
 "use client";
 
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useAppStateSync } from "@/components/providers/AppStateSyncProvider";
+import { ONBOARDING_PATH } from "@/lib/auth/postLoginRedirect";
 import { buildSignInRedirectUrl } from "@/lib/auth/routes";
 import { useAuthUser } from "@/lib/auth/useAuthUser";
+import { isOnboardingProfileComplete } from "@/lib/onboarding-data";
+import { getLocalAppState } from "@/lib/userAppState";
 import { getAuthUsername } from "@/lib/username";
 
 export function useRequireAuth() {
   const router = useRouter();
   const pathname = usePathname();
-  const { user, loading, isConfigured } = useAuthUser();
+  const { user, loading: authLoading, isConfigured } = useAuthUser();
+  const { syncing } = useAppStateSync();
+  const [guardReady, setGuardReady] = useState(false);
+  const [hasOnboarding, setHasOnboarding] = useState(false);
+
+  const waitingForSync = Boolean(user && syncing);
+  const loading = authLoading || waitingForSync || !guardReady;
 
   useEffect(() => {
-    if (loading) return;
+    if (authLoading) return;
 
     if (!user) {
+      setGuardReady(true);
+      setHasOnboarding(false);
       router.replace(buildSignInRedirectUrl(pathname));
+      return;
     }
-  }, [loading, user, router, pathname]);
+
+    if (waitingForSync) {
+      setGuardReady(false);
+      return;
+    }
+
+    const onboardingComplete = isOnboardingProfileComplete(
+      getLocalAppState().onboardingProfile,
+    );
+    setHasOnboarding(onboardingComplete);
+    setGuardReady(true);
+
+    if (!onboardingComplete) {
+      router.replace(ONBOARDING_PATH);
+    }
+  }, [authLoading, user, waitingForSync, router, pathname]);
 
   return {
     user,
     username: getAuthUsername(user?.user_metadata),
     loading,
     isConfigured,
-    isAuthenticated: !loading && Boolean(user),
+    isAuthenticated: guardReady && Boolean(user) && hasOnboarding,
+    hasOnboarding,
   };
 }

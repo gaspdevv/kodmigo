@@ -1,6 +1,6 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { syncAppStateAfterLogin } from "@/lib/appStatePersist";
-import { resolvePostLoginPathFromLocalState } from "@/lib/auth/postLoginRedirect";
+import { resolvePostLoginPathAfterSync } from "@/lib/auth/postLoginRedirect";
 
 export async function completeAuthSession(
   supabase: SupabaseClient,
@@ -29,5 +29,5 @@ export async function completeAuthSessionAndResolveRedirect(
   redirectTo: string | null,
 ): Promise<string> {
   await completeAuthSession(supabase);
-  return resolvePostLoginPathFromLocalState(redirectTo);
+  return resolvePostLoginPathAfterSync(supabase, redirectTo);
 }
