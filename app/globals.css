@@ -129,6 +129,64 @@ html {
   animation: xp-reward-in 0.35s ease-out;
 }
 
+@keyframes stage-upgrade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes stage-badge-bounce {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  40% {
+    transform: scale(1.18);
+  }
+
+  70% {
+    transform: scale(0.96);
+  }
+}
+
+@keyframes stage-upgrade-glow {
+  0%,
+  100% {
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.08);
+  }
+
+  50% {
+    box-shadow: 0 0 0 3px rgb(251 191 36 / 0.35), 0 8px 20px -4px rgb(251 191 36 / 0.25);
+  }
+}
+
+.stage-upgrade-in {
+  animation: stage-upgrade-in 0.4s ease-out;
+}
+
+.stage-badge-bounce {
+  animation: stage-badge-bounce 0.65s ease-out;
+}
+
+.stage-upgrade-glow {
+  animation: stage-upgrade-glow 1.2s ease-in-out 2;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stage-upgrade-in,
+  .stage-badge-bounce,
+  .stage-upgrade-glow {
+    animation: none;
+  }
+}
+
 @keyframes lesson-focus-pulse {
   0%,
   100% {

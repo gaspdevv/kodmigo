@@ -1,18 +1,19 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { getDashboardTheme } from "@/components/dashboard/getDashboardTheme";
 import {
+  getStageTheme,
   stageIcons,
   stageNames,
+  type StageKey,
 } from "@/components/dashboard/stageThemes";
 import {
   clearPendingXpRewards,
   getPendingXpRewards,
 } from "@/lib/rewards";
 import {
-  calculateProgressPercent,
   getDefaultUserProgress,
+  getStageProgressDisplay,
   getUserProgress,
   type UserProgress,
 } from "@/lib/progress";
@@ -22,33 +23,52 @@ import {
   getStreakProgress,
   type StreakProgress,
 } from "@/lib/streak";
+import { consumeStageCelebration } from "@/lib/stage-celebration";
+import {
+  compareStages,
+  getStageFromXp,
+  normalizeUserProgressFromXp,
+} from "@/lib/stage-progress";
 import { playCorrectSound } from "@/lib/sounds";
+import { APP_STATE_CHANGED_EVENT } from "@/lib/appStateEvents";
 import { useAppStateRefresh } from "@/lib/useAppStateRefresh";
 
 const ANIMATION_DURATION_MS = 900;
 const REWARD_NOTICE_DURATION_MS = 2800;
+const STAGE_CELEBRATION_DURATION_MS = 3000;
 
 function easeOutCubic(t: number): number {
   return 1 - Math.pow(1 - t, 3);
 }
 
+function maybeCelebrateStage(
+  stage: StageKey,
+  onCelebrate: (celebratedStage: StageKey) => void,
+): void {
+  const celebrated = consumeStageCelebration(stage);
+  if (celebrated) {
+    onCelebrate(celebrated);
+  }
+}
+
 export default function StageProgressCard() {
-  const theme = getDashboardTheme();
   const defaultProgress = getDefaultUserProgress();
 
   const [userProgress, setUserProgress] =
     useState<UserProgress>(defaultProgress);
-  const [displayXp, setDisplayXp] = useState(defaultProgress.currentXp);
+  const [displayXp, setDisplayXp] = useState(0);
   const [displayPercent, setDisplayPercent] = useState(
     defaultProgress.progressPercent,
   );
   const [showRewardNotice, setShowRewardNotice] = useState(false);
   const [rewardXp, setRewardXp] = useState(0);
+  const [celebratedStage, setCelebratedStage] = useState<StageKey | null>(null);
   const [isReady, setIsReady] = useState(false);
   const [streakProgress, setStreakProgress] = useState<StreakProgress | null>(
     null,
   );
 
+  const theme = getStageTheme(userProgress.currentStage);
   const isMaxStage = userProgress.nextStage === null;
   const currentStageName = stageNames[userProgress.currentStage];
   const nextStageName = userProgress.nextStage
@@ -59,36 +79,66 @@ export default function StageProgressCard() {
     ? stageIcons[userProgress.nextStage]
     : null;
 
+  const applyProgressFrame = useCallback((progress: UserProgress) => {
+    const display = getStageProgressDisplay(progress);
+    setUserProgress(progress);
+    setDisplayXp(display.stageXp);
+    setDisplayPercent(progress.progressPercent);
+  }, []);
+
+  const triggerStageCelebration = useCallback((stage: StageKey) => {
+    setCelebratedStage(stage);
+    window.setTimeout(() => setCelebratedStage(null), STAGE_CELEBRATION_DURATION_MS);
+  }, []);
+
+  const checkStageUpgrade = useCallback(
+    (previousTotalXp: number, nextProgress: UserProgress) => {
+      const previousStage = getStageFromXp(previousTotalXp);
+      if (compareStages(nextProgress.currentStage, previousStage) > 0) {
+        maybeCelebrateStage(nextProgress.currentStage, triggerStageCelebration);
+      }
+    },
+    [triggerStageCelebration],
+  );
+
   useEffect(() => {
     setStreakProgress(getStreakProgress());
 
     const saved = getUserProgress();
     const pendingRewards = getPendingXpRewards();
+    const initialDisplay = getStageProgressDisplay(saved);
 
     if (pendingRewards.length === 0) {
-      setUserProgress(saved);
-      setDisplayXp(saved.currentXp);
-      setDisplayPercent(saved.progressPercent);
+      applyProgressFrame(saved);
+      maybeCelebrateStage(saved.currentStage, triggerStageCelebration);
       setIsReady(true);
       return;
     }
 
-    const totalPendingXp = pendingRewards.reduce((sum, reward) => sum + reward.xp, 0);
-    const startXp = Math.max(0, saved.currentXp - totalPendingXp);
-    const startPercent = calculateProgressPercent(startXp, saved.requiredXp);
+    const totalPendingXp = pendingRewards.reduce(
+      (sum, reward) => sum + reward.xp,
+      0,
+    );
+    const startTotalXp = Math.max(0, saved.currentXp - totalPendingXp);
+    const startProgress = normalizeUserProgressFromXp(
+      startTotalXp,
+      saved.streakDays,
+    );
+    const startDisplay = getStageProgressDisplay(startProgress);
 
     setRewardXp(totalPendingXp);
     setShowRewardNotice(true);
-    setDisplayXp(startXp);
-    setDisplayPercent(startPercent);
-    setUserProgress(saved);
+    setUserProgress(startProgress);
+    setDisplayXp(startDisplay.stageXp);
+    setDisplayPercent(startProgress.progressPercent);
     setIsReady(true);
     playCorrectSound();
 
     const completeReward = () => {
       clearPendingXpRewards();
-      setDisplayXp(saved.currentXp);
-      setDisplayPercent(saved.progressPercent);
+      applyProgressFrame(saved);
+      checkStageUpgrade(startTotalXp, saved);
+      window.dispatchEvent(new Event(APP_STATE_CHANGED_EVENT));
       window.setTimeout(
         () => setShowRewardNotice(false),
         REWARD_NOTICE_DURATION_MS,
@@ -111,12 +161,16 @@ export default function StageProgressCard() {
       const elapsed = now - startTime;
       const progress = Math.min(elapsed / ANIMATION_DURATION_MS, 1);
       const eased = easeOutCubic(progress);
-
-      setDisplayXp(Math.round(startXp + totalPendingXp * eased));
-      setDisplayPercent(
-        startPercent +
-          (saved.progressPercent - startPercent) * eased,
+      const frameTotalXp = Math.round(startTotalXp + totalPendingXp * eased);
+      const frameProgress = normalizeUserProgressFromXp(
+        frameTotalXp,
+        saved.streakDays,
       );
+      const frameDisplay = getStageProgressDisplay(frameProgress);
+
+      setUserProgress(frameProgress);
+      setDisplayXp(frameDisplay.stageXp);
+      setDisplayPercent(frameProgress.progressPercent);
 
       if (progress < 1) {
         frameId = requestAnimationFrame(animate);
@@ -130,16 +184,18 @@ export default function StageProgressCard() {
     return () => {
       cancelAnimationFrame(frameId);
     };
-  }, []);
+  }, [
+    applyProgressFrame,
+    checkStageUpgrade,
+    triggerStageCelebration,
+  ]);
 
   const refreshProgress = useCallback(() => {
     setStreakProgress(getStreakProgress());
     const saved = getUserProgress();
-    setUserProgress(saved);
-    setDisplayXp(saved.currentXp);
-    setDisplayPercent(saved.progressPercent);
+    applyProgressFrame(saved);
     setIsReady(true);
-  }, []);
+  }, [applyProgressFrame]);
 
   useAppStateRefresh(refreshProgress);
 
@@ -158,7 +214,9 @@ export default function StageProgressCard() {
 
   return (
     <section
-      className={`mb-4 rounded-2xl border p-4 shadow-lg ${theme.stageCardBackground} ${theme.cardBorder} ${theme.cardShadow}`}
+      className={`mb-4 rounded-2xl border p-4 shadow-lg transition-shadow duration-500 ${theme.stageCardBackground} ${theme.cardBorder} ${theme.cardShadow} ${
+        celebratedStage ? "stage-upgrade-glow" : ""
+      }`}
     >
       {showRewardNotice && (
         <div
@@ -166,6 +224,18 @@ export default function StageProgressCard() {
           role="status"
         >
           🎉 Ders ödülün eklendi: +{rewardXp} XP
+        </div>
+      )}
+
+      {celebratedStage && (
+        <div
+          className={`stage-upgrade-in mb-3 rounded-xl border px-3 py-2 text-center text-sm font-semibold ${theme.cardBorder} bg-amber-50/95 text-amber-900`}
+          role="status"
+        >
+          <span className="stage-badge-bounce mr-1 inline-block">
+            {stageIcons[celebratedStage]}
+          </span>
+          Yeni aşama: {stageNames[celebratedStage]}
         </div>
       )}
 
@@ -195,14 +265,22 @@ export default function StageProgressCard() {
       <p className={`mb-3 flex flex-wrap items-center gap-y-1 text-sm font-semibold ${theme.primaryText}`}>
         {isMaxStage ? (
           <span
-            className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs ${theme.currentBadge}`}
+            className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs ${theme.currentBadge} ${
+              celebratedStage === userProgress.currentStage
+                ? "stage-badge-bounce"
+                : ""
+            }`}
           >
             {currentStageIcon} {currentStageName} aşaması
           </span>
         ) : (
           <>
             <span
-              className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs ${theme.currentBadge}`}
+              className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs ${theme.currentBadge} ${
+                celebratedStage === userProgress.currentStage
+                  ? "stage-badge-bounce"
+                  : ""
+              }`}
             >
               {currentStageIcon} {currentStageName}
             </span>
@@ -220,13 +298,15 @@ export default function StageProgressCard() {
         className={`mb-1.5 h-2.5 overflow-hidden rounded-full ${theme.progressTrack}`}
       >
         <div
-          className={`h-full rounded-full ${theme.progressBar}`}
+          className={`h-full rounded-full transition-all duration-300 ${theme.progressBar}`}
           style={{ width: `${displayPercent}%` }}
         />
       </div>
 
       <p className={`text-xs font-medium ${theme.mutedText}`}>
-        {displayXp} / {userProgress.requiredXp} XP
+        {isMaxStage
+          ? `Usta aşamasındasın · ${userProgress.currentXp} XP`
+          : `${displayXp} / ${userProgress.requiredXp} XP`}
       </p>
     </section>
   );

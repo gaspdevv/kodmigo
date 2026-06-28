@@ -37,7 +37,8 @@ import {
   getPythonTotalLessons,
 } from "@/data/pythonPath";
 import type { PathLevel } from "@/lib/onboarding-data";
-import { calculateLearningProgressPercent, calculateProgressPercent } from "@/lib/progress";
+import { calculateLearningProgressPercent } from "@/lib/progress";
+import { normalizeUserProgressFromXp } from "@/lib/stage-progress";
 import { createClient } from "@/lib/supabase/client";
 import { logSupabaseError } from "@/lib/supabase/debug";
 
@@ -106,49 +107,17 @@ function parseRemoteProfile(raw: unknown): ProfileData | null {
   return { username, avatarDataUrl, showcasedBadgeId };
 }
 
-function isValidStageKey(
-  value: unknown,
-): value is import("@/components/dashboard/stageThemes").StageKey {
-  return (
-    typeof value === "string" &&
-    ["bronze", "silver", "gold", "platinum", "diamond", "master"].includes(
-      value,
-    )
-  );
-}
-
 function parseRemoteUserProgress(raw: unknown): UserProgress | null {
   if (isEmptyJson(raw)) return null;
   if (!raw || typeof raw !== "object") return null;
 
   const data = raw as Partial<UserProgress>;
-  if (
-    typeof data.currentXp !== "number" ||
-    typeof data.requiredXp !== "number" ||
-    typeof data.streakDays !== "number" ||
-    !isValidStageKey(data.currentStage)
-  ) {
-    return null;
-  }
+  if (typeof data.currentXp !== "number") return null;
 
-  const nextStage =
-    data.nextStage === null
-      ? null
-      : isValidStageKey(data.nextStage)
-        ? data.nextStage
-        : null;
+  const streakDays =
+    typeof data.streakDays === "number" ? Math.max(0, data.streakDays) : 0;
 
-  const currentXp = Math.max(0, data.currentXp);
-  const requiredXp = Math.max(1, data.requiredXp);
-
-  return {
-    currentXp,
-    requiredXp,
-    progressPercent: calculateProgressPercent(currentXp, requiredXp),
-    currentStage: data.currentStage,
-    nextStage,
-    streakDays: Math.max(0, data.streakDays),
-  };
+  return normalizeUserProgressFromXp(Math.max(0, data.currentXp), streakDays);
 }
 
 function buildPythonProgressFromIds(
@@ -362,16 +331,9 @@ function mergeUserProgress(
   local: UserProgress,
   remote: UserProgress,
 ): UserProgress {
-  const winner = remote.currentXp >= local.currentXp ? remote : local;
-
-  return {
-    ...winner,
-    currentXp: Math.max(local.currentXp, remote.currentXp),
-    progressPercent: calculateProgressPercent(
-      Math.max(local.currentXp, remote.currentXp),
-      winner.requiredXp,
-    ),
-  };
+  const totalXp = Math.max(local.currentXp, remote.currentXp);
+  const streakDays = Math.max(local.streakDays, remote.streakDays);
+  return normalizeUserProgressFromXp(totalXp, streakDays);
 }
 
 function mergeLearningProgress(

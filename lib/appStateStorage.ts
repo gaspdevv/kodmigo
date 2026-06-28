@@ -10,6 +10,7 @@ export const CURRENT_USER_ID_KEY = "kodmigo_current_user_id";
 const EXTRA_APP_STATE_KEYS = [
   "kodmigo_pending_xp_reward",
   "kodmigo_pending_lesson_completion",
+  "kodmigo_last_celebrated_stage",
 ] as const;
 
 const AI_CHAT_KEY_PREFIX = "kodmigo_ai_chat_history";

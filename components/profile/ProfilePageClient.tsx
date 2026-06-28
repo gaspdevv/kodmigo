@@ -5,7 +5,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import EarnedBadgesSection from "@/components/profile/EarnedBadgesSection";
 import ProfileCard from "@/components/profile/ProfileCard";
 import BottomNav from "@/components/dashboard/BottomNav";
-import { getDashboardTheme } from "@/components/dashboard/getDashboardTheme";
+import { getStageTheme } from "@/components/dashboard/stageThemes";
 import { useAppStateSync } from "@/components/providers/AppStateSyncProvider";
 import {
   getAchievements,
@@ -38,7 +38,6 @@ import { resolveDisplayUsername } from "@/lib/username";
 import { useAppStateRefresh } from "@/lib/useAppStateRefresh";
 
 export default function ProfilePageClient() {
-  const theme = getDashboardTheme();
   const {
     user,
     username: authUsername,
@@ -94,6 +93,7 @@ export default function ProfilePageClient() {
     streakProgress,
   );
   const earnedBadges = achievements.filter((a) => a.unlocked);
+  const theme = getStageTheme(userProgress.currentStage);
 
   const handleAvatarChange = (avatarDataUrl: string) => {
     setAvatarError(null);

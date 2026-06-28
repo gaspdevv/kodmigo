@@ -72,9 +72,7 @@ export const ACHIEVEMENT_DEFINITIONS = [
 export type AchievementId = (typeof ACHIEVEMENT_DEFINITIONS)[number]["id"];
 
 function isBronzeMaster(userProgress: UserProgress): boolean {
-  if (userProgress.currentXp >= userProgress.requiredXp) return true;
-  if (userProgress.currentStage !== "bronze") return true;
-  return userProgress.currentXp >= 200;
+  return userProgress.currentStage !== "bronze";
 }
 
 function checkAchievementUnlocked(

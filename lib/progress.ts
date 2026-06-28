@@ -9,6 +9,10 @@ import {
 import { mockUser } from "@/lib/mockUser";
 import { getPendingLessonCompletions } from "@/lib/rewards";
 import { notifyAppStateLocalChanged } from "@/lib/appStateNotify";
+import {
+  getStageProgressDisplay,
+  normalizeUserProgressFromXp,
+} from "@/lib/stage-progress";
 
 export type { Unit } from "@/data/pythonPath";
 export { normalizeLessonId } from "@/data/pythonPath";
@@ -25,14 +29,7 @@ export type UserProgress = {
 const STORAGE_KEY = "kodmigo_user_progress";
 
 export function getDefaultUserProgress(): UserProgress {
-  return {
-    currentXp: mockUser.currentXp,
-    requiredXp: mockUser.requiredXp,
-    progressPercent: mockUser.progressPercent,
-    currentStage: mockUser.currentStage,
-    nextStage: mockUser.nextStage,
-    streakDays: mockUser.streakDays,
-  };
+  return normalizeUserProgressFromXp(mockUser.currentXp, mockUser.streakDays);
 }
 
 export function calculateProgressPercent(
@@ -43,48 +40,16 @@ export function calculateProgressPercent(
   return Math.min(100, Math.round((currentXp / requiredXp) * 100));
 }
 
-function isValidStageKey(
-  value: unknown,
-): value is import("@/components/dashboard/stageThemes").StageKey {
-  return (
-    typeof value === "string" &&
-    ["bronze", "silver", "gold", "platinum", "diamond", "master"].includes(
-      value,
-    )
-  );
-}
-
 function parseUserProgress(raw: unknown): UserProgress | null {
   if (!raw || typeof raw !== "object") return null;
 
   const data = raw as Partial<UserProgress>;
-  if (
-    typeof data.currentXp !== "number" ||
-    typeof data.requiredXp !== "number" ||
-    typeof data.streakDays !== "number" ||
-    !isValidStageKey(data.currentStage)
-  ) {
-    return null;
-  }
+  if (typeof data.currentXp !== "number") return null;
 
-  const nextStage =
-    data.nextStage === null
-      ? null
-      : isValidStageKey(data.nextStage)
-        ? data.nextStage
-        : null;
+  const streakDays =
+    typeof data.streakDays === "number" ? Math.max(0, data.streakDays) : 0;
 
-  const currentXp = Math.max(0, data.currentXp);
-  const requiredXp = Math.max(1, data.requiredXp);
-
-  return {
-    currentXp,
-    requiredXp,
-    progressPercent: calculateProgressPercent(currentXp, requiredXp),
-    currentStage: data.currentStage,
-    nextStage,
-    streakDays: Math.max(0, data.streakDays),
-  };
+  return normalizeUserProgressFromXp(Math.max(0, data.currentXp), streakDays);
 }
 
 export function getUserProgress(): UserProgress {
@@ -105,13 +70,10 @@ export function saveUserProgress(progress: UserProgress): void {
   if (typeof window === "undefined") return;
 
   try {
-    const normalized: UserProgress = {
-      ...progress,
-      progressPercent: calculateProgressPercent(
-        progress.currentXp,
-        progress.requiredXp,
-      ),
-    };
+    const normalized = normalizeUserProgressFromXp(
+      progress.currentXp,
+      progress.streakDays,
+    );
     localStorage.setItem(STORAGE_KEY, JSON.stringify(normalized));
     notifyAppStateLocalChanged(true);
   } catch {
@@ -120,14 +82,13 @@ export function saveUserProgress(progress: UserProgress): void {
 }
 
 export function applyXpReward(progress: UserProgress, xp: number): UserProgress {
-  const currentXp = progress.currentXp + xp;
-
-  return {
-    ...progress,
-    currentXp,
-    progressPercent: calculateProgressPercent(currentXp, progress.requiredXp),
-  };
+  return normalizeUserProgressFromXp(
+    progress.currentXp + xp,
+    progress.streakDays,
+  );
 }
+
+export { getStageProgressDisplay } from "@/lib/stage-progress";
 
 // --- Python learning path progress ---
 
