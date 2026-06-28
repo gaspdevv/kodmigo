@@ -6,12 +6,14 @@ import {
   stageIcons,
   stageNames,
 } from "@/components/dashboard/stageThemes";
-import { clearPendingXpReward, getPendingXpReward } from "@/lib/rewards";
 import {
-  applyXpReward,
+  clearPendingXpRewards,
+  getPendingXpRewards,
+} from "@/lib/rewards";
+import {
+  calculateProgressPercent,
   getDefaultUserProgress,
   getUserProgress,
-  saveUserProgress,
   type UserProgress,
 } from "@/lib/progress";
 import {
@@ -61,9 +63,9 @@ export default function StageProgressCard() {
     setStreakProgress(getStreakProgress());
 
     const saved = getUserProgress();
-    const reward = getPendingXpReward();
+    const pendingRewards = getPendingXpRewards();
 
-    if (!reward) {
+    if (pendingRewards.length === 0) {
       setUserProgress(saved);
       setDisplayXp(saved.currentXp);
       setDisplayPercent(saved.progressPercent);
@@ -71,23 +73,22 @@ export default function StageProgressCard() {
       return;
     }
 
-    const startXp = saved.currentXp;
-    const startPercent = saved.progressPercent;
-    const updated = applyXpReward(saved, reward.xp);
+    const totalPendingXp = pendingRewards.reduce((sum, reward) => sum + reward.xp, 0);
+    const startXp = Math.max(0, saved.currentXp - totalPendingXp);
+    const startPercent = calculateProgressPercent(startXp, saved.requiredXp);
 
-    setRewardXp(reward.xp);
+    setRewardXp(totalPendingXp);
     setShowRewardNotice(true);
     setDisplayXp(startXp);
     setDisplayPercent(startPercent);
+    setUserProgress(saved);
     setIsReady(true);
     playCorrectSound();
 
     const completeReward = () => {
-      saveUserProgress(updated);
-      clearPendingXpReward();
-      setUserProgress(updated);
-      setDisplayXp(updated.currentXp);
-      setDisplayPercent(updated.progressPercent);
+      clearPendingXpRewards();
+      setDisplayXp(saved.currentXp);
+      setDisplayPercent(saved.progressPercent);
       window.setTimeout(
         () => setShowRewardNotice(false),
         REWARD_NOTICE_DURATION_MS,
@@ -111,10 +112,10 @@ export default function StageProgressCard() {
       const progress = Math.min(elapsed / ANIMATION_DURATION_MS, 1);
       const eased = easeOutCubic(progress);
 
-      setDisplayXp(Math.round(startXp + reward.xp * eased));
+      setDisplayXp(Math.round(startXp + totalPendingXp * eased));
       setDisplayPercent(
         startPercent +
-          (updated.progressPercent - startPercent) * eased,
+          (saved.progressPercent - startPercent) * eased,
       );
 
       if (progress < 1) {

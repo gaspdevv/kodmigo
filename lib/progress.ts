@@ -7,7 +7,7 @@ import {
   type Unit,
 } from "@/data/pythonPath";
 import { mockUser } from "@/lib/mockUser";
-import { getPendingLessonCompletion } from "@/lib/rewards";
+import { getPendingLessonCompletions } from "@/lib/rewards";
 import { notifyAppStateLocalChanged } from "@/lib/appStateNotify";
 
 export type { Unit } from "@/data/pythonPath";
@@ -257,13 +257,14 @@ export function getEffectiveCompletedLessonIds(): string[] {
   const savedIds = progress.python.completedLessonIds.map(normalizeLessonId);
   const uniqueSaved = [...new Set(savedIds)];
 
-  const pending = getPendingLessonCompletion();
-  if (!pending || pending.courseId !== "python") return uniqueSaved;
+  const pendingIds = getPendingLessonCompletions()
+    .filter((entry) => entry.courseId === "python")
+    .map((entry) => normalizeLessonId(entry.lessonId))
+    .filter((id) => !uniqueSaved.includes(id));
 
-  const pendingId = normalizeLessonId(pending.lessonId);
-  if (uniqueSaved.includes(pendingId)) return uniqueSaved;
+  if (pendingIds.length === 0) return uniqueSaved;
 
-  return [...uniqueSaved, pendingId];
+  return [...uniqueSaved, ...pendingIds];
 }
 
 export function isLessonCompleted(

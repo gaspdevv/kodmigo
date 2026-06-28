@@ -1,4 +1,5 @@
 import type { PathLevel } from "@/lib/onboarding-data";
+import { resolveLessonXpReward } from "@/lib/xp-rewards";
 import { beginnerPathMeta, beginnerPathUnits } from "./beginner";
 import { basicPathMeta, basicPathUnits } from "./basic";
 import { intermediatePathMeta, intermediatePathUnits } from "./intermediate";
@@ -91,7 +92,8 @@ export function getLessonMetaBySlug(lessonSlug: string): Lesson | undefined {
 }
 
 export function getLessonXpReward(lessonSlug: string): number {
-  return slugToLesson.get(lessonSlug)?.xpReward ?? 10;
+  const meta = slugToLesson.get(lessonSlug);
+  return resolveLessonXpReward(meta?.xpReward);
 }
 
 export function filterCompletedForPath(

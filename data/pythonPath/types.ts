@@ -1,4 +1,9 @@
 import type { PathLevel } from "@/lib/onboarding-data";
+import {
+  MINI_TASK_XP,
+  NORMAL_LESSON_XP,
+  PROJECT_LESSON_XP,
+} from "@/lib/xp-rewards";
 
 export type LessonStatus = "completed" | "current" | "locked";
 export type LessonType =
@@ -43,12 +48,10 @@ export function makeLesson(
 ): Lesson {
   const xpReward =
     type === "Proje"
-      ? 40
+      ? PROJECT_LESSON_XP
       : type === "Mini görev" || type === "Mini Proje"
-        ? 25
-        : type === "Pratik" || type === "Uygulama"
-          ? 15
-          : 10;
+        ? MINI_TASK_XP
+        : NORMAL_LESSON_XP;
 
   return {
     id,

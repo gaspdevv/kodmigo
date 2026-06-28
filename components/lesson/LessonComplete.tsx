@@ -10,6 +10,7 @@ import {
 } from "@/lib/lesson-completion";
 import { parseXpAmount } from "@/lib/rewards";
 import { isLessonCompleted } from "@/lib/progress";
+import { NORMAL_LESSON_XP, resolveLessonXpReward } from "@/lib/xp-rewards";
 import { playClickSound } from "@/lib/sounds";
 
 type LessonCompleteProps = {
@@ -26,8 +27,10 @@ export default function LessonComplete({
   xpReward: xpRewardProp,
 }: LessonCompleteProps) {
   const rewards = step.completeRewards;
-  const xpAmount =
-    xpRewardProp ?? (rewards?.xp ? parseXpAmount(rewards.xp) : 10);
+  const xpAmount = resolveLessonXpReward(
+    xpRewardProp ??
+      (rewards?.xp ? parseXpAmount(rewards.xp) : NORMAL_LESSON_XP),
+  );
   const [isRepeatCompletion] = useState(() =>
     isLessonCompleted("python", lessonId),
   );

@@ -20,6 +20,7 @@ import {
   isValidatedTaskStepType,
 } from "@/data/lessons";
 import { getLessonXpReward } from "@/data/pythonPath";
+import { resolveLessonXpReward } from "@/lib/xp-rewards";
 import {
   answersMatch,
   getStableQuizOptions,
@@ -96,7 +97,10 @@ export default function LessonShell({ lesson, theme }: LessonShellProps) {
   const isMiniTask = step.type === "mini-task";
   const isCodeTask = isCodeWriting || isProjectStep || isMiniTask;
   const showInfoCode = Boolean(step.code) && !step.targetOutput && !isCodeTask;
-  const xpReward = lesson.xpReward ?? getLessonXpReward(lesson.id);
+  const xpReward = resolveLessonXpReward(
+    lesson.xpReward,
+    getLessonXpReward(lesson.id),
+  );
 
   const preAnswerMigo = useMemo(() => {
     if (isCompleteStep) return null;
