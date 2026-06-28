@@ -14,6 +14,15 @@ export const VALIDATION_MODES = [
   "fStringIntro",
   "extendedProfileCard",
   "miniProject",
+  "inputSumTwoNumbers",
+  "ageCalculatorBasic",
+  "personalizedAgeOutput",
+  "ticketPriceRules",
+  "listAppendAndPrint",
+  "listLoopSummary",
+  "functionReturnAndPrint",
+  "twoGreetingFunctions",
+  "quizFunctionProject",
 ] as const;
 
 export type ValidationMode = (typeof VALIDATION_MODES)[number];
@@ -106,6 +115,124 @@ const DEFAULT_HINTS = {
     "Bu JavaScript kodu. Bu görevde Python kullanıyoruz: print(...)",
   plainTextOnly:
     "Cümleni Python kodu olarak yazmalısın. print(...) kullanmayı dene.",
+  missingInputCount:
+    "Bu görevde kullanıcıdan iki sayı almak için iki input() kullanmalısın.",
+  missingInputConversion:
+    "input() metin döndürür. Toplama yapmak için sayıya çevirmelisin: int(input(...))",
+  missingInputSumPrint:
+    "Sonucu ekrana yazdırmak için print(...) kullanmalısın.",
+  missingAddition:
+    "İki sayıyı toplamak için + işlemini kullanmalısın.",
+  missingInputPrompt:
+    'input() içine kullanıcıya ne soracağını yazmalısın. Örneğin: input("Birinci sayı: ")',
+  wrongCaseInput:
+    "Python'da input küçük harfle yazılır: input(...)",
+  missingAgeInput:
+    "Bu görevde doğum yılını almak için input() kullanmalısın.",
+  missingAgeInputConversion:
+    "input() metin döndürür. Yaş hesabı yapmak için doğum yılını sayıya çevirmelisin: int(input(...))",
+  missingAgeSubtraction:
+    "Yaşı hesaplamak için mevcut yıldan doğum yılını çıkarmalısın.",
+  missingAgePrint:
+    "Hesaplanan yaşı ekrana yazdırmak için print(...) kullanmalısın.",
+  missingPersonalizedNameInput:
+    "Bu görevde kullanıcı adını almak için input() kullanmalısın.",
+  missingPersonalizedBirthYearInput:
+    "Bu görevde doğum yılını almak için ikinci bir input() kullanmalısın.",
+  missingPersonalizedInputConversion:
+    "input() metin döndürür. Yaş hesabı yapmak için doğum yılını sayıya çevirmelisin: int(input(...))",
+  missingPersonalizedAgeSubtraction:
+    "Yaşı hesaplamak için mevcut yıldan doğum yılını çıkarmalısın.",
+  missingPersonalizedFStringName:
+    "f-string içinde kullanıcı adını süslü parantezle kullanmalısın.",
+  missingPersonalizedFStringAge:
+    "f-string içinde hesaplanan yaşı da kullanmalısın.",
+  missingPersonalizedPrint:
+    "Sonucu ekrana yazdırmak için print(...) kullanmalısın.",
+  missingTicketAgeInput:
+    "Bu görevde kullanıcıdan yaş almak için input() kullanmalısın.",
+  missingTicketInputConversion:
+    "input() metin döndürür. Yaş karşılaştırması yapmak için sayıya çevirmelisin: int(input(...))",
+  missingTicketIf:
+    "Fiyat kuralı yazmak için if koşulu kullanmalısın.",
+  missingTicketSecondRule:
+    "Bu görevde en az 2 farklı fiyat kuralı olmalı. else veya elif eklemeyi dene.",
+  missingTicketPriceValue:
+    "Koşullara göre bir fiyat değeri belirlemelisin.",
+  missingTicketPrint:
+    "Hesaplanan fiyatı ekrana yazdırmak için print(...) kullanmalısın.",
+  missingListDefinition:
+    "Bu görevde köşeli parantezlerle bir liste oluşturmalısın: [...]",
+  missingListMinElements:
+    "Başlangıç listende en az 2 eleman olmalı.",
+  missingListAppend:
+    "Listeye yeni eleman eklemek için append() kullanmalısın.",
+  wrongCaseAppend:
+    "Python'da append küçük harfle yazılır: liste.append(...)",
+  missingListAppendTarget:
+    "append() işlemini oluşturduğun liste değişkeni üzerinde kullanmalısın.",
+  missingListPrint:
+    "Listeyi ekrana yazdırmak için print(...) kullanmalısın.",
+  missingListLoopDefinition:
+    "Bu görevde bir liste oluşturmalısın.",
+  missingListLoopAppend:
+    "Listeye ürün eklemek için append() kullanmalısın.",
+  missingListLoopAppendCount:
+    "Bu görevde listeye en az 2 ürün eklemelisin.",
+  missingListLoopFor:
+    "Her ürünü ayrı satırda yazdırmak için for döngüsü kullanmalısın.",
+  missingListLoopForPrint:
+    "Her ürünü yazdırmak için döngü içinde print(...) kullanmalısın.",
+  missingListLoopLen:
+    "Toplam ürün sayısını yazdırmak için len(liste) kullanmalısın.",
+  missingListLoopPrint:
+    "Listeyi ekrana yazdırmak için print(...) kullanmalısın.",
+  missingFunctionDef:
+    "Bu görevde def ile bir fonksiyon tanımlamalısın.",
+  missingFunctionParam:
+    "Fonksiyonun bir isim parametresi almalı.",
+  missingFunctionReturn:
+    "Bu görevde fonksiyon sonucu return ile döndürmeli.",
+  missingFunctionParamInReturn:
+    "Selamlamada fonksiyona gelen ismi kullanmalısın.",
+  missingFunctionGreeting:
+    "Fonksiyonun 'Merhaba' ile başlayan bir selamlama döndürmeli.",
+  missingFunctionCall:
+    "Fonksiyonu bir isim vererek çağırmalısın.",
+  missingFunctionPrint:
+    "Fonksiyon sonucunu ekrana yazdırmak için print(...) kullanmalısın.",
+  missingTwoFunctions:
+    "Bu görevde iki farklı fonksiyon tanımlamalısın.",
+  missingGreetingOneParam:
+    "selamla fonksiyonu bir isim parametresi almalı.",
+  missingGreetingTwoParam:
+    "resmi_selam fonksiyonu isim ve soyisim olmak üzere iki parametre almalı.",
+  missingTwoFunctionReturn:
+    "Bu görevde fonksiyonlar sonucu return ile döndürmeli.",
+  missingTwoFunctionParamInReturn:
+    "Fonksiyonun döndürdüğü metinde gelen parametreleri kullanmalısın.",
+  missingTwoFunctionCall:
+    "Yazdığın fonksiyonları örnek değerlerle çağırmalısın.",
+  missingTwoFunctionPrint:
+    "Fonksiyon sonuçlarını ekrana yazdırmak için print(...) kullanmalısın.",
+  undefinedFunctionFStringVariable:
+    "f-string içinde yalnızca tanımladığın değişkenleri veya fonksiyon parametrelerini kullanmalısın.",
+  missingQuizFunction:
+    "Bu görevde soru_sor(...) benzeri bir fonksiyon tanımlamalısın.",
+  missingQuizTwoParams:
+    "soru_sor fonksiyonu soru metni ve doğru cevap için iki parametre almalı.",
+  missingQuizInput:
+    "Her soru için kullanıcı cevabını almak üzere input() kullanmalısın.",
+  missingQuizIf:
+    "Kullanıcının cevabını doğru cevapla karşılaştırmak için if kullanmalısın.",
+  missingQuizTwoCalls:
+    "Bu görevde soru_sor(...) fonksiyonunu en az 2 kez çağırmalısın.",
+  missingQuizEndingMessage:
+    "Quiz sonunda bir bitiş mesajı yazdırmalısın.",
+  missingQuizPrint:
+    "Sonuçları ekrana yazdırmak için print(...) kullanmalısın.",
+  undefinedQuizFStringVariable:
+    "f-string içinde yalnızca tanımladığın değişkenleri veya fonksiyon parametrelerini kullanmalısın.",
   default:
     "Henüz tam değil. Görevi tekrar oku ve küçük bir düzenleme daha dene.",
 };
@@ -197,6 +324,697 @@ function isBareAssignmentFragment(input: string): boolean {
   return false;
 }
 
+function hasWrongCaseInput(input: string): boolean {
+  const matches = [...input.matchAll(/([a-zA-Z_]\w*)\s*\(/g)];
+  for (const match of matches) {
+    const name = match[1] ?? "";
+    if (name.toLowerCase() === "input" && name !== "input") {
+      return true;
+    }
+  }
+  return false;
+}
+
+function countInputCalls(input: string): number {
+  return (input.match(/\binput\s*\(/g) ?? []).length;
+}
+
+function countConvertedInputCalls(input: string): number {
+  return (input.match(/\b(?:int|float)\s*\(\s*input\s*\(/gi) ?? []).length;
+}
+
+function hasEmptyInputPrompt(input: string): boolean {
+  return /\binput\s*\(\s*\)/.test(input);
+}
+
+function hasAdditionOutsideStrings(input: string): boolean {
+  const withoutStrings = stripStringLiterals(input);
+  return /\+/.test(withoutStrings);
+}
+
+function stripStringLiterals(input: string): string {
+  return input.replace(/(["'])(?:\\.|(?!\1)[\s\S])*?\1/g, "");
+}
+
+function collectBirthYearVariables(input: string): string[] {
+  const vars: string[] = [];
+  for (const line of nonEmptyLines(input)) {
+    const match = line.match(
+      /^\s*([a-zA-Z_]\w*)\s*=\s*(?:int|float)\s*\(\s*input\s*\(/i,
+    );
+    if (match) {
+      vars.push(match[1] ?? "");
+    }
+  }
+  return vars;
+}
+
+function expressionUsesBirthYearInSubtraction(
+  expr: string,
+  birthYearVars: string[],
+): boolean {
+  const stripped = stripStringLiterals(expr);
+  if (!/-/.test(stripped)) {
+    return false;
+  }
+  return birthYearVars.some((varName) =>
+    new RegExp(`\\b${varName}\\b`).test(stripped),
+  );
+}
+
+function hasAgeSubtraction(input: string, birthYearVars: string[]): boolean {
+  if (birthYearVars.length === 0) {
+    return false;
+  }
+
+  for (const line of nonEmptyLines(input)) {
+    const assignMatch = line.match(/^\s*[a-zA-Z_]\w*\s*=\s*(.+)$/);
+    if (
+      assignMatch &&
+      expressionUsesBirthYearInSubtraction(assignMatch[1] ?? "", birthYearVars)
+    ) {
+      return true;
+    }
+
+    const printMatch = line.match(/print\s*\(([\s\S]*)\)\s*$/i);
+    if (
+      printMatch &&
+      expressionUsesBirthYearInSubtraction(printMatch[1] ?? "", birthYearVars)
+    ) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+function collectAgeResultVariables(
+  input: string,
+  birthYearVars: string[],
+): Set<string> {
+  const ageVars = new Set<string>();
+  for (const line of nonEmptyLines(input)) {
+    const match = line.match(/^\s*([a-zA-Z_]\w*)\s*=\s*(.+)$/);
+    if (!match) continue;
+
+    const name = match[1] ?? "";
+    if (birthYearVars.includes(name)) continue;
+
+    if (expressionUsesBirthYearInSubtraction(match[2] ?? "", birthYearVars)) {
+      ageVars.add(name);
+    }
+  }
+  return ageVars;
+}
+
+function printShowsAgeResult(
+  input: string,
+  birthYearVars: string[],
+  ageVars: Set<string>,
+): boolean {
+  for (const line of nonEmptyLines(input)) {
+    if (!/\bprint\s*\(/i.test(line)) continue;
+
+    const match = line.match(/print\s*\(([\s\S]*)\)\s*$/i);
+    if (!match) continue;
+
+    const args = match[1] ?? "";
+    if (expressionUsesBirthYearInSubtraction(args, birthYearVars)) {
+      return true;
+    }
+
+    const strippedArgs = stripStringLiteralsFromArgs(args);
+    for (const ageVar of ageVars) {
+      if (new RegExp(`\\b${ageVar}\\b`).test(strippedArgs)) {
+        return true;
+      }
+    }
+  }
+
+  return false;
+}
+
+function collectPlainInputVariables(input: string): string[] {
+  const vars: string[] = [];
+  for (const line of nonEmptyLines(input)) {
+    if (/^\s*[a-zA-Z_]\w*\s*=\s*(?:int|float)\s*\(\s*input/i.test(line)) {
+      continue;
+    }
+    const match = line.match(/^\s*([a-zA-Z_]\w*)\s*=\s*input\s*\(/i);
+    if (match) {
+      vars.push(match[1] ?? "");
+    }
+  }
+  return vars;
+}
+
+function findFStringPrintContent(input: string): string | null {
+  for (const line of nonEmptyLines(input)) {
+    const match = line.match(FSTRING_PRINT_LINE_PARSE);
+    if (match) {
+      return match[2] ?? "";
+    }
+  }
+  return null;
+}
+
+function fStringReferencesVar(content: string, varNames: string[]): boolean {
+  const refs = [...content.matchAll(FSTRING_VAR_REF)].map((m) => m[1] ?? "");
+  return varNames.some((name) => refs.includes(name));
+}
+
+function fStringHasAgeExpression(
+  content: string,
+  birthYearVars: string[],
+  ageVars: Set<string>,
+): boolean {
+  if (fStringReferencesVar(content, [...ageVars])) {
+    return true;
+  }
+
+  const expressions = [...content.matchAll(/\{([^}]+)\}/g)];
+  for (const match of expressions) {
+    const expr = (match[1] ?? "").trim();
+    if ([...ageVars].includes(expr)) {
+      return true;
+    }
+    if (expressionUsesBirthYearInSubtraction(expr, birthYearVars)) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+function hasAgeCalculation(
+  input: string,
+  birthYearVars: string[],
+): boolean {
+  if (hasAgeSubtraction(input, birthYearVars)) {
+    return true;
+  }
+
+  const fContent = findFStringPrintContent(input);
+  if (!fContent || birthYearVars.length === 0) {
+    return false;
+  }
+
+  const expressions = [...fContent.matchAll(/\{([^}]+)\}/g)];
+  for (const match of expressions) {
+    if (expressionUsesBirthYearInSubtraction(match[1] ?? "", birthYearVars)) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+function hasPrintCall(input: string): boolean {
+  return /\bprint\s*\(/.test(input);
+}
+
+function validateInputSumTwoNumbersMode(
+  input: string,
+  rules: StepValidation,
+): ValidationResult {
+  if (hasWrongCaseInput(input)) {
+    return { valid: false, message: pickHint(rules, "wrongCaseInput") };
+  }
+
+  const inputCount = countInputCalls(input);
+  if (inputCount < 2) {
+    return { valid: false, message: pickHint(rules, "missingInputCount") };
+  }
+
+  if (hasEmptyInputPrompt(input)) {
+    return { valid: false, message: pickHint(rules, "missingInputPrompt") };
+  }
+
+  const convertedCount = countConvertedInputCalls(input);
+  if (convertedCount < inputCount) {
+    return { valid: false, message: pickHint(rules, "missingInputConversion") };
+  }
+
+  if (!hasPrintCall(input)) {
+    return { valid: false, message: pickHint(rules, "missingInputSumPrint") };
+  }
+
+  if (!hasAdditionOutsideStrings(input)) {
+    return { valid: false, message: pickHint(rules, "missingAddition") };
+  }
+
+  return { valid: true };
+}
+
+function validateAgeCalculatorBasicMode(
+  input: string,
+  rules: StepValidation,
+): ValidationResult {
+  if (hasWrongCaseInput(input)) {
+    return { valid: false, message: pickHint(rules, "wrongCaseInput") };
+  }
+
+  const inputCount = countInputCalls(input);
+  if (inputCount < 1) {
+    return { valid: false, message: pickHint(rules, "missingAgeInput") };
+  }
+
+  const birthYearVars = collectBirthYearVariables(input);
+  const convertedCount = countConvertedInputCalls(input);
+  if (convertedCount < 1 || birthYearVars.length === 0) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingAgeInputConversion"),
+    };
+  }
+
+  if (!hasAgeSubtraction(input, birthYearVars)) {
+    return { valid: false, message: pickHint(rules, "missingAgeSubtraction") };
+  }
+
+  if (!hasPrintCall(input)) {
+    return { valid: false, message: pickHint(rules, "missingAgePrint") };
+  }
+
+  const ageVars = collectAgeResultVariables(input, birthYearVars);
+  if (!printShowsAgeResult(input, birthYearVars, ageVars)) {
+    return { valid: false, message: pickHint(rules, "missingAgeSubtraction") };
+  }
+
+  return { valid: true };
+}
+
+function validatePersonalizedAgeOutputMode(
+  input: string,
+  rules: StepValidation,
+): ValidationResult {
+  if (hasWrongCaseInput(input)) {
+    return { valid: false, message: pickHint(rules, "wrongCaseInput") };
+  }
+
+  const nameVars = collectPlainInputVariables(input);
+  const birthYearVars = collectBirthYearVariables(input);
+  const inputCount = countInputCalls(input);
+
+  if (nameVars.length === 0) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingPersonalizedNameInput"),
+    };
+  }
+
+  if (inputCount < 2) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingPersonalizedBirthYearInput"),
+    };
+  }
+
+  if (birthYearVars.length === 0) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingPersonalizedInputConversion"),
+    };
+  }
+
+  if (!hasPrintCall(input)) {
+    return { valid: false, message: pickHint(rules, "missingPersonalizedPrint") };
+  }
+
+  const fContent = findFStringPrintContent(input);
+  if (!fContent) {
+    return { valid: false, message: pickHint(rules, "missingFString") };
+  }
+
+  if (!fStringReferencesVar(fContent, nameVars)) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingPersonalizedFStringName"),
+    };
+  }
+
+  const ageVars = collectAgeResultVariables(input, birthYearVars);
+  if (!fStringHasAgeExpression(fContent, birthYearVars, ageVars)) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingPersonalizedFStringAge"),
+    };
+  }
+
+  if (!hasAgeCalculation(input, birthYearVars)) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingPersonalizedAgeSubtraction"),
+    };
+  }
+
+  if (!/merhaba/i.test(fContent) || !/yaşın|yasin/i.test(fContent)) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingPersonalizedFStringAge"),
+    };
+  }
+
+  return { valid: true };
+}
+
+function hasIfStatement(input: string): boolean {
+  return /^\s*if\s+/m.test(input);
+}
+
+function hasElifOrElse(input: string): boolean {
+  return /^\s*elif\s+/m.test(input) || /^\s*else\s*:/m.test(input);
+}
+
+function isAgeInputLine(line: string): boolean {
+  const trimmed = line.trim();
+  return (
+    /^(?:int|float)\s*\(\s*input\s*\(/i.test(trimmed) ||
+    /^[a-zA-Z_]\w*\s*=\s*(?:int|float)\s*\(\s*input/i.test(trimmed)
+  );
+}
+
+function collectPriceRuleSignatures(input: string): string[] {
+  const rules: string[] = [];
+  for (const line of nonEmptyLines(input)) {
+    if (isAgeInputLine(line)) {
+      continue;
+    }
+
+    const trimmed = line.trim();
+    const assignMatch = trimmed.match(
+      /^[a-zA-Z_]\w*\s*=\s*(-?\d+(?:\.\d+)?)\s*$/,
+    );
+    if (assignMatch) {
+      rules.push(`num:${assignMatch[1] ?? "0"}`);
+      continue;
+    }
+
+    const printNumMatch = trimmed.match(
+      /^print\s*\(\s*(-?\d+(?:\.\d+)?)\s*[,)]/i,
+    );
+    if (printNumMatch) {
+      rules.push(`num:${printNumMatch[1] ?? "0"}`);
+      continue;
+    }
+
+    const printStrMatch = trimmed.match(/^print\s*\(\s*(["'])([\s\S]*?)\1/i);
+    if (printStrMatch) {
+      rules.push(`str:${printStrMatch[2] ?? ""}`);
+    }
+  }
+  return rules;
+}
+
+function validateTicketPriceRulesMode(
+  input: string,
+  rules: StepValidation,
+): ValidationResult {
+  if (hasWrongCaseInput(input)) {
+    return { valid: false, message: pickHint(rules, "wrongCaseInput") };
+  }
+
+  if (countInputCalls(input) < 1) {
+    return { valid: false, message: pickHint(rules, "missingTicketAgeInput") };
+  }
+
+  if (countConvertedInputCalls(input) < 1) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingTicketInputConversion"),
+    };
+  }
+
+  if (!hasIfStatement(input)) {
+    return { valid: false, message: pickHint(rules, "missingTicketIf") };
+  }
+
+  if (!hasElifOrElse(input)) {
+    return { valid: false, message: pickHint(rules, "missingTicketSecondRule") };
+  }
+
+  if (!hasPrintCall(input)) {
+    return { valid: false, message: pickHint(rules, "missingTicketPrint") };
+  }
+
+  const priceRules = collectPriceRuleSignatures(input);
+  if (priceRules.length === 0) {
+    return { valid: false, message: pickHint(rules, "missingTicketPriceValue") };
+  }
+
+  if (new Set(priceRules).size < 2) {
+    return { valid: false, message: pickHint(rules, "missingTicketSecondRule") };
+  }
+
+  return { valid: true };
+}
+
+type ListDefinition = {
+  varName: string;
+  elementCount: number;
+};
+
+function hasWrongCaseAppend(input: string): boolean {
+  const matches = [
+    ...input.matchAll(/([a-zA-Z_]\w*)\s*\.\s*([a-zA-Z_]\w*)\s*\(/g),
+  ];
+  for (const match of matches) {
+    const method = match[2] ?? "";
+    if (method.toLowerCase() === "append" && method !== "append") {
+      return true;
+    }
+  }
+  return false;
+}
+
+function countListElements(inner: string): number {
+  const trimmed = inner.trim();
+  if (!trimmed) {
+    return 0;
+  }
+
+  const elements: string[] = [];
+  let current = "";
+  let inString: string | null = null;
+
+  for (let i = 0; i < trimmed.length; i++) {
+    const ch = trimmed[i] ?? "";
+    if (inString) {
+      current += ch;
+      if (ch === inString && trimmed[i - 1] !== "\\") {
+        inString = null;
+      }
+      continue;
+    }
+    if (ch === '"' || ch === "'") {
+      inString = ch;
+      current += ch;
+      continue;
+    }
+    if (ch === ",") {
+      if (current.trim()) {
+        elements.push(current.trim());
+      }
+      current = "";
+      continue;
+    }
+    current += ch;
+  }
+
+  if (current.trim()) {
+    elements.push(current.trim());
+  }
+
+  return elements.length;
+}
+
+function parseListDefinitions(input: string): ListDefinition[] {
+  const defs: ListDefinition[] = [];
+  for (const line of nonEmptyLines(input)) {
+    const match = line.match(/^\s*([a-zA-Z_]\w*)\s*=\s*\[(.*)\]\s*$/);
+    if (!match) {
+      continue;
+    }
+
+    defs.push({
+      varName: match[1] ?? "",
+      elementCount: countListElements(match[2] ?? ""),
+    });
+  }
+  return defs;
+}
+
+function findAppendCalls(input: string): { varName: string }[] {
+  const calls: { varName: string }[] = [];
+  for (const line of nonEmptyLines(input)) {
+    const match = line.match(/^\s*([a-zA-Z_]\w*)\s*\.\s*append\s*\(/i);
+    if (match) {
+      calls.push({ varName: match[1] ?? "" });
+    }
+  }
+  return calls;
+}
+
+function printUsesListVar(input: string, varName: string): boolean {
+  const pattern = new RegExp(
+    `^\\s*print\\s*\\(\\s*${varName}\\s*\\)\\s*$`,
+    "i",
+  );
+  return nonEmptyLines(input).some((line) => pattern.test(line));
+}
+
+function validateListAppendAndPrintMode(
+  input: string,
+  rules: StepValidation,
+): ValidationResult {
+  if (hasWrongCaseAppend(input)) {
+    return { valid: false, message: pickHint(rules, "wrongCaseAppend") };
+  }
+
+  const listDefs = parseListDefinitions(input);
+  const appendCalls = findAppendCalls(input);
+
+  if (listDefs.length === 0) {
+    return { valid: false, message: pickHint(rules, "missingListDefinition") };
+  }
+
+  const qualifiedLists = listDefs.filter((def) => def.elementCount >= 2);
+  if (qualifiedLists.length === 0) {
+    return { valid: false, message: pickHint(rules, "missingListMinElements") };
+  }
+
+  if (appendCalls.length === 0) {
+    return { valid: false, message: pickHint(rules, "missingListAppend") };
+  }
+
+  const matchingLists = qualifiedLists.filter((def) =>
+    appendCalls.some((call) => call.varName === def.varName),
+  );
+
+  if (matchingLists.length === 0) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingListAppendTarget"),
+    };
+  }
+
+  if (!hasPrintCall(input)) {
+    return { valid: false, message: pickHint(rules, "missingListPrint") };
+  }
+
+  const printedList = matchingLists.find((def) =>
+    printUsesListVar(input, def.varName),
+  );
+  if (!printedList) {
+    return { valid: false, message: pickHint(rules, "missingListPrint") };
+  }
+
+  return { valid: true };
+}
+
+function countAppendOnVar(input: string, varName: string): number {
+  const pattern = new RegExp(
+    `^\\s*${varName}\\s*\\.\\s*append\\s*\\(`,
+    "im",
+  );
+  return nonEmptyLines(input).filter((line) => pattern.test(line)).length;
+}
+
+function hasForLoopOverVar(input: string, varName: string): boolean {
+  return new RegExp(
+    `^\\s*for\\s+\\w+\\s+in\\s+${varName}\\s*:`,
+    "im",
+  ).test(input);
+}
+
+function hasPrintInsideForLoop(input: string): boolean {
+  const flat = nonEmptyLines(input);
+  for (let i = 0; i < flat.length; i++) {
+    if (!/^for\s+\w+\s+in\s+\w+/i.test(flat[i] ?? "")) {
+      continue;
+    }
+    for (let j = i + 1; j < flat.length; j++) {
+      if (/^(for|if|def|elif|else|while)\b/i.test(flat[j] ?? "")) {
+        break;
+      }
+      if (/^print\s*\(/i.test(flat[j] ?? "")) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+function hasLenPrintForList(input: string, varName: string): boolean {
+  return nonEmptyLines(input).some((line) => {
+    if (!/^print\s*\(/i.test(line)) {
+      return false;
+    }
+    return new RegExp(`len\\s*\\(\\s*${varName}\\s*\\)`, "i").test(line);
+  });
+}
+
+function validateListLoopSummaryMode(
+  input: string,
+  rules: StepValidation,
+): ValidationResult {
+  if (hasWrongCaseAppend(input)) {
+    return { valid: false, message: pickHint(rules, "wrongCaseAppend") };
+  }
+
+  const listDefs = parseListDefinitions(input);
+  if (listDefs.length === 0) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingListLoopDefinition"),
+    };
+  }
+
+  let primaryList = listDefs[0]!;
+  let maxAppends = countAppendOnVar(input, primaryList.varName);
+  for (const def of listDefs) {
+    const appendCount = countAppendOnVar(input, def.varName);
+    if (appendCount > maxAppends) {
+      maxAppends = appendCount;
+      primaryList = def;
+    }
+  }
+
+  const varName = primaryList.varName;
+
+  if (maxAppends === 0) {
+    return { valid: false, message: pickHint(rules, "missingListLoopAppend") };
+  }
+
+  if (maxAppends < 2) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingListLoopAppendCount"),
+    };
+  }
+
+  if (!hasForLoopOverVar(input, varName)) {
+    return { valid: false, message: pickHint(rules, "missingListLoopFor") };
+  }
+
+  if (!hasPrintInsideForLoop(input)) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingListLoopForPrint"),
+    };
+  }
+
+  if (!hasLenPrintForList(input, varName)) {
+    return { valid: false, message: pickHint(rules, "missingListLoopLen") };
+  }
+
+  if (!hasPrintCall(input)) {
+    return { valid: false, message: pickHint(rules, "missingListLoopPrint") };
+  }
+
+  return { valid: true };
+}
+
 function hasWrongCasePrint(input: string): boolean {
   const matches = [...input.matchAll(/([a-zA-Z_]\w*)\s*\(/g)];
   for (const match of matches) {
@@ -251,6 +1069,11 @@ function findUndefinedVariableInPrint(
   const ids = [...remaining.matchAll(/\b([a-zA-Z_]\w*)\b/g)];
   for (const match of ids) {
     const id = match[1] ?? "";
+    const start = match.index ?? 0;
+    const rest = remaining.slice(start + id.length).trimStart();
+    if (rest.startsWith("(")) {
+      continue;
+    }
     if (!ASSIGNMENT_VALUE_SKIP.has(id) && !definedVars.has(id)) {
       return id;
     }
@@ -337,6 +1160,11 @@ function parseSubmission(
   let fStringPrintCount = 0;
 
   for (const line of lines) {
+    const forMatch = line.match(/^\s*for\s+([a-zA-Z_]\w*)\s+in\b/);
+    if (forMatch?.[1]) {
+      definedVars.add(forMatch[1]);
+    }
+
     const assignMatch = line.match(ASSIGNMENT_LINE_PARSE);
     if (assignMatch) {
       const name = assignMatch[1] ?? "";
@@ -655,6 +1483,418 @@ function validateExtendedProfileCardMode(
   return { valid: true };
 }
 
+function extractFunctionDefs(
+  input: string,
+): { name: string; params: string[] }[] {
+  const results: { name: string; params: string[] }[] = [];
+  for (const line of nonEmptyLines(input)) {
+    const match = line.match(/^\s*def\s+([a-zA-Z_]\w*)\s*\(([^)]*)\)/);
+    if (!match) continue;
+    const params = (match[2] ?? "")
+      .split(",")
+      .map((part) => (part.trim().split("=")[0] ?? "").trim())
+      .filter((part) => part.length > 0 && part !== "self");
+    results.push({ name: match[1] ?? "", params });
+  }
+  return results;
+}
+
+function getReturnExpressions(input: string): string[] {
+  return nonEmptyLines(input)
+    .filter((line) => /^\s*return\b/.test(line))
+    .map((line) => line.replace(/^\s*return\s+/, "").trim());
+}
+
+function returnUsesParam(expression: string, params: string[]): boolean {
+  const stripped = stripStringLiteralsFromArgs(expression);
+  for (const param of params) {
+    if (new RegExp(`\\{${param}\\}`, "i").test(expression)) {
+      return true;
+    }
+    if (new RegExp(`\\b${param}\\b`, "i").test(stripped)) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function hasDefinedFunctionCallWithString(
+  input: string,
+  funcName: string,
+): boolean {
+  return new RegExp(
+    `\\b${funcName}\\s*\\(\\s*["'][^"']*["']\\s*\\)`,
+    "i",
+  ).test(input);
+}
+
+function validateFunctionReturnAndPrintMode(
+  input: string,
+  rules: StepValidation,
+): ValidationResult {
+  const defs = extractFunctionDefs(input);
+  if (defs.length === 0) {
+    return { valid: false, message: pickHint(rules, "missingFunctionDef") };
+  }
+
+  const primary = defs[0]!;
+  if (primary.params.length === 0) {
+    return { valid: false, message: pickHint(rules, "missingFunctionParam") };
+  }
+
+  const returns = getReturnExpressions(input);
+  if (returns.length === 0) {
+    return { valid: false, message: pickHint(rules, "missingFunctionReturn") };
+  }
+
+  const returnExpr = returns[0]!;
+  if (!returnUsesParam(returnExpr, primary.params)) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingFunctionParamInReturn"),
+    };
+  }
+
+  if (!/merhaba/i.test(returnExpr)) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingFunctionGreeting"),
+    };
+  }
+
+  const called = defs.some((def) =>
+    hasDefinedFunctionCallWithString(input, def.name),
+  );
+  if (!called) {
+    return { valid: false, message: pickHint(rules, "missingFunctionCall") };
+  }
+
+  if (!hasPrintCall(input)) {
+    return { valid: false, message: pickHint(rules, "missingFunctionPrint") };
+  }
+
+  return { valid: true };
+}
+
+function getFunctionReturnMap(input: string): Map<string, string | undefined> {
+  const result = new Map<string, string | undefined>();
+  const lines = nonEmptyLines(input);
+  let currentFunc: string | null = null;
+
+  for (const line of lines) {
+    const defMatch = line.match(/^\s*def\s+([a-zA-Z_]\w*)\s*\(/);
+    if (defMatch?.[1]) {
+      currentFunc = defMatch[1];
+      result.set(currentFunc, undefined);
+      continue;
+    }
+    if (currentFunc && /^\s*return\b/.test(line)) {
+      result.set(currentFunc, line.replace(/^\s*return\s+/, "").trim());
+      continue;
+    }
+    if (/^\s*print\s*\(/i.test(line)) {
+      currentFunc = null;
+    }
+  }
+
+  return result;
+}
+
+function validateReturnFStringParams(
+  expr: string,
+  params: string[],
+  rules: StepValidation,
+): ValidationResult | null {
+  const match = expr.match(/^f(["'])([\s\S]*)\1\s*$/);
+  if (!match) return null;
+
+  const content = match[2] ?? "";
+  const varRefs = [...content.matchAll(FSTRING_VAR_REF)].map((m) => m[1] ?? "");
+  const allowed = new Set(params);
+
+  for (const varName of varRefs) {
+    if (!allowed.has(varName)) {
+      return {
+        valid: false,
+        message: pickHint(rules, "undefinedFunctionFStringVariable"),
+      };
+    }
+  }
+
+  return null;
+}
+
+function isFunctionPrinted(input: string, funcName: string): boolean {
+  return new RegExp(`print\\s*\\(\\s*${funcName}\\s*\\(`, "i").test(input);
+}
+
+function validateTwoGreetingFunctionsMode(
+  input: string,
+  rules: StepValidation,
+): ValidationResult {
+  const defs = extractFunctionDefs(input);
+  if (defs.length < 2) {
+    return { valid: false, message: pickHint(rules, "missingTwoFunctions") };
+  }
+
+  const oneParamFunc = defs.find((d) => d.params.length === 1);
+  const twoParamFunc = defs.find((d) => d.params.length === 2);
+
+  if (!oneParamFunc) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingGreetingOneParam"),
+    };
+  }
+  if (!twoParamFunc) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingGreetingTwoParam"),
+    };
+  }
+
+  const returnMap = getFunctionReturnMap(input);
+  const targets = [oneParamFunc, twoParamFunc];
+
+  for (const func of targets) {
+    const returnExpr = returnMap.get(func.name);
+    if (!returnExpr) {
+      return {
+        valid: false,
+        message: pickHint(rules, "missingTwoFunctionReturn"),
+      };
+    }
+
+    const fStringError = validateReturnFStringParams(
+      returnExpr,
+      func.params,
+      rules,
+    );
+    if (fStringError) return fStringError;
+
+    if (!returnUsesParam(returnExpr, func.params)) {
+      return {
+        valid: false,
+        message: pickHint(rules, "missingTwoFunctionParamInReturn"),
+      };
+    }
+  }
+
+  for (const func of targets) {
+    if (!isFunctionPrinted(input, func.name)) {
+      return {
+        valid: false,
+        message: pickHint(rules, "missingTwoFunctionCall"),
+      };
+    }
+  }
+
+  const printCount = nonEmptyLines(input).filter((line) =>
+    /^print\s*\(/i.test(line),
+  ).length;
+  if (printCount < 2) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingTwoFunctionPrint"),
+    };
+  }
+
+  return { valid: true };
+}
+
+function extractGlobalAssignmentsBeforeDef(input: string): Set<string> {
+  const globals = new Set<string>();
+  for (const line of nonEmptyLines(input)) {
+    if (/^\s*def\s+/.test(line)) break;
+    const assignMatch = line.match(ASSIGNMENT_LINE_PARSE);
+    if (assignMatch?.[1]) {
+      globals.add(assignMatch[1]);
+    }
+  }
+  return globals;
+}
+
+function getFunctionBodyLines(input: string, funcName: string): string[] {
+  const lines = nonEmptyLines(input);
+  const body: string[] = [];
+  let capturing = false;
+
+  for (const line of lines) {
+    if (new RegExp(`^\\s*def\\s+${funcName}\\s*\\(`).test(line)) {
+      capturing = true;
+      continue;
+    }
+    if (!capturing) continue;
+    if (/^\s*def\s+\w/.test(line)) break;
+    if (new RegExp(`^\\s*${funcName}\\s*\\(`).test(line)) break;
+    body.push(line);
+  }
+
+  return body;
+}
+
+function countTopLevelFunctionCalls(input: string, funcName: string): number {
+  return nonEmptyLines(input).filter((line) => {
+    if (/^\s*def\s+/.test(line)) return false;
+    return new RegExp(`\\b${funcName}\\s*\\(`, "i").test(line);
+  }).length;
+}
+
+function getTopLevelLinesAfterFunction(
+  input: string,
+  funcName: string,
+): string[] {
+  const lines = nonEmptyLines(input);
+  let lastCallIdx = -1;
+
+  for (let i = 0; i < lines.length; i++) {
+    if (/^\s*def\s+/.test(lines[i] ?? "")) continue;
+    if (new RegExp(`\\b${funcName}\\s*\\(`, "i").test(lines[i] ?? "")) {
+      lastCallIdx = i;
+    }
+  }
+
+  if (lastCallIdx < 0) return [];
+  return lines.slice(lastCallIdx + 1);
+}
+
+function checkFStringLineScopes(
+  line: string,
+  allowed: Set<string>,
+  rules: StepValidation,
+): ValidationResult | null {
+  const fMatch = line.match(/print\s*\(\s*f(["'])([\s\S]*?)\1/);
+  if (!fMatch) return null;
+
+  const refs = [...(fMatch[2] ?? "").matchAll(FSTRING_VAR_REF)].map(
+    (m) => m[1] ?? "",
+  );
+  for (const ref of refs) {
+    if (!allowed.has(ref)) {
+      return {
+        valid: false,
+        message: pickHint(rules, "undefinedQuizFStringVariable"),
+      };
+    }
+  }
+
+  return null;
+}
+
+function validateQuizFStrings(
+  input: string,
+  func: { name: string; params: string[] },
+  globalVars: Set<string>,
+  rules: StepValidation,
+): ValidationResult | null {
+  const allowed = new Set([...globalVars, ...func.params]);
+  const bodyVars = new Set<string>();
+
+  for (const line of getFunctionBodyLines(input, func.name)) {
+    const globalMatch = line.match(/^\s*global\s+(.+)/);
+    if (globalMatch) {
+      globalMatch[1]
+        .split(",")
+        .forEach((name) => allowed.add(name.trim()));
+    }
+
+    const assignMatch = line.match(ASSIGNMENT_LINE_PARSE);
+    if (assignMatch?.[1]) {
+      bodyVars.add(assignMatch[1]);
+    }
+
+    const err = checkFStringLineScopes(
+      line,
+      new Set([...allowed, ...bodyVars]),
+      rules,
+    );
+    if (err) return err;
+  }
+
+  const topGlobals = new Set(globalVars);
+  for (const line of getTopLevelLinesAfterFunction(input, func.name)) {
+    const assignMatch = line.match(ASSIGNMENT_LINE_PARSE);
+    if (assignMatch?.[1]) {
+      topGlobals.add(assignMatch[1]);
+    }
+
+    const err = checkFStringLineScopes(line, topGlobals, rules);
+    if (err) return err;
+  }
+
+  return null;
+}
+
+function findQuizFunction(
+  defs: { name: string; params: string[] }[],
+): { name: string; params: string[] } | null {
+  const named = defs.find((d) => d.name === "soru_sor");
+  if (named) return named;
+  return defs.find((d) => d.params.length >= 2) ?? null;
+}
+
+function validateQuizFunctionProjectMode(
+  input: string,
+  rules: StepValidation,
+): ValidationResult {
+  if (hasWrongCaseInput(input)) {
+    return { valid: false, message: pickHint(rules, "wrongCaseInput") };
+  }
+
+  const defs = extractFunctionDefs(input);
+  if (defs.length === 0) {
+    return { valid: false, message: pickHint(rules, "missingQuizFunction") };
+  }
+
+  const quizFunc = findQuizFunction(defs);
+  if (!quizFunc) {
+    return { valid: false, message: pickHint(rules, "missingQuizFunction") };
+  }
+
+  if (quizFunc.params.length < 2) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingQuizTwoParams"),
+    };
+  }
+
+  const bodyLines = getFunctionBodyLines(input, quizFunc.name);
+  const bodyText = bodyLines.join("\n");
+
+  if (!/input\s*\(/i.test(bodyText)) {
+    return { valid: false, message: pickHint(rules, "missingQuizInput") };
+  }
+
+  if (!/^\s*if\s+/im.test(bodyText)) {
+    return { valid: false, message: pickHint(rules, "missingQuizIf") };
+  }
+
+  if (countTopLevelFunctionCalls(input, quizFunc.name) < 2) {
+    return { valid: false, message: pickHint(rules, "missingQuizTwoCalls") };
+  }
+
+  const topLevelAfter = getTopLevelLinesAfterFunction(input, quizFunc.name);
+  const hasEndingMessage = topLevelAfter.some((line) =>
+    /^print\s*\(/i.test(line),
+  );
+  if (!hasEndingMessage) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingQuizEndingMessage"),
+    };
+  }
+
+  const globalVars = extractGlobalAssignmentsBeforeDef(input);
+  const fStringError = validateQuizFStrings(input, quizFunc, globalVars, rules);
+  if (fStringError) return fStringError;
+
+  if (!hasPrintCall(input)) {
+    return { valid: false, message: pickHint(rules, "missingQuizPrint") };
+  }
+
+  return { valid: true };
+}
+
 function validateMiniProjectMode(
   input: string,
   rules: StepValidation,
@@ -813,6 +2053,24 @@ function validateByMode(
       return validateExtendedProfileCardMode(input, rules);
     case "miniProject":
       return validateMiniProjectMode(input, rules);
+    case "inputSumTwoNumbers":
+      return validateInputSumTwoNumbersMode(input, rules);
+    case "ageCalculatorBasic":
+      return validateAgeCalculatorBasicMode(input, rules);
+    case "personalizedAgeOutput":
+      return validatePersonalizedAgeOutputMode(input, rules);
+    case "ticketPriceRules":
+      return validateTicketPriceRulesMode(input, rules);
+    case "listAppendAndPrint":
+      return validateListAppendAndPrintMode(input, rules);
+    case "listLoopSummary":
+      return validateListLoopSummaryMode(input, rules);
+    case "functionReturnAndPrint":
+      return validateFunctionReturnAndPrintMode(input, rules);
+    case "twoGreetingFunctions":
+      return validateTwoGreetingFunctionsMode(input, rules);
+    case "quizFunctionProject":
+      return validateQuizFunctionProjectMode(input, rules);
     default:
       return { valid: true };
   }
@@ -841,7 +2099,10 @@ function inferTaskRequirements(step: LessonStep, rules: StepValidation): void {
 
   if (
     rules.mustIncludeDef === undefined &&
-    (/\bdef\s/.test(checklist) || /\bdef\s+\w/.test(taskText))
+    (/\bdef\s/.test(checklist) ||
+      /\bdef\s+\w/.test(taskText) ||
+      /\bfonksiyon/.test(checklist) ||
+      /\bfonksiyon/.test(taskText))
   ) {
     rules.mustIncludeDef = true;
   }
@@ -920,6 +2181,42 @@ function inferValidationMode(
     return "extendedProfileCard";
   }
 
+  if (taskRequiresPersonalizedAgeOutput(checklist, taskText)) {
+    return "personalizedAgeOutput";
+  }
+
+  if (taskRequiresTicketPriceRules(checklist, taskText)) {
+    return "ticketPriceRules";
+  }
+
+  if (taskRequiresListAppendAndPrint(checklist, taskText)) {
+    return "listAppendAndPrint";
+  }
+
+  if (taskRequiresListLoopSummary(checklist, taskText)) {
+    return "listLoopSummary";
+  }
+
+  if (taskRequiresFunctionReturnAndPrint(checklist, taskText)) {
+    return "functionReturnAndPrint";
+  }
+
+  if (taskRequiresTwoGreetingFunctions(checklist, taskText)) {
+    return "twoGreetingFunctions";
+  }
+
+  if (taskRequiresQuizFunctionProject(checklist, taskText)) {
+    return "quizFunctionProject";
+  }
+
+  if (
+    rules.mustIncludeDef ||
+    rules.mustIncludeLoop ||
+    rules.mustIncludeIf
+  ) {
+    return "miniProject";
+  }
+
   if (taskRequiresFString(checklist, taskText, rules)) {
     return "fStringIntro";
   }
@@ -963,6 +2260,25 @@ function inferValidationMode(
 
   if (rules.mustIncludePrint && !rules.mustIncludeAssignment) {
     return "printStringLiteral";
+  }
+
+  if (
+    /\biki input\b/.test(countSource) &&
+    /int\s*\(|float\s*\(/.test(countSource) &&
+    /topla|toplam/.test(countSource)
+  ) {
+    return "inputSumTwoNumbers";
+  }
+
+  if (
+    (/doğum yıl|dogum yil/.test(countSource) ||
+      /doğum yıl|dogum yil/.test(taskText)) &&
+    (/yaş|yas/.test(countSource) || /yaş|yas/.test(taskText)) &&
+    (/hesap|çıkar|çıkarma|yazdır/.test(countSource) ||
+      /hesap|çıkar|yazdır/.test(taskText)) &&
+    !taskRequiresFString(checklist, taskText, rules)
+  ) {
+    return "ageCalculatorBasic";
   }
 
   if (step.type === "project-step") {
@@ -1023,7 +2339,135 @@ function applyModeDefaults(rules: StepValidation): void {
       break;
     case "miniProject":
       break;
+    case "inputSumTwoNumbers":
+      rules.mustIncludePrint = true;
+      rules.mustLookLikePython = true;
+      break;
+    case "ageCalculatorBasic":
+      rules.mustIncludePrint = true;
+      rules.mustLookLikePython = true;
+      break;
+    case "personalizedAgeOutput":
+      rules.mustIncludePrint = true;
+      rules.mustLookLikePython = true;
+      rules.requiresFString = true;
+      break;
+    case "ticketPriceRules":
+      rules.mustIncludePrint = true;
+      rules.mustLookLikePython = true;
+      rules.mustIncludeIf = true;
+      break;
+    case "listAppendAndPrint":
+      rules.mustIncludePrint = true;
+      rules.mustLookLikePython = true;
+      rules.mustIncludeAssignment = true;
+      break;
+    case "listLoopSummary":
+      rules.mustIncludePrint = true;
+      rules.mustLookLikePython = true;
+      rules.mustIncludeLoop = true;
+      break;
+    case "functionReturnAndPrint":
+      rules.mustLookLikePython = true;
+      break;
+    case "twoGreetingFunctions":
+      rules.mustLookLikePython = true;
+      break;
+    case "quizFunctionProject":
+      rules.mustLookLikePython = true;
+      break;
   }
+}
+
+function taskRequiresListLoopSummary(
+  checklist: string,
+  taskText: string,
+): boolean {
+  const countSource = `${checklist} ${taskText}`;
+  return (
+    /append/.test(countSource) &&
+    (/for|döngü/.test(countSource)) &&
+    (/len|toplam|ürün sayısı|satırda/.test(countSource))
+  );
+}
+
+function taskRequiresFunctionReturnAndPrint(
+  checklist: string,
+  taskText: string,
+): boolean {
+  const source = `${checklist} ${taskText}`;
+  return (
+    (/def|fonksiyon/.test(source)) &&
+    (/return|döndür/.test(source)) &&
+    (/print|yazdır/.test(source)) &&
+    (/parametre|isim/.test(source) || /merhaba/.test(source)) &&
+    !/iki.*fonksiyon|2 fonksiyon|resmi_selam/i.test(source)
+  );
+}
+
+function taskRequiresTwoGreetingFunctions(
+  checklist: string,
+  taskText: string,
+): boolean {
+  const source = `${checklist} ${taskText}`;
+  return (
+    (/iki.*fonksiyon|2 fonksiyon|ikisini de/i.test(source)) &&
+    (/def|fonksiyon/.test(source)) &&
+    (/çağır|yazdır|print/.test(source))
+  );
+}
+
+function taskRequiresQuizFunctionProject(
+  checklist: string,
+  taskText: string,
+): boolean {
+  const source = `${checklist} ${taskText}`;
+  return (
+    (/soru_sor|quiz/.test(source)) &&
+    (/fonksiyon|def/.test(source)) &&
+    (/en az 2 soru|2 soru|iki soru/.test(source)) &&
+    (/bitiş|bitis/.test(source))
+  );
+}
+
+function taskRequiresListAppendAndPrint(
+  checklist: string,
+  taskText: string,
+): boolean {
+  const countSource = `${checklist} ${taskText}`;
+  return (
+    /liste/.test(countSource) &&
+    /append/.test(countSource) &&
+    (/yazdır|print|eleman/.test(countSource))
+  );
+}
+
+function taskRequiresTicketPriceRules(
+  checklist: string,
+  taskText: string,
+): boolean {
+  const countSource = `${checklist} ${taskText}`;
+  return (
+    (/fiyat/.test(countSource)) &&
+    (/if|elif|else|koşul/.test(countSource)) &&
+    (/yaş|yas/.test(countSource))
+  );
+}
+
+function taskRequiresPersonalizedAgeOutput(
+  checklist: string,
+  taskText: string,
+): boolean {
+  const hasNameAndAgeFormat =
+    /merhaba/.test(taskText) && /yaşın|yasin/.test(taskText);
+  const hasInputAgeFString =
+    /f-string/.test(checklist) &&
+    (/doğum yıl|dogum yil/.test(checklist) ||
+      /doğum yıl|dogum yil/.test(taskText)) &&
+    (/isim|ad\b|kullanıcı ad/.test(checklist) ||
+      /kullanıcı ad|isim|adını/.test(taskText));
+
+  return hasNameAndAgeFormat || hasInputAgeFString;
 }
 
 function taskRequiresFString(
@@ -1328,6 +2772,600 @@ export const CODE_VALIDATION_FIXTURES: {
     input: 'aktif = true\nprint(f"Aktif: {aktif}")',
     expectValid: false,
     expectMessage: /boolean|True|False/,
+  },
+  {
+    name: "inputSumTwoNumbers — tam çözüm kabul",
+    mode: "inputSumTwoNumbers",
+    input:
+      'sayi1 = int(input("Birinci sayıyı gir: "))\nsayi2 = int(input("İkinci sayıyı gir: "))\ntoplam = sayi1 + sayi2\nprint("Toplam:", toplam)',
+    expectValid: true,
+  },
+  {
+    name: "inputSumTwoNumbers — kısa çözüm kabul",
+    mode: "inputSumTwoNumbers",
+    input:
+      'a = int(input("İlk sayı: "))\nb = int(input("İkinci sayı: "))\nprint("Sonuç:", a + b)',
+    expectValid: true,
+  },
+  {
+    name: "inputSumTwoNumbers — float kabul",
+    mode: "inputSumTwoNumbers",
+    input:
+      'x = float(input("Birinci sayı: "))\ny = float(input("İkinci sayı: "))\nprint("Toplam:", x + y)',
+    expectValid: true,
+  },
+  {
+    name: "inputSumTwoNumbers — int/float yok ret",
+    mode: "inputSumTwoNumbers",
+    input:
+      'a = input("İlk sayı: ")\nb = input("İkinci sayı: ")\nprint(a + b)',
+    expectValid: false,
+    expectMessage: /sayıya çevir/,
+  },
+  {
+    name: "inputSumTwoNumbers — tek input ret",
+    mode: "inputSumTwoNumbers",
+    input: 'a = int(input("İlk sayı: "))\nprint(a)',
+    expectValid: false,
+    expectMessage: /iki input/,
+  },
+  {
+    name: "inputSumTwoNumbers — print yok ret",
+    mode: "inputSumTwoNumbers",
+    input:
+      'a = int(input("İlk sayı: "))\nb = int(input("İkinci sayı: "))\ntoplam = a + b',
+    expectValid: false,
+    expectMessage: /print/,
+  },
+  {
+    name: "inputSumTwoNumbers — toplama yok ret",
+    mode: "inputSumTwoNumbers",
+    input:
+      'a = int(input("İlk sayı: "))\nb = int(input("İkinci sayı: "))\nprint(a)',
+    expectValid: false,
+    expectMessage: /\+/,
+  },
+  {
+    name: "inputSumTwoNumbers — boş prompt ret",
+    mode: "inputSumTwoNumbers",
+    input: "a = int(input())\nb = int(input())\nprint(a + b)",
+    expectValid: false,
+    expectMessage: /input\(\) içine/,
+  },
+  {
+    name: "inputSumTwoNumbers — Print büyük harf ret",
+    mode: "inputSumTwoNumbers",
+    input:
+      'a = int(input("İlk sayı: "))\nb = int(input("İkinci sayı: "))\nPrint(a + b)',
+    expectValid: false,
+    expectMessage: /print küçük harfle/,
+  },
+  {
+    name: "ageCalculatorBasic — kısa çözüm kabul",
+    mode: "ageCalculatorBasic",
+    input: "dogum_yili = int(input())\nprint(2026 - dogum_yili)",
+    expectValid: true,
+  },
+  {
+    name: "ageCalculatorBasic — promptlu çözüm kabul",
+    mode: "ageCalculatorBasic",
+    input:
+      'dogum_yili = int(input("Doğum yılını gir: "))\nyas = 2026 - dogum_yili\nprint(yas)',
+    expectValid: true,
+  },
+  {
+    name: "ageCalculatorBasic — farklı değişken adı kabul",
+    mode: "ageCalculatorBasic",
+    input:
+      'yil = int(input("Doğum yılın: "))\nprint(2026 - yil)',
+    expectValid: true,
+  },
+  {
+    name: "ageCalculatorBasic — etiketli print kabul",
+    mode: "ageCalculatorBasic",
+    input:
+      'dogum_yili = int(input("Doğum yılını gir: "))\nyas = 2026 - dogum_yili\nprint("Yaşın:", yas)',
+    expectValid: true,
+  },
+  {
+    name: "ageCalculatorBasic — int yok ret",
+    mode: "ageCalculatorBasic",
+    input: "dogum_yili = input()\nprint(2026 - dogum_yili)",
+    expectValid: false,
+    expectMessage: /sayıya çevir/,
+  },
+  {
+    name: "ageCalculatorBasic — çıkarma yok ret",
+    mode: "ageCalculatorBasic",
+    input: "dogum_yili = int(input())\nprint(dogum_yili)",
+    expectValid: false,
+    expectMessage: /çıkarmalısın/,
+  },
+  {
+    name: "ageCalculatorBasic — print yok ret",
+    mode: "ageCalculatorBasic",
+    input: "dogum_yili = int(input())\nyas = 2026 - dogum_yili",
+    expectValid: false,
+    expectMessage: /print/,
+  },
+  {
+    name: "ageCalculatorBasic — Print büyük harf ret",
+    mode: "ageCalculatorBasic",
+    input: "dogum_yili = int(input())\nPrint(2026 - dogum_yili)",
+    expectValid: false,
+    expectMessage: /print küçük harfle/,
+  },
+  {
+    name: "ageCalculatorBasic — Input büyük harf ret",
+    mode: "ageCalculatorBasic",
+    input: "dogum_yili = int(Input())\nprint(2026 - dogum_yili)",
+    expectValid: false,
+    expectMessage: /input küçük harfle/,
+  },
+  {
+    name: "personalizedAgeOutput — kullanıcı cevabı kabul",
+    mode: "personalizedAgeOutput",
+    input:
+      'isim = input()\ndogum_yili = int(input())\nyas = 2026 - dogum_yili\nprint(f"Merhaba {isim}, yaşın {yas}")',
+    expectValid: true,
+  },
+  {
+    name: "personalizedAgeOutput — promptlu çözüm kabul",
+    mode: "personalizedAgeOutput",
+    input:
+      'ad = input("Adın: ")\ndogum_yili = int(input("Doğum yılın: "))\nyas = 2026 - dogum_yili\nprint(f"Merhaba {ad}, yaşın {yas}")',
+    expectValid: true,
+  },
+  {
+    name: "personalizedAgeOutput — yaş hesabı print içinde kabul",
+    mode: "personalizedAgeOutput",
+    input:
+      'isim = input("Adını yaz: ")\nyil = int(input("Doğum yılını yaz: "))\nprint(f"Merhaba {isim}, yaşın {2026 - yil}")',
+    expectValid: true,
+  },
+  {
+    name: "personalizedAgeOutput — int yok ret",
+    mode: "personalizedAgeOutput",
+    input:
+      'isim = input()\ndogum_yili = input()\nyas = 2026 - dogum_yili\nprint(f"Merhaba {isim}, yaşın {yas}")',
+    expectValid: false,
+    expectMessage: /sayıya çevir/,
+  },
+  {
+    name: "personalizedAgeOutput — f-string yok ret",
+    mode: "personalizedAgeOutput",
+    input:
+      'isim = input()\ndogum_yili = int(input())\nyas = 2026 - dogum_yili\nprint("Merhaba {isim}, yaşın {yas}")',
+    expectValid: false,
+    expectMessage: /f-string/,
+  },
+  {
+    name: "personalizedAgeOutput — yaş yazdırılmıyor ret",
+    mode: "personalizedAgeOutput",
+    input:
+      'isim = input()\ndogum_yili = int(input())\nprint(f"Merhaba {isim}")',
+    expectValid: false,
+    expectMessage: /yaşı da kullanmalısın/,
+  },
+  {
+    name: "personalizedAgeOutput — print yok ret",
+    mode: "personalizedAgeOutput",
+    input:
+      "isim = input()\ndogum_yili = int(input())\nyas = 2026 - dogum_yili",
+    expectValid: false,
+    expectMessage: /print/,
+  },
+  {
+    name: "personalizedAgeOutput — Print büyük harf ret",
+    mode: "personalizedAgeOutput",
+    input:
+      'isim = input()\ndogum_yili = int(input())\nyas = 2026 - dogum_yili\nPrint(f"Merhaba {isim}, yaşın {yas}")',
+    expectValid: false,
+    expectMessage: /print küçük harfle/,
+  },
+  {
+    name: "personalizedAgeOutput — Input büyük harf ret",
+    mode: "personalizedAgeOutput",
+    input:
+      'isim = Input()\ndogum_yili = int(input())\nyas = 2026 - dogum_yili\nprint(f"Merhaba {isim}, yaşın {yas}")',
+    expectValid: false,
+    expectMessage: /input küçük harfle/,
+  },
+  {
+    name: "ticketPriceRules — kullanıcı cevabı kabul",
+    mode: "ticketPriceRules",
+    input:
+      "yas = int(input())\n\nif yas <= 12:\n    fiyat = 0\nelif 13 <= yas <= 17:\n    fiyat = 50\nelse:\n    fiyat = 100\n\nprint(fiyat)",
+    expectValid: true,
+  },
+  {
+    name: "ticketPriceRules — iki kural kabul",
+    mode: "ticketPriceRules",
+    input:
+      'yas = int(input("Yaşını gir: "))\n\nif yas < 18:\n    fiyat = 50\nelse:\n    fiyat = 100\n\nprint(fiyat)',
+    expectValid: true,
+  },
+  {
+    name: "ticketPriceRules — doğrudan print kabul",
+    mode: "ticketPriceRules",
+    input:
+      'yas = int(input("Yaş: "))\n\nif yas <= 12:\n    print(0)\nelse:\n    print(100)',
+    expectValid: true,
+  },
+  {
+    name: "ticketPriceRules — üç kademe kabul",
+    mode: "ticketPriceRules",
+    input:
+      'yas = int(input("Yaşını gir: "))\n\nif yas < 7:\n    fiyat = 0\nelif yas < 18:\n    fiyat = 50\nelse:\n    fiyat = 100\n\nprint("Bilet fiyatı:", fiyat)',
+    expectValid: true,
+  },
+  {
+    name: "ticketPriceRules — int yok ret",
+    mode: "ticketPriceRules",
+    input:
+      "yas = input()\nif yas < 18:\n    fiyat = 50\nelse:\n    fiyat = 100\nprint(fiyat)",
+    expectValid: false,
+    expectMessage: /sayıya çevir/,
+  },
+  {
+    name: "ticketPriceRules — koşul yok ret",
+    mode: "ticketPriceRules",
+    input: "yas = int(input())\nfiyat = 100\nprint(fiyat)",
+    expectValid: false,
+    expectMessage: /if koşulu/,
+  },
+  {
+    name: "ticketPriceRules — ikinci kural yok ret",
+    mode: "ticketPriceRules",
+    input: "yas = int(input())\nif yas < 18:\n    fiyat = 50\n\nprint(fiyat)",
+    expectValid: false,
+    expectMessage: /2 farklı fiyat kuralı/,
+  },
+  {
+    name: "ticketPriceRules — print yok ret",
+    mode: "ticketPriceRules",
+    input:
+      "yas = int(input())\nif yas < 18:\n    fiyat = 50\nelse:\n    fiyat = 100",
+    expectValid: false,
+    expectMessage: /print/,
+  },
+  {
+    name: "ticketPriceRules — Print büyük harf ret",
+    mode: "ticketPriceRules",
+    input:
+      "yas = int(input())\nif yas < 18:\n    fiyat = 50\nelse:\n    fiyat = 100\n\nPrint(fiyat)",
+    expectValid: false,
+    expectMessage: /print küçük harfle/,
+  },
+  {
+    name: "listAppendAndPrint — kullanıcı cevabı kabul",
+    mode: "listAppendAndPrint",
+    input:
+      'sehirler = ["İstanbul", "Ankara"]\nsehirler.append("İzmir")\nprint(sehirler)',
+    expectValid: true,
+  },
+  {
+    name: "listAppendAndPrint — farklı liste adı kabul",
+    mode: "listAppendAndPrint",
+    input: 'liste = ["ekmek", "süt"]\nliste.append("yumurta")\nprint(liste)',
+    expectValid: true,
+  },
+  {
+    name: "listAppendAndPrint — tek tırnak kabul",
+    mode: "listAppendAndPrint",
+    input:
+      "alisveris = ['elma', 'muz']\nalisveris.append('armut')\nprint(alisveris)",
+    expectValid: true,
+  },
+  {
+    name: "listAppendAndPrint — tek eleman ret",
+    mode: "listAppendAndPrint",
+    input:
+      'sehirler = ["İstanbul"]\nsehirler.append("İzmir")\nprint(sehirler)',
+    expectValid: false,
+    expectMessage: /en az 2 eleman/,
+  },
+  {
+    name: "listAppendAndPrint — append yok ret",
+    mode: "listAppendAndPrint",
+    input: 'sehirler = ["İstanbul", "Ankara"]\nprint(sehirler)',
+    expectValid: false,
+    expectMessage: /append/,
+  },
+  {
+    name: "listAppendAndPrint — print yok ret",
+    mode: "listAppendAndPrint",
+    input:
+      'sehirler = ["İstanbul", "Ankara"]\nsehirler.append("İzmir")',
+    expectValid: false,
+    expectMessage: /print/,
+  },
+  {
+    name: "listAppendAndPrint — Append büyük harf ret",
+    mode: "listAppendAndPrint",
+    input:
+      'sehirler = ["İstanbul", "Ankara"]\nsehirler.Append("İzmir")\nprint(sehirler)',
+    expectValid: false,
+    expectMessage: /append küçük harfle/,
+  },
+  {
+    name: "listAppendAndPrint — string liste ret",
+    mode: "listAppendAndPrint",
+    input:
+      'sehirler = "İstanbul, Ankara"\nsehirler.append("İzmir")\nprint(sehirler)',
+    expectValid: false,
+    expectMessage: /köşeli parantezlerle/,
+  },
+  {
+    name: "listAppendAndPrint — yanlış listeye append ret",
+    mode: "listAppendAndPrint",
+    input:
+      'sehirler = ["İstanbul", "Ankara"]\nbaska_liste.append("İzmir")\nprint(sehirler)',
+    expectValid: false,
+    expectMessage: /liste değişkeni üzerinde/,
+  },
+  {
+    name: "listLoopSummary — kullanıcı cevabı kabul",
+    mode: "listLoopSummary",
+    input:
+      'liste = ["Elma", "Ekmek"]\nliste.append("Süt")\nliste.append("Yumurta")\n\nfor urun in liste:\n    print(urun)\n\nprint(f"Toplam ürün sayısı: {len(liste)}")',
+    expectValid: true,
+  },
+  {
+    name: "listLoopSummary — append + for + len kabul",
+    mode: "listLoopSummary",
+    input:
+      'liste = ["Elma", "Ekmek"]\nliste.append("Süt")\nliste.append("Yumurta")\nfor urun in liste:\nprint(urun)\nprint(f"Toplam ürün sayısı: {len(liste)}")',
+    expectValid: true,
+  },
+  {
+    name: "listLoopSummary — sadece print(liste) ret",
+    mode: "listLoopSummary",
+    input:
+      'liste = ["Elma", "Ekmek"]\nliste.append("Süt")\nliste.append("Yumurta")\nprint(liste)',
+    expectValid: false,
+    expectMessage: /for döngüsü/,
+  },
+  {
+    name: "listLoopSummary — len yok ret",
+    mode: "listLoopSummary",
+    input:
+      'liste = ["Elma", "Ekmek"]\nliste.append("Süt")\nliste.append("Yumurta")\nfor urun in liste:\nprint(urun)',
+    expectValid: false,
+    expectMessage: /len\(liste\)/,
+  },
+  {
+    name: "listLoopSummary — tek append ret",
+    mode: "listLoopSummary",
+    input:
+      'liste = ["Elma", "Ekmek"]\nliste.append("Süt")\nfor urun in liste:\nprint(urun)\nprint(f"Toplam ürün sayısı: {len(liste)}")',
+    expectValid: false,
+    expectMessage: /en az 2 ürün/,
+  },
+  {
+    name: "listLoopSummary — Append büyük harf ret",
+    mode: "listLoopSummary",
+    input:
+      'liste = ["Elma", "Ekmek"]\nliste.Append("Süt")\nliste.append("Yumurta")\nfor urun in liste:\nprint(urun)\nprint(len(liste))',
+    expectValid: false,
+    expectMessage: /append küçük harfle/,
+  },
+  {
+    name: "multiplePrintStringLiteral — iki print kabul",
+    mode: "multiplePrintStringLiteral",
+    input: 'print("Merhaba")\nprint("Dünya")',
+    expectValid: true,
+  },
+  {
+    name: "multiplePrintStringLiteral — tek print ret",
+    mode: "multiplePrintStringLiteral",
+    input: 'print("Merhaba")',
+    expectValid: false,
+    expectMessage: /print/,
+  },
+  {
+    name: "miniProject — def + print kabul",
+    mode: "miniProject",
+    rules: { mustIncludeDef: true, mustIncludePrint: true },
+    input: "def selam():\n    print('Merhaba')\nselam()",
+    expectValid: true,
+  },
+  {
+    name: "miniProject — def eksik ret",
+    mode: "miniProject",
+    rules: { mustIncludeDef: true, mustIncludePrint: true },
+    input: "print('Merhaba')",
+    expectValid: false,
+    expectMessage: /yapı/,
+  },
+  {
+    name: "miniProject — for döngüsü kabul",
+    mode: "miniProject",
+    rules: { mustIncludeLoop: true, mustIncludePrint: true },
+    input: 'for i in range(3):\n    print(i)',
+    expectValid: true,
+  },
+  {
+    name: "functionReturnAndPrint — kullanıcı cevabı kabul",
+    mode: "functionReturnAndPrint",
+    input:
+      'def selamla(isim):\nreturn f"Merhaba, {isim}"\n\nsonuc = selamla("Ahmet")\nprint(sonuc)',
+    expectValid: true,
+  },
+  {
+    name: "functionReturnAndPrint — doğrudan print kabul",
+    mode: "functionReturnAndPrint",
+    input:
+      'def selamla(ad):\nreturn f"Merhaba, {ad}"\n\nprint(selamla("Efe"))',
+    expectValid: true,
+  },
+  {
+    name: "functionReturnAndPrint — string birleştirme kabul",
+    mode: "functionReturnAndPrint",
+    input:
+      'def merhaba_de(isim):\nreturn "Merhaba, " + isim\n\nprint(merhaba_de("Ayşe"))',
+    expectValid: true,
+  },
+  {
+    name: "functionReturnAndPrint — parametre yok ret",
+    mode: "functionReturnAndPrint",
+    input: 'def selamla():\nreturn "Merhaba"\n\nprint(selamla())',
+    expectValid: false,
+    expectMessage: /parametre/,
+  },
+  {
+    name: "functionReturnAndPrint — return yok ret",
+    mode: "functionReturnAndPrint",
+    input:
+      'def selamla(isim):\nprint(f"Merhaba, {isim}")\n\nselamla("Ahmet")',
+    expectValid: false,
+    expectMessage: /return/,
+  },
+  {
+    name: "functionReturnAndPrint — parametre return'de yok ret",
+    mode: "functionReturnAndPrint",
+    input:
+      'def selamla(isim):\nreturn f"Merhaba"\n\nprint(selamla("Ahmet"))',
+    expectValid: false,
+    expectMessage: /ismi kullanmalısın/,
+  },
+  {
+    name: "functionReturnAndPrint — print yok ret",
+    mode: "functionReturnAndPrint",
+    input: 'def selamla(isim):\nreturn f"Merhaba, {isim}"\n\nselamla("Ahmet")',
+    expectValid: false,
+    expectMessage: /print/,
+  },
+  {
+    name: "functionReturnAndPrint — Print büyük harf ret",
+    mode: "functionReturnAndPrint",
+    input:
+      'def selamla(isim):\nreturn f"Merhaba, {isim}"\n\nsonuc = selamla("Ahmet")\nPrint(sonuc)',
+    expectValid: false,
+    expectMessage: /print küçük harfle/,
+  },
+  {
+    name: "twoGreetingFunctions — kullanıcı cevabı kabul",
+    mode: "twoGreetingFunctions",
+    input:
+      'def selamla(isim):\nreturn f"Merhaba, {isim}"\n\ndef resmi_selam(isim, soyisim):\nreturn f"Sayın {isim} {soyisim}, hoş geldiniz."\n\nprint(selamla("Ahmet"))\nprint(resmi_selam("Mustafa", "Yılmaz"))',
+    expectValid: true,
+  },
+  {
+    name: "twoGreetingFunctions — farklı parametre adları kabul",
+    mode: "twoGreetingFunctions",
+    input:
+      'def selamla(ad):\nreturn f"Merhaba, {ad}"\n\ndef resmi_selam(ad, soyad):\nreturn f"Sayın {ad} {soyad}"\n\nprint(selamla("Efe"))\nprint(resmi_selam("Ayşe", "Demir"))',
+    expectValid: true,
+  },
+  {
+    name: "twoGreetingFunctions — string birleştirme kabul",
+    mode: "twoGreetingFunctions",
+    input:
+      'def selamla(isim):\nreturn "Merhaba, " + isim\n\ndef resmi_selam(isim, soyisim):\nreturn "Sayın " + isim + " " + soyisim\n\nprint(selamla("Ahmet"))\nprint(resmi_selam("Mustafa", "Yılmaz"))',
+    expectValid: true,
+  },
+  {
+    name: "twoGreetingFunctions — ikinci fonksiyon yok ret",
+    mode: "twoGreetingFunctions",
+    input:
+      'def selamla(isim):\nreturn f"Merhaba, {isim}"\n\nprint(selamla("Ahmet"))',
+    expectValid: false,
+    expectMessage: /iki farklı fonksiyon/,
+  },
+  {
+    name: "twoGreetingFunctions — ikinci fonksiyon çağrılmıyor ret",
+    mode: "twoGreetingFunctions",
+    input:
+      'def selamla(isim):\nreturn f"Merhaba, {isim}"\n\ndef resmi_selam(isim, soyisim):\nreturn f"Sayın {isim} {soyisim}"\n\nprint(selamla("Ahmet"))',
+    expectValid: false,
+    expectMessage: /çağırmalısın/,
+  },
+  {
+    name: "twoGreetingFunctions — return yok ret",
+    mode: "twoGreetingFunctions",
+    input:
+      'def selamla(isim):\nprint(f"Merhaba, {isim}")\n\ndef resmi_selam(isim, soyisim):\nprint(f"Sayın {isim} {soyisim}")\n\nselamla("Ahmet")\nresmi_selam("Mustafa", "Yılmaz")',
+    expectValid: false,
+    expectMessage: /return/,
+  },
+  {
+    name: "twoGreetingFunctions — tanımsız f-string değişkeni ret",
+    mode: "twoGreetingFunctions",
+    input:
+      'def selamla(isim):\nreturn f"Merhaba, {ad}"\n\ndef resmi_selam(isim, soyisim):\nreturn f"Sayın {isim} {soyisim}"\n\nprint(selamla("Ahmet"))\nprint(resmi_selam("Mustafa", "Yılmaz"))',
+    expectValid: false,
+    expectMessage: /f-string içinde yalnızca/,
+  },
+  {
+    name: "twoGreetingFunctions — Print büyük harf ret",
+    mode: "twoGreetingFunctions",
+    input:
+      'def selamla(isim):\nreturn f"Merhaba, {isim}"\n\ndef resmi_selam(isim, soyisim):\nreturn f"Sayın {isim} {soyisim}"\n\nPrint(selamla("Ahmet"))\nprint(resmi_selam("Mustafa", "Yılmaz"))',
+    expectValid: false,
+    expectMessage: /print küçük harfle/,
+  },
+  {
+    name: "quizFunctionProject — kullanıcı cevabı kabul",
+    mode: "quizFunctionProject",
+    input:
+      'toplam_puan = 0\n\ndef soru_sor(metin, dogru):\nglobal toplam_puan\nprint(metin)\nkullanici_cevabi = input("Cevabınız: ").strip().lower()\nif kullanici_cevabi == dogru.lower():\n    toplam_puan += 10\n    print("Doğru! +10 puan.\\n")\nelse:\n    print(f"Yanlış! Doğru cevap: {dogru}\\n")\n\nsoru_sor("Python\'da fonksiyon tanımlamak için hangi anahtar kelime kullanılır?", "def")\nsoru_sor("Ekrana çıktı yazdırmak için kullanılan fonksiyon hangisidir?", "print")\n\nprint("Quiz tamamlandı! Katılımınız için teşekkürler.")\nprint(f"Toplam Puanınız: {toplam_puan}")',
+    expectValid: true,
+  },
+  {
+    name: "quizFunctionProject — basit quiz kabul",
+    mode: "quizFunctionProject",
+    input:
+      'def soru_sor(metin, dogru):\nprint(metin)\ncevap = input("Cevap: ")\nif cevap == dogru:\nprint("Doğru")\nelse:\nprint("Yanlış")\n\nsoru_sor("2 + 2 kaçtır?", "4")\nsoru_sor("Python\'da ekrana yazdırma fonksiyonu nedir?", "print")\nprint("Quiz bitti")',
+    expectValid: true,
+  },
+  {
+    name: "quizFunctionProject — input yok ret",
+    mode: "quizFunctionProject",
+    input:
+      'def soru_sor(metin, dogru):\nprint(metin)\n\nsoru_sor("Soru 1", "cevap")\nsoru_sor("Soru 2", "cevap")\nprint("Bitti")',
+    expectValid: false,
+    expectMessage: /input\(\)/,
+  },
+  {
+    name: "quizFunctionProject — if yok ret",
+    mode: "quizFunctionProject",
+    input:
+      'def soru_sor(metin, dogru):\ncevap = input("Cevap: ")\nprint(cevap)\n\nsoru_sor("Soru 1", "cevap")\nsoru_sor("Soru 2", "cevap")\nprint("Bitti")',
+    expectValid: false,
+    expectMessage: /if kullanmalısın/,
+  },
+  {
+    name: "quizFunctionProject — tek soru ret",
+    mode: "quizFunctionProject",
+    input:
+      'def soru_sor(metin, dogru):\ncevap = input("Cevap: ")\nif cevap == dogru:\nprint("Doğru")\n\nsoru_sor("Soru 1", "cevap")\nprint("Bitti")',
+    expectValid: false,
+    expectMessage: /en az 2 kez/,
+  },
+  {
+    name: "quizFunctionProject — bitiş mesajı yok ret",
+    mode: "quizFunctionProject",
+    input:
+      'def soru_sor(metin, dogru):\ncevap = input("Cevap: ")\nif cevap == dogru:\nprint("Doğru")\n\nsoru_sor("Soru 1", "cevap")\nsoru_sor("Soru 2", "cevap")',
+    expectValid: false,
+    expectMessage: /bitiş mesajı/,
+  },
+  {
+    name: "quizFunctionProject — Input büyük harf ret",
+    mode: "quizFunctionProject",
+    input:
+      'def soru_sor(metin, dogru):\ncevap = Input("Cevap: ")\nif cevap == dogru:\nprint("Doğru")\n\nsoru_sor("Soru 1", "cevap")\nsoru_sor("Soru 2", "cevap")\nprint("Bitti")',
+    expectValid: false,
+    expectMessage: /input küçük harfle/,
+  },
+  {
+    name: "quizFunctionProject — Print büyük harf ret",
+    mode: "quizFunctionProject",
+    input:
+      'def soru_sor(metin, dogru):\ncevap = input("Cevap: ")\nif cevap == dogru:\nPrint("Doğru")\n\nsoru_sor("Soru 1", "cevap")\nsoru_sor("Soru 2", "cevap")\nprint("Bitti")',
+    expectValid: false,
+    expectMessage: /print küçük harfle/,
   },
 ];
 

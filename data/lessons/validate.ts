@@ -1,5 +1,6 @@
 import { answersMatch } from "@/lib/lesson-answers";
 import {
+  CODE_VALIDATION_FIXTURES,
   mergeTaskValidation,
   normalizeValidationMode,
   runCodeValidationFixtures,
@@ -235,6 +236,15 @@ export function validateLessonsForDev(
       }
 
       if (isValidatedTaskStepType(step.type)) {
+        if (!step.validation?.validationMode) {
+          pushIssue(
+            issues,
+            lesson,
+            step,
+            `${step.type} missing explicit validation.validationMode`,
+          );
+        }
+
         const merged = mergeTaskValidation(step);
         const mode = merged.validationMode;
 
@@ -382,12 +392,33 @@ export function validateCodeFixturesForDev(): LessonValidationIssue[] {
   return issues;
 }
 
+function validateFixtureModeCoverage(): LessonValidationIssue[] {
+  const issues: LessonValidationIssue[] = [];
+  const modesWithFixtures = new Set(
+    CODE_VALIDATION_FIXTURES.map((fixture) => fixture.mode),
+  );
+
+  for (const mode of VALIDATION_MODES) {
+    if (!modesWithFixtures.has(mode)) {
+      issues.push({
+        lessonId: "validation-fixtures",
+        stepId: mode,
+        stepTitle: mode,
+        message: `No fixture test for validationMode "${mode}"`,
+      });
+    }
+  }
+
+  return issues;
+}
+
 export function validateAllLessons(
   lessons: Record<string, LessonContent>,
 ): LessonValidationIssue[] {
   return [
     ...validateLessonsForDev(lessons),
     ...validateCodeFixturesForDev(),
+    ...validateFixtureModeCoverage(),
   ];
 }
 

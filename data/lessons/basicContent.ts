@@ -315,11 +315,26 @@ export const basicLessons: Record<string, LessonContent> = {
         checklist: ["input ve int", "if/else", "İki farklı mesaj"],
         exampleSolution:
           'notu = int(input("Notunuz: "))\nif notu >= 50:\n    print("Geçti")\nelse:\n    print("Kaldı")',
+        validation: {
+          validationMode: "miniProject",
+          mustIncludeIf: true,
+          mustIncludePrint: true,
+          requiredPatterns: ["input\\s*\\(", "int\\s*\\("],
+          minLength: 30,
+        },
       }),
       projectStep("step-3", "Üç harf notu", "En az 3 not aralığı ve f-string ile sonuç.", {
         checklist: ["elif kullanılmış", "3 aralık", "f-string çıktı"],
         exampleSolution:
           'n = int(input("Not: "))\nif n >= 90:\n    harf = "A"\nelif n >= 75:\n    harf = "B"\nelse:\n    harf = "C"\nprint(f"Harf notunuz: {harf}")',
+        validation: {
+          validationMode: "miniProject",
+          mustIncludeIf: true,
+          requiresFString: true,
+          mustIncludePrint: true,
+          requiredPatterns: ["input\\s*\\(", "elif"],
+          minLength: 40,
+        },
       }),
       completeStep("step-4", 25, "Liste tekrarı"),
     ],
@@ -400,11 +415,23 @@ export const basicLessons: Record<string, LessonContent> = {
       miniTaskStep("step-2", "Tek kişi", "ad ve email anahtarlı dict oluştur ve yazdır.", {
         checklist: ["dict tanımlı", "2 anahtar", "print ile gösterim"],
         exampleSolution: 'kisi = {"ad": "Mehmet", "email": "m@test.com"}\nprint(kisi)',
+        validation: {
+          validationMode: "miniProject",
+          mustIncludePrint: true,
+          requiredPatterns: ["\\{"],
+          minLength: 25,
+        },
       }),
       projectStep("step-3", "İki kişi", "İki kişilik liste; for ile her kişinin adını yazdır.", {
         checklist: ["Liste içinde dict", "for döngüsü", "ad alanı yazdırılıyor"],
         exampleSolution:
           'rehber = [\n    {"ad": "Ali", "tel": "111"},\n    {"ad": "Zeynep", "tel": "222"}\n]\nfor k in rehber:\n    print(k["ad"])',
+        validation: {
+          validationMode: "miniProject",
+          mustIncludeLoop: true,
+          mustIncludePrint: true,
+          minLength: 35,
+        },
       }),
       completeStep("step-4", 25, "for ve range tekrarı"),
     ],
@@ -453,6 +480,13 @@ export const basicLessons: Record<string, LessonContent> = {
       miniTaskStep("step-3", "Çift sayılar", "Listedeki çift sayıları yazdır (if % 2 == 0).", {
         checklist: ["for döngüsü", "if ile çift kontrol", "print"],
         exampleSolution: 'for n in [1, 2, 3, 4]:\n    if n % 2 == 0:\n        print(n)',
+        validation: {
+          validationMode: "miniProject",
+          mustIncludeLoop: true,
+          mustIncludeIf: true,
+          mustIncludePrint: true,
+          minLength: 25,
+        },
       }),
       debugStep(
         "step-4",
@@ -511,11 +545,23 @@ export const basicLessons: Record<string, LessonContent> = {
       miniTaskStep("step-2", "Toplam", "En az 3 harcamalı liste; toplamı yazdır.", {
         checklist: ["3+ eleman", "sum veya döngü", "toplam print"],
         exampleSolution: "h = [10, 20, 30]\nprint(sum(h))",
+        validation: {
+          validationMode: "miniProject",
+          mustIncludePrint: true,
+          minLength: 20,
+        },
       }),
       projectStep("step-3", "Özet rapor", "Toplam, ortalama ve en yüksek harcamayı yazdır.", {
         checklist: ["toplam", "ortalama", "max() veya döngü ile en yüksek"],
         exampleSolution:
           'h = [100, 50, 200]\nprint(f"Toplam: {sum(h)}")\nprint(f"Ortalama: {sum(h)/len(h)}")\nprint(f"En yüksek: {max(h)}")',
+        validation: {
+          validationMode: "miniProject",
+          requiresFString: true,
+          mustIncludePrint: true,
+          minPrintCount: 3,
+          minLength: 40,
+        },
       }),
       completeStep("step-4", 25, "Fonksiyon tasarlama"),
     ],
@@ -580,6 +626,14 @@ export const basicLessons: Record<string, LessonContent> = {
       miniTaskStep("step-2", "cift_mi", "n çift ise True dönen fonksiyon yaz.", {
         checklist: ["def ve parametre", "return bool", "test print"],
         exampleSolution: "def cift_mi(n):\n    return n % 2 == 0\n\nprint(cift_mi(4))",
+        validation: {
+          validationMode: "miniProject",
+          mustIncludeDef: true,
+          mustIncludePrint: true,
+          requiresBoolean: true,
+          requiredPatterns: ["return"],
+          minLength: 25,
+        },
       }),
       codeOrderStep(
         "step-3",
@@ -614,11 +668,26 @@ export const basicLessons: Record<string, LessonContent> = {
         checklist: ["def topla", "input/float", "çağrı ve print"],
         exampleSolution:
           "def topla(a, b):\n    return a + b\nx = float(input('x: '))\ny = float(input('y: '))\nprint(topla(x, y))",
+        validation: {
+          validationMode: "miniProject",
+          mustIncludeDef: true,
+          mustIncludePrint: true,
+          requiredPatterns: ["input\\s*\\(", "return"],
+          minLength: 35,
+        },
       }),
       projectStep("step-3", "Dört işlem", "En az 3 işlem fonksiyonu; kullanıcı seçim yapsın (metin input).", {
         checklist: ["3+ fonksiyon", "if ile işlem seçimi", "sonuç print"],
         exampleSolution:
           'def carp(a,b): return a*b\ndef bol(a,b): return a/b if b else 0\na=float(input("a: "))\nb=float(input("b: "))\nop=input("islem (+,-,*,/): ")\nif op=="*": print(carp(a,b))',
+        validation: {
+          validationMode: "miniProject",
+          mustIncludeDef: true,
+          mustIncludeIf: true,
+          mustIncludePrint: true,
+          requiredPatterns: ["input\\s*\\("],
+          minLength: 45,
+        },
       }),
       completeStep("step-4", 25, "Syntax error mantığı"),
     ],
@@ -713,11 +782,24 @@ export const basicLessons: Record<string, LessonContent> = {
       projectStep("step-2", "Liste oluştur", "En az 3 alışkanlıklı liste yazdır.", {
         checklist: ["3+ alışkanlık", "for veya çoklu print", "okunur çıktı"],
         exampleSolution: 'h = ["Meditasyon", "Kod", "Yürüyüş"]\nfor x in h:\n    print(x)',
+        validation: {
+          validationMode: "miniProject",
+          mustIncludeLoop: true,
+          mustIncludePrint: true,
+          minLength: 25,
+        },
       }),
       projectStep("step-3", "Tamamlandı dict", "Her alışkanlık için dict: ad ve tamamlandi (bool).", {
         checklist: ["dict listesi", "bool alan", "yazdırma"],
         exampleSolution:
           'gorevler = [\n    {"ad": "Spor", "tamamlandi": True},\n    {"ad": "Okuma", "tamamlandi": False}\n]\nfor g in gorevler:\n    print(g["ad"], g["tamamlandi"])',
+        validation: {
+          validationMode: "miniProject",
+          mustIncludeLoop: true,
+          mustIncludePrint: true,
+          requiresBoolean: true,
+          minLength: 35,
+        },
       }),
       completeStep("step-4", 40, "Proje: Alışkanlık takipçisi — Adım 2"),
     ],
@@ -739,11 +821,25 @@ export const basicLessons: Record<string, LessonContent> = {
         checklist: ["for + if", "sayaç", "print sonuç"],
         exampleSolution:
           'g = [{"ad":"A","tamamlandi":True},{"ad":"B","tamamlandi":False}]\nc=0\nfor x in g:\n    if x["tamamlandi"]: c+=1\nprint(c)',
+        validation: {
+          validationMode: "miniProject",
+          mustIncludeLoop: true,
+          mustIncludeIf: true,
+          mustIncludePrint: true,
+          minLength: 30,
+        },
       }),
       projectStep("step-3", "Yüzde", "Tamamlanma yüzdesini f-string ile göster.", {
         checklist: ["yüzde formülü", "f-string", "0 bölme kontrolü opsiyonel"],
         exampleSolution:
           'g = [{"ad":"A","tamamlandi":True},{"ad":"B","tamamlandi":True},{"ad":"C","tamamlandi":False}]\nt=sum(1 for x in g if x["tamamlandi"])\nprint(f"Tamamlanan: %{t/len(g)*100:.0f}")',
+        validation: {
+          validationMode: "miniProject",
+          mustIncludeLoop: true,
+          requiresFString: true,
+          mustIncludePrint: true,
+          minLength: 35,
+        },
       }),
       completeStep("step-4", 40, "Proje: Alışkanlık takipçisi — Adım 3"),
     ],
@@ -765,12 +861,25 @@ export const basicLessons: Record<string, LessonContent> = {
         checklist: ["input", "append dict", "liste güncelleniyor"],
         exampleSolution:
           'liste = []\nad = input("Alışkanlık: ")\nliste.append({"ad": ad, "tamamlandi": False})\nprint(liste)',
+        validation: {
+          validationMode: "miniProject",
+          mustIncludePrint: true,
+          requiredPatterns: ["input\\s*\\(", "append"],
+          minLength: 30,
+        },
       }),
       projectStep("step-3", "Tam proje", "ozet_yazdir(gorevler) fonksiyonu: toplam, tamamlanan, yüzde.", {
         checklist: ["fonksiyon tanımlı", "özet istatistik", "en az 2 alışkanlık örneği"],
         exampleSolution:
           'def ozet_yazdir(g):\n    t = len(g)\n    c = sum(1 for x in g if x["tamamlandi"])\n    print(f"{c}/{t} tamamlandı (%{c/t*100:.0f})")\n\ng = [{"ad":"Kod","tamamlandi":True},{"ad":"Spor","tamamlandi":False}]\nozet_yazdir(g)',
         migo: "Temel yolu tamamladın — harika iş!",
+        validation: {
+          validationMode: "miniProject",
+          mustIncludeDef: true,
+          requiresFString: true,
+          mustIncludePrint: true,
+          minLength: 45,
+        },
       }),
       completeStep("step-4", 40, "Python Orta Yolu", {
         content: "Alışkanlık takipçisi projeni bitirdin. Temel yol tamamlandı!",

@@ -907,6 +907,10 @@ export const beginnerLessons: Record<string, LessonContent> = {
           exampleSolution:
             'sayi1 = int(input("Birinci sayı: "))\nsayi2 = int(input("İkinci sayı: "))\nprint(sayi1 + sayi2)',
           migo: "Prompt metinlerini Türkçe ve anlaşılır yaz.",
+          validation: {
+            validationMode: "inputSumTwoNumbers",
+            minLength: 30,
+          },
         },
       ),
       fillStep(
@@ -952,6 +956,10 @@ export const beginnerLessons: Record<string, LessonContent> = {
           ],
           exampleSolution:
             'dogum_yili = int(input("Doğum yılın: "))\nyas = 2026 - dogum_yili\nprint("Yaşın:", yas)',
+          validation: {
+            validationMode: "ageCalculatorBasic",
+            minLength: 20,
+          },
         },
       ),
       projectStep(
@@ -967,6 +975,10 @@ export const beginnerLessons: Record<string, LessonContent> = {
           exampleSolution:
             'isim = input("Adın: ")\ndogum = int(input("Doğum yılın: "))\nyas = 2026 - dogum\nprint(f"Merhaba {isim}, yaşın {yas}")',
           migo: "İsim metin olarak kalır, doğum yılı sayıya çevrilir.",
+          validation: {
+            validationMode: "personalizedAgeOutput",
+            minLength: 40,
+          },
         },
       ),
       completeStep("step-4", 25, "if mantığı"),
@@ -1197,6 +1209,10 @@ export const beginnerLessons: Record<string, LessonContent> = {
           ],
           exampleSolution:
             'yas = int(input("Yaşınız: "))\nif yas < 18:\n    print("İndirimli: 60 TL")\nelse:\n    print("Tam: 120 TL")',
+          validation: {
+            validationMode: "ticketPriceRules",
+            minLength: 30,
+          },
         },
       ),
       projectStep(
@@ -1212,6 +1228,14 @@ export const beginnerLessons: Record<string, LessonContent> = {
           exampleSolution:
             'yas = int(input("Yaş: "))\nif yas <= 12:\n    fiyat = 0\nelif yas <= 17:\n    fiyat = 50\nelse:\n    fiyat = 100\nprint(f"Bilet fiyatınız: {fiyat} TL")',
           migo: "Önce fiyatı değişkene ata, sonra yazdır — kod daha okunur olur.",
+          validation: {
+            validationMode: "miniProject",
+            mustIncludeIf: true,
+            requiresFString: true,
+            mustIncludePrint: true,
+            requiredPatterns: ["input\\s*\\(", "int\\s*\\(", "elif"],
+            minLength: 40,
+          },
         },
       ),
       completeStep("step-4", 25, "Liste nedir?"),
@@ -1398,6 +1422,10 @@ export const beginnerLessons: Record<string, LessonContent> = {
           ],
           exampleSolution:
             'alisveris = ["elma", "su"]\nalisveris.append("çay")\nprint(alisveris)',
+          validation: {
+            validationMode: "listAppendAndPrint",
+            minLength: 25,
+          },
         },
       ),
       projectStep(
@@ -1413,6 +1441,10 @@ export const beginnerLessons: Record<string, LessonContent> = {
           exampleSolution:
             'liste = ["süt"]\nliste.append("ekmek")\nliste.append("yumurta")\nfor urun in liste:\n    print(f"- {urun}")\nprint(f"Toplam: {len(liste)} ürün")',
           migo: "for döngüsünü bir sonraki ünitede derinleştireceğiz — burada basit kullanım yeterli.",
+          validation: {
+            validationMode: "listLoopSummary",
+            minLength: 40,
+          },
         },
       ),
       completeStep("step-4", 25, "for döngüsü"),
@@ -1555,6 +1587,12 @@ export const beginnerLessons: Record<string, LessonContent> = {
           ],
           exampleSolution:
             'meyveler = ["elma", "armut", "muz"]\nfor meyve in meyveler:\n    print(meyve)',
+          validation: {
+            validationMode: "miniProject",
+            mustIncludeLoop: true,
+            mustIncludePrint: true,
+            minLength: 30,
+          },
         },
       ),
       fillStep(
@@ -1599,6 +1637,12 @@ export const beginnerLessons: Record<string, LessonContent> = {
           ],
           exampleSolution:
             'gorevler = ["E-posta", "Toplantı", "Kod"]\nfor g in gorevler:\n    print(g)',
+          validation: {
+            validationMode: "miniProject",
+            mustIncludeLoop: true,
+            mustIncludePrint: true,
+            minLength: 30,
+          },
         },
       ),
       projectStep(
@@ -1614,6 +1658,13 @@ export const beginnerLessons: Record<string, LessonContent> = {
           exampleSolution:
             'gorevler = ["Kahvaltı", "Ders", "Proje"]\nfor i in range(len(gorevler)):\n    print(f"{i+1}. {gorevler[i]}")',
           migo: "enumerate ileride öğreneceğin kısa bir alternatiftir.",
+          validation: {
+            validationMode: "miniProject",
+            mustIncludeLoop: true,
+            requiresFString: true,
+            mustIncludePrint: true,
+            minLength: 35,
+          },
         },
       ),
       completeStep("step-4", 25, "Fonksiyon neden kullanılır?"),
@@ -1811,6 +1862,10 @@ export const beginnerLessons: Record<string, LessonContent> = {
           ],
           exampleSolution:
             'def merhaba(isim):\n    return f"Merhaba, {isim}"\n\nprint(merhaba("Efe"))',
+          validation: {
+            validationMode: "functionReturnAndPrint",
+            minLength: 35,
+          },
         },
       ),
       projectStep(
@@ -1826,6 +1881,10 @@ export const beginnerLessons: Record<string, LessonContent> = {
           exampleSolution:
             'def selamla(isim):\n    return f"Selam {isim}!"\n\ndef resmi_selam(isim, soyisim):\n    return f"Sayın {isim} {soyisim}"\n\nprint(selamla("Ayşe"))\nprint(resmi_selam("Ayşe", "Yılmaz"))',
           migo: "Fonksiyonları küçük ve tek işe odaklı tut.",
+          validation: {
+            validationMode: "twoGreetingFunctions",
+            minLength: 50,
+          },
         },
       ),
       completeStep("step-4", 25, "Proje: Quiz uygulaması — Bölüm 1"),
@@ -1862,6 +1921,13 @@ export const beginnerLessons: Record<string, LessonContent> = {
           exampleSolution:
             'print("Python\'da liste hangi parantezle yazılır?")\ncevap = input("Cevap: ")\nif cevap == "[]":\n    print("Doğru!")\nelse:\n    print("Yanlış. Cevap: []")',
           migo: "Soruyu net yaz; kullanıcı ne cevap vereceğini bilsin.",
+          validation: {
+            validationMode: "miniProject",
+            mustIncludeIf: true,
+            mustIncludePrint: true,
+            requiredPatterns: ["input\\s*\\("],
+            minLength: 35,
+          },
         },
       ),
       projectStep(
@@ -1876,6 +1942,13 @@ export const beginnerLessons: Record<string, LessonContent> = {
           ],
           exampleSolution:
             'puan = 0\ncevap = input("5*2=? ")\nif cevap == "10":\n    puan = 10\n    print(f"Doğru! +{puan} puan")\nelse:\n    print("Yanlış. Cevap: 10")',
+          validation: {
+            validationMode: "miniProject",
+            mustIncludeIf: true,
+            mustIncludePrint: true,
+            requiredPatterns: ["input\\s*\\("],
+            minLength: 35,
+          },
         },
       ),
       completeStep("step-4", 40, "Proje: Quiz uygulaması — Bölüm 2"),
@@ -1911,6 +1984,13 @@ export const beginnerLessons: Record<string, LessonContent> = {
           ],
           exampleSolution:
             'puan = 0\ncevap1 = input("2+2? ")\nif cevap1 == "4":\n    puan += 10\ncevap2 = input("Python dili? ")\nif cevap2.lower() == "python":\n    puan += 10\nprint(f"Toplam puan: {puan}")',
+          validation: {
+            validationMode: "miniProject",
+            mustIncludeIf: true,
+            mustIncludePrint: true,
+            requiredPatterns: ["input\\s*\\("],
+            minLength: 40,
+          },
         },
       ),
       projectStep(
@@ -1926,6 +2006,10 @@ export const beginnerLessons: Record<string, LessonContent> = {
           exampleSolution:
             'puan = 0\n\ndef soru_sor(metin, dogru):\n    global puan\n    c = input(metin + " ")\n    if c == dogru:\n        puan += 10\n        print("Doğru")\n    else:\n        print(f"Yanlış. Cevap: {dogru}")\n\nsoru_sor("3*3?", "9")\nsoru_sor("[] ne tür?", "liste")\nprint(f"Oyun bitti. Puan: {puan}")',
           migo: "Tebrikler — Başlangıç yolunu tamamladın!",
+          validation: {
+            validationMode: "quizFunctionProject",
+            minLength: 50,
+          },
         },
       ),
       completeStep("step-4", 40, "Python Temel Yolu", {
