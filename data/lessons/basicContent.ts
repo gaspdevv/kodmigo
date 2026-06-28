@@ -29,14 +29,14 @@ export const basicLessons: Record<string, LessonContent> = {
         migo: "Temel yolda hızlı ilerliyoruz — temelleri sağlam tut.",
       }),
       fillStep("step-2", "Eksik komut", 'mesaj = "Hazır"\n____(mesaj)', ["print", "input", "def", "str"], "print", {
-        migo: "Değişkeni tanımladıktan sonra ekrana yazdırmak için hangi komutu kullanırsın?",
+        migo: "Değişkenin değerini ekranda göstermek için hangi yapı gerekir?",
       }),
       outputStep("step-3", "Çıktı", 'x = 5\nprint(x + 3)', ["8", "53", "x+3", "Hata"], "8"),
       codeOrderLinesStep(
         "step-4",
         "Atama ve print sırası",
         ['mesaj = "Hazır"', "print(mesaj)"],
-        { migo: "Önce değişken, sonra print." },
+        { migo: "Sıralama yaparken önce hangi satırın diğerleri için gerekli olduğunu düşün." },
       ),
       codeWritingStep(
         "step-5",
@@ -44,6 +44,7 @@ export const basicLessons: Record<string, LessonContent> = {
         "Bir değişkene sayı ata ve print() ile yazdır.",
         {
           validation: {
+            validationMode: "variableAndPrint",
             mustIncludeAssignment: true,
             mustIncludePrint: true,
             requiredPatterns: ["=\\s*\\d"],
@@ -98,6 +99,7 @@ export const basicLessons: Record<string, LessonContent> = {
         "Bir değişkene sayı ata ve type() ile türünü yazdır.",
         {
           validation: {
+            validationMode: "variableAndPrint",
             mustIncludeAssignment: true,
             mustIncludePrint: true,
             requiredPatterns: ["type\\s*\\("],
@@ -189,7 +191,7 @@ export const basicLessons: Record<string, LessonContent> = {
         "print(isim) satırı isim tanımlanmadan çalışırsa ne olur?",
         ["NameError", "SyntaxError", "TypeError", "Hiç hata olmaz"],
         "NameError",
-        { migo: "Tanımsız değişken NameError verir." },
+        { migo: "Tanımlanmamış bir isim kullanıldığında Python genelde hata verir. Hata türlerini seçeneklerden incele." },
       ),
       codeWritingStep(
         "step-5",
@@ -197,6 +199,7 @@ export const basicLessons: Record<string, LessonContent> = {
         "Önce isim değişkenini tanımla, sonra print() ile yazdır.",
         {
           validation: {
+            validationMode: "variableAndPrint",
             mustIncludeAssignment: true,
             mustIncludePrint: true,
             requiredPatterns: ["isim\\s*="],
@@ -290,7 +293,7 @@ export const basicLessons: Record<string, LessonContent> = {
         "if puan >= 50 ____ devam == True:\n    print('Geçti')",
         ["and", "or", "not", "if"],
         "and",
-        { content: "Hem puan hem devam şartı.", migo: "İki koşul da gerekli — and." },
+        { content: "Hem puan hem devam şartı.", migo: "İki koşulun aynı anda sağlanması gerektiğini düşün." },
       ),
       completeStep("step-5", 15, "Mini proje: Not değerlendirme"),
     ],
@@ -375,7 +378,7 @@ export const basicLessons: Record<string, LessonContent> = {
       matchStep("step-2", "Kullanım", "Sıralı ürün listesi için?", ["list", "dict", "if", "print"], "list"),
       mcStep("step-3", "Kişi kartı", ["dict", "list", "int", "str"], "dict", {
         content: "ad, email, telefon alanları olan kayıt?",
-        migo: "Alan adlarıyla erişim dict için ideal.",
+        migo: "Birden fazla alanı olan bir kayıt için hangi veri yapısı daha uygun? Seçeneklerin farkını düşün.",
       }),
       outputStep("step-4", "Dict erişim", 'd = {"x": 10}\nprint(d["x"])', ["10", "x", "Hata", '{"x": 10}'], "10"),
       completeStep("step-5", 15, "Mini proje: Kişi rehberi"),
@@ -635,7 +638,7 @@ export const basicLessons: Record<string, LessonContent> = {
       }),
       debugStep("step-2", "Hata", "if x > 0\n    print(x)", ["if satırında : eksik", "print yanlış", "x tanımsız", "else gerekli"], "if satırında : eksik"),
       debugStep("step-3", "Parantez", 'print("Merhaba"', ["Kapanmayan parantez", "print yanlış", "tırnak fazla", "import eksik"], "Kapanmayan parantez"),
-      mcStep("step-4", "Geçerli mi?", ["if True:\n    pass", "if True\n    pass", "if true: pass", "IF True: pass"], "if True:\n    pass"),
+      mcStep("step-4", "Geçerli mi?", ["if True:\n    pass", "if True\n    pass", "if True:pass", "while True:\n    pass"], "if True:\n    pass"),
       completeStep("step-5", 10, "Yanlış değişken adı hataları"),
     ],
     "basic",
@@ -665,7 +668,7 @@ export const basicLessons: Record<string, LessonContent> = {
         ["isim / Isim büyük-küçük harf uyumsuz", "print hatası", "tırnak", "for eksik"],
         "isim / Isim büyük-küçük harf uyumsuz",
       ),
-      fillStep("step-4", "Düzelt", "kullanici_adi = 'Efe'\nprint(____)", ["kullanici_adi", "kullaniciadi", "Kullanici_Adi", "adi"], "kullanici_adi"),
+      fillStep("step-4", "Düzelt", "kullanici_adi = 'Efe'\nprint(____)", ["kullanici_adi", "kullaniciadi", "user_adi", "adi"], "kullanici_adi"),
       completeStep("step-5", 15, "Tür dönüşümü hataları"),
     ],
     "basic",

@@ -54,7 +54,7 @@ export const intermediateLessons: Record<string, LessonContent> = {
         "step-4",
         "Refactor sırası",
         ["def hesapla(): return 10", "def goster(): print(hesapla())", "goster()"],
-        { content: "Önce fonksiyonlar, sonra çağrı.", migo: "Fonksiyonlar kullanılmadan önce tanımlanmalı. Çağrı en sonda mı olmalı?" },
+        { content: "Önce fonksiyonlar, sonra çağrı.", migo: "Sıralama yaparken önce hangi satırın diğerleri için gerekli olduğunu düşün." },
       ),
       codeWritingStep(
         "step-5",
@@ -62,6 +62,7 @@ export const intermediateLessons: Record<string, LessonContent> = {
         "İki sayıyı toplayan kısa bir fonksiyon yaz.",
         {
           validation: {
+            validationMode: "miniProject",
             mustIncludeDef: true,
             requiredPatterns: ["return"],
             minLength: 20,
@@ -111,6 +112,7 @@ export const intermediateLessons: Record<string, LessonContent> = {
         "Negatif sayıyı pozitife çeviren kısa bir fonksiyon yaz.",
         {
           validation: {
+            validationMode: "miniProject",
             mustIncludeDef: true,
             mustIncludeIf: true,
             requiredPatterns: ["return"],
@@ -162,6 +164,7 @@ export const intermediateLessons: Record<string, LessonContent> = {
         "notu >= 50 ise True dönen bir fonksiyon yaz.",
         {
           validation: {
+            validationMode: "miniProject",
             mustIncludeDef: true,
             requiredPatterns: ["return", ">="],
             minLength: 25,
@@ -193,6 +196,7 @@ export const intermediateLessons: Record<string, LessonContent> = {
         "dogru sayısı * 10 dönen bir fonksiyon yaz.",
         {
           validation: {
+            validationMode: "miniProject",
             mustIncludeDef: true,
             requiredPatterns: ["return", "\\*\\s*10"],
             minLength: 20,
@@ -224,6 +228,7 @@ export const intermediateLessons: Record<string, LessonContent> = {
         exampleSolution:
           "def puan(d, y):\n    p = d * 10 - y * 2\n    return max(0, p)\nprint(puan(5, 1))",
         validation: {
+          validationMode: "miniProject",
           mustIncludeDef: true,
           requiredPatterns: ["return", "max\\s*\\("],
           minLength: 35,
@@ -252,7 +257,7 @@ export const intermediateLessons: Record<string, LessonContent> = {
           { concept: "Dict", answer: "Anahtar-değer çiftleri" },
         ],
         ["Tek bir sayı", "Sadece metin"],
-        { migo: "Öğrenci kayıtları genelde liste içinde dict olarak tutulur." },
+        { migo: "Her kavramın yaptığı işi düşün ve açıklamalarla eşleştir." },
       ),
       debugStep(
         "step-3",
@@ -273,6 +278,7 @@ export const intermediateLessons: Record<string, LessonContent> = {
         "ad ve not anahtarları olan bir öğrenci dict'i oluştur ve bir alanı yazdır.",
         {
           validation: {
+            validationMode: "miniProject",
             mustIncludePrint: true,
             requiredPatterns: ["\\{", ":"],
             minLength: 25,
@@ -434,7 +440,7 @@ export const intermediateLessons: Record<string, LessonContent> = {
         "nums = [2, 8, 5]\nm = nums[0]\nfor n in nums[1:]:\n    if n > m:\n        m = n\nprint(m)",
         ["8", "2", "5", "Hata"],
         "8",
-        { migo: "Döngü her adımda m'yi günceller; sonunda 8 kalır." },
+        { migo: "Döngü boyunca m değişkeninin nasıl güncellendiğini adım adım takip et." },
       ),
       fillStep("step-3", "Built-in", "en_buyuk = ____(sayilar)", ["max", "min", "sum", "len"], "max"),
       debugStep(
@@ -485,7 +491,7 @@ export const intermediateLessons: Record<string, LessonContent> = {
       infoStep("step-1", "lower/upper", "Kullanıcı girdisini normalize etmek için sık kullanılır.", {
         code: 'cevap = input("Evet/Hayır: ")\nif cevap.lower() == "evet":\n    print("Tamam")',
       }),
-      outputStep("step-2", "upper", 'print("kodmigo".upper())', ["KODMIGO", "kodmigo", "Kodmigo", "Hata"], "KODMIGO"),
+      outputStep("step-2", "upper", 'print("kodmigo".upper())', ["KODMIGO", "değişmedi", "kod migo", "Hata"], "KODMIGO"),
       fillStep("step-3", "Karşılaştır", 'if metin.____() == "python":', ["lower", "upper", "split", "len"], "lower"),
       mcStep("step-4", "Sonuç", ["True", "False", "Hata", "PY"], "True", { code: 'print("Test" == "test".upper()[:1] + "est")' }),
       completeStep("step-5", 10, "split ile parçalama"),

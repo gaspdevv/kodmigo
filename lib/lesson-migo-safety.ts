@@ -6,31 +6,56 @@ const ANSWER_LEAK_PATTERNS = [
   /\bşu\s+şıkkı\s+seç/i,
   /\bşöyle\s+yazmalısın/i,
   /\bdoğru\s+kod\b/i,
-  /\d+\s*[<>!=]+\s*\d+.*(doğru|False|True|çalışır)/i,
-  /\b(False|True)\s+döner/i,
+  /\bdoğru\s+sıra\b/i,
+  /\bcevap\s+.+\s+olmalı/i,
+  /\bburada\s+çıktı\b/i,
+  /\bşu\s+kodu\s+yaz/i,
+  /\bhata\s+.+\s+satırında\b/i,
+  /\beksik\s+olan\s+şey\b/i,
+  /\bkod\s+ekrana\s+.+\s+yazar\b/i,
+  /\d+\s*[<>!=]+\s*\d+.*(doğru|çalışır)/i,
   /\belif\s+dalı\s+çalışır/i,
   /\belse\s+çalışır/i,
   /en\s+sonda\s+çalışmalı/i,
   /\b\d+\s*[\*\+\-\/]\s*\d+\s*=\s*\d+/,
+  /\bsırayla\b.+\bsonra\b.+\bgörün/i,
+  /\bprint\s+içindeki\s+metin\s+olduğu\s+gibi/i,
+  /\batama\s+print['']?ten\s+önce/i,
+  /\bönce\s+değişken\b[^.]{0,40}\bsonra\s+print/i,
+  /\bönce\s+tanımla\b[^.]{0,40}\bsonra\b/i,
+  /\bhangi\s+komutu\s+kullanmıştık/i,
+  /\bhangi\s+komutu\s+kullanırsın/i,
+  /\bçağrı\s+en\s+sonda\s+mı\s+olmalı/i,
+  /\bsonunda\s+\d+\s+kalır/i,
+  /\b—\s*and\b/i,
+  /\b—\s*or\b/i,
+  /\bdict\s+için\s+ideal/i,
+  /\blist\s+için\s+ideal/i,
+  /\bnameerror\s+verir/i,
+  /\btanımsız\s+değişken\b/i,
+  /\bhangi\s+anahtar\s+kelime\b/i,
+  /\bhangi\s+parantez\s+türü\b/i,
+  /\b\d+\s+numaralı\s+indeks\b/i,
+  /\bprint\s*\(\s*["'][^"']+["']\s*\)/,
 ];
 
 const GENERIC_PRE_HINTS: Partial<Record<LessonStepType, string>> = {
   "multiple-choice":
-    "Seçenekleri tek tek oku. Ezberden çok kavramın ne anlama geldiğine odaklan.",
+    "Seçenekleri tek tek oku. Python'da kodun ne yaptığını anlamak için önce hangi işlemin çalıştığına bak.",
   "fill-blank":
     "Boşluğu doldurmadan önce cümlenin tamamını oku ve hangi yapının eksik olduğunu düşün.",
   "output-quiz":
-    "Kodu satır satır takip et. Önce hangi satırın çalıştığını, sonra ekranda ne görüneceğini düşün.",
+    "Kodun çıktısını tahmin ederken satırları yukarıdan aşağıya takip et. Her print() ayrı çıktı üretir.",
   "code-order":
-    "Python'da önce tanımlama, sonra kullanım sırası önemlidir. Kodun akışını düşün.",
+    "Sıralama yaparken önce hangi satırın diğerleri için gerekli olduğunu düşün.",
   "debug-choice":
-    "Hata ayıklarken parantez, tırnak, girinti ve değişken adlarına bakmak iyi bir başlangıçtır.",
+    "Python'da yazım ve büyük/küçük harf duyarlılığına dikkat et. Parantez, tırnak ve girintiyi de kontrol et.",
   "match-concept":
-    "Her kavramı seçeneklerle tek tek eşleştir. Acele etme, anlam üzerinden git.",
+    "Her kavramın yaptığı işi düşün: biri ekrana çıktı verir, biri bilgiyi saklar.",
   "code-writing":
-    "Görevde istenen çıktıyı veya davranışı tekrar oku. Python yapısını kendin kur.",
+    "Ekrana metin yazdırırken print yapısını kullanırsın. Metin yazdırırken tırnakları unutma.",
   "project-step":
-    "Hedef çıktıyı aklında tut ve adım adım ilerle. Küçük parçalarla başlayabilirsin.",
+    "Görevi küçük parçalara ayır: önce bilgiyi hazırla, sonra ekrana yazdır.",
   "mini-task":
     "Görev metnindeki anahtar kelimelere dikkat et ve ona uygun bir kod yaz.",
   info: "Bir sonraki adımda göreceğin görev için bu bilgiyi aklında tut.",
@@ -39,36 +64,87 @@ const GENERIC_PRE_HINTS: Partial<Record<LessonStepType, string>> = {
 const GENERIC_INCORRECT_FEEDBACK =
   "Henüz tam değil. Soruyu ve seçenekleri tekrar oku; kodun davranışını veya kavramı düşünerek yeniden dene.";
 
+/** Short generic answers where token overlap is expected in conceptual hints. */
+const COMMON_ANSWER_WORDS = new Set([
+  "true",
+  "false",
+  "none",
+  "hata",
+  "error",
+  "1",
+  "0",
+  "ok",
+  "evet",
+  "hayır",
+  "print",
+  "list",
+  "dict",
+  "if",
+  "else",
+  "elif",
+  "for",
+  "while",
+  "def",
+  "and",
+  "or",
+  "not",
+  "int",
+  "str",
+  "float",
+]);
+
 function escapeRegex(value: string): string {
   return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function normalizeForLeakCompare(text: string): string {
+  return text.trim().toLowerCase().replace(/\n/g, " ").replace(/\s+/g, " ");
+}
+
+function isDistinctiveAnswerToken(token: string): boolean {
+  const normalized = token.trim().toLowerCase();
+  if (normalized.length < 3) return false;
+  if (COMMON_ANSWER_WORDS.has(normalized)) return false;
+  return true;
+}
+
+function answersEquivalent(a: string, b: string): boolean {
+  return a.trim().toLowerCase() === b.trim().toLowerCase();
 }
 
 function collectAnswerTokens(step: LessonStep): string[] {
   const tokens = new Set<string>();
 
-  if (step.correctAnswer) {
-    tokens.add(step.correctAnswer.trim());
-    for (const part of step.correctAnswer.split(/\||\n/)) {
+  const addToken = (value: string | undefined) => {
+    const trimmed = value?.trim();
+    if (!trimmed || trimmed.length < 2) return;
+    tokens.add(trimmed);
+    for (const part of trimmed.split(/\||\n/)) {
       const piece = part.trim();
       if (piece.length >= 2) tokens.add(piece);
     }
-  }
+  };
+
+  addToken(step.correctAnswer);
+  addToken(step.targetOutput);
+  addToken(step.expectedText);
 
   for (const option of step.options ?? []) {
     if (step.correctAnswer && answersEquivalent(option, step.correctAnswer)) {
-      tokens.add(option.trim());
+      addToken(option);
     }
   }
 
   for (const pair of step.matchPairs ?? []) {
-    tokens.add(pair.answer.trim());
+    addToken(pair.answer);
+    addToken(pair.concept);
   }
 
-  return [...tokens].filter((token) => token.length >= 2);
-}
+  if (step.orderLines?.length && step.correctAnswer) {
+    addToken(step.correctAnswer);
+  }
 
-function answersEquivalent(a: string, b: string): boolean {
-  return a.trim().toLowerCase() === b.trim().toLowerCase();
+  return [...tokens];
 }
 
 export function messageLeaksAnswer(message: string, step: LessonStep): boolean {
@@ -79,15 +155,39 @@ export function messageLeaksAnswer(message: string, step: LessonStep): boolean {
     if (pattern.test(trimmed)) return true;
   }
 
+  const lowerMessage = trimmed.toLowerCase();
+  const normalizedMessage = normalizeForLeakCompare(trimmed);
+
+  if (step.correctAnswer) {
+    const normalizedAnswer = normalizeForLeakCompare(step.correctAnswer);
+    if (
+      normalizedAnswer.length >= 6 &&
+      normalizedMessage.includes(normalizedAnswer)
+    ) {
+      return true;
+    }
+  }
+
+  if (step.targetOutput) {
+    const normalizedTarget = normalizeForLeakCompare(step.targetOutput);
+    if (
+      normalizedTarget.length >= 6 &&
+      normalizedMessage.includes(normalizedTarget)
+    ) {
+      return true;
+    }
+  }
+
   for (const token of collectAnswerTokens(step)) {
+    if (!isDistinctiveAnswerToken(token)) continue;
+
     const lowerToken = token.toLowerCase();
-    const lowerMessage = trimmed.toLowerCase();
 
     if (lowerToken.length >= 8 && lowerMessage.includes(lowerToken)) {
       return true;
     }
 
-    if (lowerToken.length >= 2 && lowerToken.length <= 40) {
+    if (lowerToken.length >= 3 && lowerToken.length <= 60) {
       const wordPattern = new RegExp(`\\b${escapeRegex(lowerToken)}\\b`, "i");
       if (wordPattern.test(trimmed)) return true;
     }
@@ -118,11 +218,6 @@ export function getPostCorrectMigoMessage(step: LessonStep): string | null {
   const after = step.migoMessageAfterCorrect?.trim();
   if (after) return after;
 
-  const pre = step.migoMessage?.trim();
-  if (pre && !messageLeaksAnswer(pre, step)) {
-    return null;
-  }
-
   return null;
 }
 
@@ -133,11 +228,11 @@ export function getSafeQuizIncorrectFeedback(step: LessonStep): string {
   }
 
   if (step.type === "output-quiz") {
-    return "Çıktıyı tekrar düşün. Kodu satır satır okuyup her print'in ne yazdırdığını takip et.";
+    return "Kodun satırlarını sırayla takip etmeyi dene. print() her çalıştığında ekrana yeni bir çıktı ekler.";
   }
 
   if (step.type === "debug-choice") {
-    return "Bu seçenek tam isabet değil. Parantez, tırnak, girinti ve değişken adlarını tekrar kontrol et.";
+    return "Bu seçenek tam isabet değil. Parantez, tırnak, girinti ve yazımı tekrar kontrol et.";
   }
 
   if (step.type === "fill-blank") {
@@ -149,7 +244,7 @@ export function getSafeQuizIncorrectFeedback(step: LessonStep): string {
   }
 
   if (step.type === "code-order") {
-    return "Satır sırası henüz doğru değil. Önce tanımlama, sonra kullanım mantığını düşün.";
+    return "Satır sırası henüz doğru değil. Önce hangi satırın diğerleri için gerekli olduğunu düşün.";
   }
 
   return GENERIC_INCORRECT_FEEDBACK;

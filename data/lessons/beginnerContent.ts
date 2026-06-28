@@ -114,7 +114,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
         "print",
         {
           content: "Boşluğu tamamlayarak ekrana Selam yazdır.",
-          migo: "Ekrana yazdırmak için daha önce hangi komutu kullanmıştık?",
+          migo: "Boşluğu doldururken bu satırın ekrana yazdırma işlemi yaptığını düşün.",
           migoAfterCorrect: "Ekrana çıktı vermek için print() komutunu kullanırız.",
         },
       ),
@@ -145,6 +145,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
         "print() kullanarak ekrana kendi cümleni yazdır.",
         {
           validation: {
+            validationMode: "printStringLiteral",
             mustIncludePrint: true,
             minLength: 10,
           },
@@ -172,14 +173,14 @@ export const beginnerLessons: Record<string, LessonContent> = {
         "Kodu satır satır okuyarak ekranda ne görüneceğini düşün. Bu alışkanlık hata ayıklamayı kolaylaştırır.",
         {
           code: 'print("A")\nprint("B")',
-          migo: "İki print() arka arkaya çalışırsa iki satır çıktı görürsün.",
+          migo: "Her print() ekrana ayrı bir satır yazar. Kodun satırlarını yukarıdan aşağıya takip etmeyi dene.",
         },
       ),
       outputStep(
         "step-2",
         "İlk tahmin",
         'print("Kodmigo")\nprint("Python")',
-        ["Kodmigo\nPython", "Python\nKodmigo", "Kodmigo Python", "Hata"],
+        ["Kodmigo\nPython", "Python\nKodmigo", "KodmigoPython", "Hata"],
         "Kodmigo\nPython",
         {
           migo: "Kodu satır satır takip et — her print ayrı bir satır mı oluşturur?",
@@ -210,7 +211,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
           { concept: 'print("B")', answer: "B" },
         ],
         ["AB", "Hata", "Boş satır"],
-        { content: "Her kod satırının çıktısını doğru eşleştir.", migo: "print içindeki metin olduğu gibi yazılır." },
+        { content: "Her kod satırının çıktısını doğru eşleştir.", migo: "Her kavramın yaptığı işi düşün: kod satırı ile çıktısı nasıl eşleşir?" },
       ),
       codeWritingStep(
         "step-5",
@@ -218,6 +219,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
         'İki print() ile önce "Merhaba" sonra "Dünya" yazdır.',
         {
           validation: {
+            validationMode: "multiplePrintStringLiteral",
             mustIncludePrint: true,
             requiredPatterns: ["Merhaba", "Dünya"],
             minLength: 20,
@@ -256,14 +258,12 @@ export const beginnerLessons: Record<string, LessonContent> = {
         "print() kullanarak kendini tanıtan bir cümle yaz.",
         {
           validation: {
+            validationMode: "printStringLiteral",
             mustIncludePrint: true,
-            requiredIncludes: ["print"],
-            requiredPatterns: ["print\\s*\\("],
             minLength: 10,
-            rejectPatterns: ["^abc$", "^x\\s*="],
           },
           checklist: [
-            "print() fonksiyonu kullanıldı",
+            "print() kullanıldı",
             "Parantez içinde bir metin var",
             "Kendini tanıtan anlamlı bir cümle yazıldı",
           ],
@@ -277,6 +277,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
         "Bir ad değişkeni oluştur ve print() ile yazdır.",
         {
           validation: {
+            validationMode: "variableAndPrint",
             mustIncludeAssignment: true,
             mustIncludePrint: true,
             minLength: 15,
@@ -289,7 +290,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
         "step-4",
         "Değişken ve print sırası",
         ['isim = "Migo"', "print(isim)"],
-        { content: "Önce değişken atanmalı, sonra yazdırılmalı.", migo: "Atama print'ten önce gelir." },
+        { content: "Önce değişken atanmalı, sonra yazdırılmalı.", migo: "Sıralama yaparken önce hangi satırın diğerleri için gerekli olduğunu düşün." },
       ),
       projectStep(
         "step-5",
@@ -304,11 +305,11 @@ export const beginnerLessons: Record<string, LessonContent> = {
           exampleSolution:
             'ad = "Efe"\nsehir = "İstanbul"\nprint("Ad:", ad)\nprint("Şehir:", sehir)',
           validation: {
+            validationMode: "miniProfile",
             mustIncludeAssignment: true,
             mustIncludePrint: true,
             minLength: 30,
           },
-          migo: "Her print satırında farklı bir bilgi paylaş — kartın okunaklı olsun.",
         },
       ),
       completeStep("step-6", 25, "Değişken mantığı", {
@@ -375,6 +376,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
         "Bir şehir değişkeni oluştur ve print() ile yazdır.",
         {
           validation: {
+            validationMode: "variableAndPrint",
             mustIncludeAssignment: true,
             mustIncludePrint: true,
             minLength: 15,
@@ -504,6 +506,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
         "Bir fiyat değişkenine ondalıklı sayı ata ve print() ile yazdır.",
         {
           validation: {
+            validationMode: "variableAndPrint",
             mustIncludeAssignment: true,
             mustIncludePrint: true,
             requiredPatterns: ["=\\s*\\d"],
@@ -542,6 +545,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
         "Migo'yu selamlayan bir print() satırı yaz.",
         {
           validation: {
+            validationMode: "printStringLiteral",
             mustIncludePrint: true,
             requiredAnyIncludes: ["Migo", "Kodmigo"],
             minLength: 10,
@@ -562,6 +566,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
         "Migo'nun adını bir değişkende sakla.",
         {
           validation: {
+            validationMode: "variableAssignment",
             mustIncludeAssignment: true,
             requiredAnyIncludes: ["Migo", "Kodmigo"],
             minLength: 8,
@@ -587,6 +592,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
           exampleSolution:
             'print("Merhaba! Ben Migo.")\nprint("Ben Kodmigo\'nun tilki rehberiyim.")\nprint("Bugün Python öğrenmeye başladım.")\nprint("En sevdiğim şey: Her gün biraz kod!")',
           validation: {
+            validationMode: "multiplePrintStringLiteral",
             mustIncludePrint: true,
             requiredAnyIncludes: ["Migo", "Kodmigo"],
             minPrintCount: 2,
@@ -655,9 +661,9 @@ export const beginnerLessons: Record<string, LessonContent> = {
         "Bir ad değişkeni ve f-string ile kendini tanıtan print() yaz.",
         {
           validation: {
+            validationMode: "fStringIntro",
             mustIncludeAssignment: true,
             mustIncludePrint: true,
-            requiredPatterns: ["f[\"']"],
             minLength: 20,
           },
           exampleSolution: 'ad = "Efe"\nprint(f"Merhaba, ben {ad}")',
@@ -691,8 +697,10 @@ export const beginnerLessons: Record<string, LessonContent> = {
         "En az 2 değişken ve print() ile kısa profil çıktısı yaz.",
         {
           validation: {
+            validationMode: "variableAndPrint",
             mustIncludeAssignment: true,
             mustIncludePrint: true,
+            minAssignmentCount: 2,
             minLength: 25,
           },
           checklist: [
@@ -724,8 +732,8 @@ export const beginnerLessons: Record<string, LessonContent> = {
           exampleSolution:
             'ad = "Efe"\nyas = 28\naktif = True\nprint(f"Ad: {ad}")\nprint(f"Yaş: {yas}")\nprint(f"Aktif: {aktif}")',
           validation: {
+            validationMode: "extendedProfileCard",
             mustIncludePrint: true,
-            requiredPatterns: ["True|False", "f[\"']"],
             minPrintCount: 3,
             minLength: 40,
           },
@@ -780,6 +788,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
         'input() ile kullanıcıdan ad al ve print() ile yazdır.',
         {
           validation: {
+            validationMode: "miniProject",
             mustIncludePrint: true,
             requiredPatterns: ["input\\s*\\(", "="],
             minLength: 20,
@@ -796,8 +805,10 @@ export const beginnerLessons: Record<string, LessonContent> = {
           exampleSolution:
             'ad = input("Adın: ")\nprint(f"Merhaba, {ad}!")',
           validation: {
+            validationMode: "miniProject",
             mustIncludePrint: true,
-            requiredPatterns: ["input\\s*\\(", "f[\"']"],
+            requiresFString: true,
+            requiredPatterns: ["input\\s*\\("],
             minLength: 25,
           },
           migo: "Kullanıcıdan aldığın metni f-string ile birleştir.",
@@ -1097,7 +1108,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
         ["else", "elif", "then", "if"],
         "else",
         {
-          migo: "if koşulu sağlanmazsa hangi anahtar kelime alternatif dalı açar?",
+          migo: "if koşulu doğru değilse alternatif dalı hangi yapı açar? Cümlenin akışını düşün.",
           migoAfterCorrect: "Koşul yanlışsa else bloğu çalışır.",
         },
       ),
@@ -1148,7 +1159,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
         "elif",
         {
           content: "Orta sıcaklık için elif ekle.",
-          migo: "Birden fazla koşul varsa if'ten sonra hangi anahtar kelimeyi kullanırsın?",
+          migo: "Birden fazla koşul varsa if'ten sonra ek dallar için hangi yapı kullanılır?",
           migoAfterCorrect: "if ve else arasına ek koşullar için elif kullanılır.",
         },
       ),
@@ -1239,7 +1250,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
         "[]",
         {
           content: "Boş bir görev listesi oluştur.",
-          migo: "Python'da liste oluşturmak için hangi parantez türü kullanılır?",
+          migo: "Python'da sıralı öğeleri tutmak için hangi veri yapısı kullanılır?",
           migoAfterCorrect: "Boş liste köşeli parantezle yazılır: [].",
         },
       ),
@@ -1279,7 +1290,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
         "85",
         {
           code: "notlar = [70, 85, 90]",
-          migo: "Python'da indeks 0'dan başlar — 1 numaralı indeks hangi elemana denk gelir?",
+          migo: "Python'da indeks 0'dan başlar. İndeks numarası ile listedeki konumu ilişkilendir.",
           migoAfterCorrect: "İndeks 1 ikinci elemanı verir; bu listede 85.",
         },
       ),
@@ -1290,7 +1301,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
         ["append", "add", "push", "insert"],
         "append",
         {
-          migo: "Listenin sonuna eleman eklemek için hangi yöntem kullanılır?",
+          migo: "Listenin sonuna yeni öğe eklemek için hangi yöntem kullanılır?",
           migoAfterCorrect: "Sona eklemek için append() kullanılır.",
         },
       ),
@@ -1657,7 +1668,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
         ["def", "function", "fn", "fun"],
         "def",
         {
-          migo: "Python'da fonksiyon tanımlamak için hangi anahtar kelime kullanılır?",
+          migo: "Python'da yeniden kullanılabilir kod blokları tanımlamak için hangi yapı kullanılır?",
           migoAfterCorrect: "Python'da fonksiyon def ile tanımlanır.",
         },
       ),

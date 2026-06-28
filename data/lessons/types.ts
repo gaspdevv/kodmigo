@@ -26,6 +26,7 @@ export type StepValidation = {
   forbiddenExactAnswers?: string[];
   minLength?: number;
   minPrintCount?: number;
+  minAssignmentCount?: number;
   minLines?: number;
   mustLookLikePython?: boolean;
   mustIncludePrint?: boolean;
@@ -33,6 +34,26 @@ export type StepValidation = {
   mustIncludeDef?: boolean;
   mustIncludeIf?: boolean;
   mustIncludeLoop?: boolean;
+  /** When true, print() args must use quoted strings (not bare identifiers). Inferred for print-only tasks. */
+  requireQuotedStringsInPrint?: boolean;
+  /** Require at least one assignment with True/False (not quoted). */
+  requiresBoolean?: boolean;
+  /** Require at least one f-string print line. */
+  requiresFString?: boolean;
+  /** Minimum characters inside quoted print for self-intro tasks. */
+  selfIntroMinChars?: number;
+  /** Task-specific validation mode for clearer rules without overfitting lesson text. */
+  validationMode?:
+    | "printStringLiteral"
+    | "multiplePrintStringLiteral"
+    | "variableAssignment"
+    | "variableAndPrint"
+    | "miniProfile"
+    | "fStringIntro"
+    | "extendedProfileCard"
+    | "miniProject"
+    | "selfIntroPrint"
+    | "fString";
   hints?: Partial<Record<
     | "empty"
     | "junk"
@@ -40,12 +61,23 @@ export type StepValidation = {
     | "notPython"
     | "missingPrint"
     | "emptyPrint"
+    | "wrongCasePrint"
+    | "unquotedString"
+    | "unquotedAssignment"
+    | "undefinedPrintVariable"
+    | "missingFString"
+    | "missingFStringVariable"
+    | "undefinedFStringVariable"
     | "missingAssignment"
+    | "missingAssignmentCount"
     | "incompleteAssignment"
+    | "missingBoolean"
+    | "invalidBooleanCase"
     | "missingKeyword"
     | "missingAnyKeyword"
     | "missingStructure"
     | "missingPrintCount"
+    | "missingPrintCount3"
     | "missingLines"
     | "consoleLog"
     | "plainTextOnly"
