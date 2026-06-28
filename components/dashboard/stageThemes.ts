@@ -48,6 +48,11 @@ export type StageTheme = {
   lessonChoiceSelected: string;
   lessonFeedbackSuccess: string;
   lessonFeedbackError: string;
+  lessonAccentSoft: string;
+  lessonAccentSelected: string;
+  lessonAccentHover: string;
+  lessonFocusRing: string;
+  lessonAccentBadge: string;
   lessonCodeBackground: string;
 };
 
@@ -123,6 +128,11 @@ export const stageThemes: Record<StageKey, StageTheme> = {
       "border border-emerald-200 bg-emerald-50 text-emerald-800",
     lessonFeedbackError:
       "border border-rose-200 bg-rose-50 text-rose-800",
+    lessonAccentSoft: "bg-orange-50/80",
+    lessonAccentSelected: "border-orange-400 bg-orange-50/80",
+    lessonAccentHover: "hover:border-orange-300",
+    lessonFocusRing: "focus:ring-2 focus:ring-orange-400/50",
+    lessonAccentBadge: "bg-orange-100",
     lessonCodeBackground: "bg-stone-900 text-emerald-400",
   },
   silver: {
@@ -153,7 +163,7 @@ export const stageThemes: Record<StageKey, StageTheme> = {
     streakBg: "bg-slate-200 text-slate-700",
     navBorder: "border-slate-300/60",
     navBackground: "bg-white/95",
-    migoAccent: "text-kodmigo-orange",
+    migoAccent: "text-slate-600",
     lessonCompletedCard: "bg-white/95",
     lessonCompletedBorder: "border-slate-200",
     lessonCompletedIcon: "bg-emerald-50 text-emerald-600",
@@ -177,6 +187,11 @@ export const stageThemes: Record<StageKey, StageTheme> = {
       "border border-emerald-200 bg-emerald-50 text-emerald-800",
     lessonFeedbackError:
       "border border-rose-200 bg-rose-50 text-rose-800",
+    lessonAccentSoft: "bg-slate-100/80",
+    lessonAccentSelected: "border-slate-400 bg-slate-100/80",
+    lessonAccentHover: "hover:border-slate-300",
+    lessonFocusRing: "focus:ring-2 focus:ring-slate-400/50",
+    lessonAccentBadge: "bg-slate-200",
     lessonCodeBackground: "bg-slate-900 text-emerald-400",
   },
   gold: {
@@ -208,7 +223,7 @@ export const stageThemes: Record<StageKey, StageTheme> = {
     streakBg: "bg-yellow-100 text-amber-800",
     navBorder: "border-yellow-200/60",
     navBackground: "bg-white/95",
-    migoAccent: "text-kodmigo-orange",
+    migoAccent: "text-amber-600",
     lessonCompletedCard: "bg-white/95",
     lessonCompletedBorder: "border-yellow-200",
     lessonCompletedIcon: "bg-emerald-50 text-emerald-600",
@@ -233,6 +248,11 @@ export const stageThemes: Record<StageKey, StageTheme> = {
       "border border-emerald-200 bg-emerald-50 text-emerald-800",
     lessonFeedbackError:
       "border border-rose-200 bg-rose-50 text-rose-800",
+    lessonAccentSoft: "bg-yellow-50/80",
+    lessonAccentSelected: "border-amber-400 bg-yellow-50/80",
+    lessonAccentHover: "hover:border-amber-300",
+    lessonFocusRing: "focus:ring-2 focus:ring-amber-400/50",
+    lessonAccentBadge: "bg-yellow-100",
     lessonCodeBackground: "bg-stone-900 text-emerald-400",
   },
   platinum: {
@@ -263,7 +283,7 @@ export const stageThemes: Record<StageKey, StageTheme> = {
     streakBg: "bg-indigo-50 text-indigo-700",
     navBorder: "border-indigo-200/40",
     navBackground: "bg-white/95",
-    migoAccent: "text-kodmigo-orange",
+    migoAccent: "text-indigo-600",
     lessonCompletedCard: "bg-white/95",
     lessonCompletedBorder: "border-indigo-100",
     lessonCompletedIcon: "bg-emerald-50 text-emerald-600",
@@ -288,6 +308,11 @@ export const stageThemes: Record<StageKey, StageTheme> = {
       "border border-emerald-200 bg-emerald-50 text-emerald-800",
     lessonFeedbackError:
       "border border-rose-200 bg-rose-50 text-rose-800",
+    lessonAccentSoft: "bg-indigo-50/80",
+    lessonAccentSelected: "border-indigo-400 bg-indigo-50/80",
+    lessonAccentHover: "hover:border-indigo-300",
+    lessonFocusRing: "focus:ring-2 focus:ring-indigo-400/50",
+    lessonAccentBadge: "bg-indigo-100",
     lessonCodeBackground: "bg-slate-900 text-emerald-400",
   },
   diamond: {
@@ -317,7 +342,7 @@ export const stageThemes: Record<StageKey, StageTheme> = {
     streakBg: "bg-cyan-100 text-slate-700",
     navBorder: "border-cyan-200/60",
     navBackground: "bg-white/95",
-    migoAccent: "text-kodmigo-orange",
+    migoAccent: "text-cyan-600",
     lessonCompletedCard: "bg-white/95",
     lessonCompletedBorder: "border-cyan-200",
     lessonCompletedIcon: "bg-emerald-50 text-emerald-600",
@@ -341,6 +366,11 @@ export const stageThemes: Record<StageKey, StageTheme> = {
       "border border-emerald-200 bg-emerald-50 text-emerald-800",
     lessonFeedbackError:
       "border border-rose-200 bg-rose-50 text-rose-800",
+    lessonAccentSoft: "bg-cyan-50/80",
+    lessonAccentSelected: "border-cyan-400 bg-cyan-50/80",
+    lessonAccentHover: "hover:border-cyan-300",
+    lessonFocusRing: "focus:ring-2 focus:ring-cyan-400/50",
+    lessonAccentBadge: "bg-cyan-100",
     lessonCodeBackground: "bg-slate-900 text-emerald-400",
   },
   master: {
@@ -398,6 +428,11 @@ export const stageThemes: Record<StageKey, StageTheme> = {
       "border border-emerald-500/30 bg-emerald-500/10 text-emerald-300",
     lessonFeedbackError:
       "border border-rose-500/30 bg-rose-500/10 text-rose-300",
+    lessonAccentSoft: "bg-amber-500/10",
+    lessonAccentSelected: "border-amber-500/50 bg-amber-500/10",
+    lessonAccentHover: "hover:border-amber-500/40",
+    lessonFocusRing: "focus:ring-2 focus:ring-amber-500/40",
+    lessonAccentBadge: "bg-amber-500/15",
     lessonCodeBackground: "bg-slate-950 text-emerald-400 border border-amber-500/15",
   },
 };

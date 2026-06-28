@@ -529,14 +529,14 @@ export default function LessonShell({ lesson, theme }: LessonShellProps) {
                 <div
                   className={`rounded-2xl border p-4 ${
                     isProjectStep
-                      ? "border-violet-200 bg-violet-50/50"
+                      ? `${theme.cardBorder} ${theme.lessonAccentSoft}`
                       : isCodeWriting
                         ? "border-slate-300 bg-slate-900/95"
                         : `${theme.cardBorder} ${theme.cardBackground}`
                   }`}
                 >
                   {isProjectStep && (
-                    <p className="mb-2 text-xs font-bold uppercase tracking-wide text-violet-700">
+                    <p className={`mb-2 text-xs font-bold uppercase tracking-wide ${theme.sectionAccent}`}>
                       Proje adımı
                     </p>
                   )}
@@ -556,7 +556,7 @@ export default function LessonShell({ lesson, theme }: LessonShellProps) {
                     }}
                     placeholder={step.placeholder ?? "Kodunu yaz..."}
                     rows={isProjectStep ? 8 : 5}
-                    className={`box-border max-w-full w-full resize-y rounded-xl border px-4 py-3 font-mono text-sm leading-relaxed outline-none transition focus:ring-2 focus:ring-orange-400/50 ${
+                    className={`box-border max-w-full w-full resize-y rounded-xl border px-4 py-3 font-mono text-sm leading-relaxed outline-none transition ${theme.lessonFocusRing} ${
                       isCodeWriting
                         ? "border-slate-600 bg-slate-950 text-emerald-100 placeholder:text-slate-500"
                         : `${theme.cardBorder} ${theme.cardBackground} ${theme.primaryText}`

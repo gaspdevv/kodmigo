@@ -42,7 +42,7 @@ export default function MatchConceptActivity({
                 Kavram
               </p>
               <div
-                className={`flex min-w-0 items-center rounded-xl border px-3 py-2 text-sm font-semibold break-words ${theme.cardBorder} bg-orange-50/80 ${theme.primaryText}`}
+                className={`flex min-w-0 items-center rounded-xl border px-3 py-2 text-sm font-semibold break-words ${theme.cardBorder} ${theme.lessonAccentSoft} ${theme.primaryText}`}
               >
                 {pair.concept}
               </div>
@@ -55,7 +55,7 @@ export default function MatchConceptActivity({
                 value={selections[pair.concept] ?? ""}
                 disabled={feedbackState === "correct"}
                 onChange={(event) => onSelectPair(pair.concept, event.target.value)}
-                className={`w-full min-w-0 rounded-xl border px-3 py-2 text-sm outline-none transition focus:ring-2 focus:ring-orange-400/50 ${theme.cardBorder} ${theme.cardBackground} ${theme.primaryText}`}
+                className={`w-full min-w-0 rounded-xl border px-3 py-2 text-sm outline-none transition ${theme.lessonFocusRing} ${theme.cardBorder} ${theme.cardBackground} ${theme.primaryText}`}
               >
               <option value="">Seç...</option>
               {options.map((option) => (
@@ -75,7 +75,7 @@ export default function MatchConceptActivity({
     <div className="mb-4">
       <div className="grid gap-3 sm:grid-cols-2">
         <div
-          className={`rounded-2xl border-2 border-dashed p-4 ${theme.cardBorder} bg-orange-50/70`}
+          className={`rounded-2xl border-2 border-dashed p-4 ${theme.cardBorder} ${theme.lessonAccentSoft}`}
         >
           <p className={`mb-2 text-xs font-bold uppercase tracking-wide ${theme.migoAccent}`}>
             Kavram
@@ -101,8 +101,8 @@ export default function MatchConceptActivity({
                 onClick={() => onSelectSingle(option)}
                 className={`w-full break-words rounded-xl border px-3 py-2.5 text-left text-sm transition ${
                   selected
-                    ? `border-orange-400 bg-orange-50/80 font-semibold ${theme.primaryText}`
-                    : `${theme.cardBorder} ${theme.cardBackground} ${theme.mutedText} hover:border-orange-300`
+                    ? `${theme.lessonAccentSelected} font-semibold ${theme.primaryText}`
+                    : `${theme.cardBorder} ${theme.cardBackground} ${theme.mutedText} ${theme.lessonAccentHover}`
                 } ${
                   feedback === "correct"
                     ? "border-emerald-400 bg-emerald-50"

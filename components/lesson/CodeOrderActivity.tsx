@@ -91,7 +91,7 @@ export default function CodeOrderActivity({
           }`}
         >
           <span
-            className={`mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs font-bold ${theme.migoAccent} bg-orange-100`}
+            className={`mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs font-bold ${theme.migoAccent} ${theme.lessonAccentBadge}`}
           >
             {index + 1}
           </span>

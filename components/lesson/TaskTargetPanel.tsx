@@ -15,7 +15,7 @@ export default function TaskTargetPanel({ step, theme }: TaskTargetPanelProps) {
     <div className="mb-4 space-y-3">
       {step.targetOutput && (
         <div
-          className={`rounded-2xl border p-4 ${theme.cardBorder} bg-orange-50/60`}
+          className={`rounded-2xl border p-4 ${theme.cardBorder} ${theme.lessonAccentSoft}`}
         >
           <p className={`mb-2 text-xs font-bold uppercase tracking-wide ${theme.sectionAccent}`}>
             Hedef çıktı
