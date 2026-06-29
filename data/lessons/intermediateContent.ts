@@ -1,4 +1,5 @@
 import type { LessonContent } from "./types";
+import { applyMigoHintsToLessons } from "./applyMigoHints";
 import {
   buildLesson,
   codeOrderLinesStep,
@@ -16,7 +17,8 @@ import {
   projectStep,
 } from "./builders";
 
-export const intermediateLessons: Record<string, LessonContent> = {
+export const intermediateLessons: Record<string, LessonContent> =
+  applyMigoHintsToLessons({
   "int-function-split": buildLesson(
     "int-function-split",
     "Fonksiyonları parçalamak",
@@ -805,7 +807,7 @@ export const intermediateLessons: Record<string, LessonContent> = {
         checklist: ["4 fonksiyon veya 3+ ", "özet istatistik", "örnek senaryo"],
         exampleSolution:
           'def ozet(g):\n    t=len(g)\n    c=sum(1 for x in g if x["tamam"])\n    print(f"{c}/{t} bitti")\ng=[]\ng.append({"ad":"Kod","tamam":True})\ng.append({"ad":"Spor","tamam":False})\nozet(g)',
-        migo: "İleri seviyeyi tamamladın — mükemmel ilerleme!",
+        migo: "ekle, listele, tamamla ve ozet fonksiyonlarını tanımla. Örnek görevlerle hepsini sırayla çağır.",
         validation: {
           validationMode: "taskTrackerFullProject",
           minLength: 45,
@@ -817,4 +819,4 @@ export const intermediateLessons: Record<string, LessonContent> = {
     ],
     "intermediate",
   ),
-};
+});

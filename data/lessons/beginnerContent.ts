@@ -1,4 +1,5 @@
 import type { LessonContent } from "./types";
+import { applyMigoHintsToLessons } from "./applyMigoHints";
 import {
   buildLesson,
   codeOrderLinesStep,
@@ -16,7 +17,8 @@ import {
   projectStep,
 } from "./builders";
 
-export const beginnerLessons: Record<string, LessonContent> = {
+export const beginnerLessons: Record<string, LessonContent> =
+  applyMigoHintsToLessons({
   "python-what-is-python": buildLesson(
     "python-what-is-python",
     "Python ile ne yapılır?",
@@ -358,7 +360,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
           { concept: "Atama", answer: "= ile değer verme" },
         ],
         ["Bir fonksiyon türü", "Sadece metin yazdırma", "Hata mesajı"],
-        { migo: "Her kavram için doğru açıklamayı seç." },
+        { migo: "Her kavramın ne işe yaradığını düşün; sol taraftaki terimleri sağdaki açıklamalarla eşleştir." },
       ),
       debugStep(
         "step-3",
@@ -938,7 +940,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
           ],
           exampleSolution:
             'sayi1 = int(input("Birinci sayı: "))\nsayi2 = int(input("İkinci sayı: "))\nprint(sayi1 + sayi2)',
-          migo: "Prompt metinlerini Türkçe ve anlaşılır yaz.",
+          migo: "input(...) içindeki metin kullanıcıya gösterilen sorudur. İki sayı alıp toplamak için int dönüşümünü düşün.",
           validation: {
             validationMode: "inputSumTwoNumbers",
             minLength: 30,
@@ -1039,7 +1041,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
         "Ne zaman çalışır?",
         ["yas >= 18 True ise", "Her zaman", "yas çift ise", "Hiçbir zaman"],
         "yas >= 18 True ise",
-        { code: "yas = 20\nif yas >= 18:\n    print(\"Reşitsin\")", migo: "Koşul doğru olduğunda if bloğu çalışır. Girintiye dikkat et." },
+        { code: "yas = 20\nif yas >= 18:\n    print(\"Reşitsin\")", migo: "Koşul sağlandığında if bloğundaki satırlar çalışır. Girintiye dikkat et." },
       ),
       fillStep(
         "step-3",
@@ -1156,7 +1158,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
         ["else", "elif", "then", "if"],
         "else",
         {
-          migo: "if koşulu doğru değilse alternatif dalı hangi yapı açar? Cümlenin akışını düşün.",
+          migo: "Koşul sağlanmadığında alternatif dalı hangi yapı açar? Cümlenin akışını düşün.",
           migoAfterCorrect: "Koşul yanlışsa else bloğu çalışır.",
         },
       ),
@@ -1187,7 +1189,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
         'notu = 82\nif notu >= 90:\n    print("A")\nelif notu >= 80:\n    print("B")\nelse:\n    print("C")',
         ["B", "A", "C", "82"],
         "B",
-        { migo: "Koşulları sırayla kontrol et. İlk doğru olan dal çalışır, sonrakiler atlanır." },
+        { migo: "Koşulları sırayla kontrol et. İlk eşleşen dal çalışır, sonrakiler atlanır." },
       ),
       mcStep(
         "step-3",
@@ -1637,7 +1639,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
         'for sayi in [1, 4, 7, 10]:\n    if sayi ____ 5:\n        print(sayi)',
         [">", "<", "==", "!="],
         ">",
-        { content: "5'ten büyük sayıları yazdır.", migo: "if ile filtreleme yapabilirsin." },
+        { content: "5'ten büyük sayıları yazdır.", migo: "for ile gezerken if ile koşula uyan elemanları seçebilirsin." },
       ),
       completeStep("step-5", 15, "Mini proje: Günlük görev yazdırıcı"),
     ],
@@ -1734,7 +1736,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
           "İnterneti kapatmak",
         ],
         "Kod tekrarını azaltmak",
-        { migo: "Aynı mantığı birçok yerde yazmak yerine ne yapabilirsin?" },
+        { migo: "Aynı mantığı birçok yerde yazmak yerine tek bir tanımlı blokla tekrar kullanmayı düşün." },
       ),
       mcStep(
         "step-3",
@@ -1956,7 +1958,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
           ],
           exampleSolution:
             'print("Python\'da liste hangi parantezle yazılır?")\ncevap = input("Cevap: ")\nif cevap == "[]":\n    print("Doğru!")\nelse:\n    print("Yanlış. Cevap: []")',
-          migo: "Soruyu net yaz; kullanıcı ne cevap vereceğini bilsin.",
+          migo: "input ile kullanıcıdan yanıt al. if ile girilen değeri beklenenle karşılaştır.",
           validation: {
             validationMode: "miniProject",
             mustIncludeIf: true,
@@ -2055,4 +2057,4 @@ export const beginnerLessons: Record<string, LessonContent> = {
     ],
     "beginner",
   ),
-};
+});

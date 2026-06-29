@@ -1,4 +1,5 @@
 import type { LessonContent } from "./types";
+import { applyMigoHintsToLessons } from "./applyMigoHints";
 import {
   buildLesson,
   codeOrderLinesStep,
@@ -16,7 +17,8 @@ import {
   codeWritingStep,
 } from "./builders";
 
-export const basicLessons: Record<string, LessonContent> = {
+export const basicLessons: Record<string, LessonContent> =
+  applyMigoHintsToLessons({
   "bas-quick-print": buildLesson(
     "bas-quick-print",
     "print ve değişken tekrarı",
@@ -126,7 +128,7 @@ export const basicLessons: Record<string, LessonContent> = {
         migo: "Kod çalışırken yukarıdan aşağı ilerler. Her print ekrana bir satır yazar.",
       }),
       outputStep("step-2", "Bu kodun çıktısı nedir?", 'a = "1"\nprint(a + "2")', ["12", "3", "a2", "Hata"], "12", {
-        migo: "Metin birleştirme.",
+        migo: "Metin birleştirmede + operatörü iki metni bitiştirir. Tırnaklı değerler yan yana gelince ne oluşur?",
       }),
       outputStep("step-3", "Bu kodun çıktısı nedir?", "print(3 * 4)", ["12", "34", "7", "Hata"], "12"),
       debugStep(
@@ -232,7 +234,7 @@ export const basicLessons: Record<string, LessonContent> = {
       }),
       outputStep("step-2", "Bu kodun çıktısı nedir?", 'puan = 70\nif puan >= 90:\n    print("A")\nelif puan >= 70:\n    print("B")\nelse:\n    print("C")', ["B", "A", "C", "70"], "B"),
       mcStep("step-3", "Kaç blok çalışır?", ["1", "2", "3", "Hepsi"], "1", {
-        migo: "İlk doğru dal çalışır, diğerleri atlanır.",
+        migo: "İlk eşleşen dal çalışır, diğerleri atlanır.",
       }),
       debugStep(
         "step-4",
@@ -253,7 +255,7 @@ export const basicLessons: Record<string, LessonContent> = {
         "puan = 85 için hangi dal çalışır?",
         ["if puan >= 90", "elif puan >= 70", "else", "Hiçbiri"],
         "elif puan >= 70",
-        { migo: "İlk doğru koşul çalışır." },
+        { migo: "Koşulları sırayla değerlendir; ilk sağlanan dalın çalıştığını düşün." },
       ),
       completeStep("step-6", 10, "and / or operatörleri"),
     ],
@@ -868,7 +870,7 @@ export const basicLessons: Record<string, LessonContent> = {
         checklist: ["ozet_yazdir fonksiyonu", "toplam/tamamlanan/yüzde", "f-string print"],
         exampleSolution:
           'def ozet_yazdir(gorevler):\n    toplam = len(gorevler)\n    tamamlanan = 0\n    for g in gorevler:\n        if g["tamamlandi"]: tamamlanan += 1\n    yuzde = tamamlanan / toplam * 100\n    print(f"Toplam: {toplam}")\n    print(f"Tamamlanan: {tamamlanan}")\n    print(f"Yüzde: %{yuzde}")\n\ngorevler = [{"ad":"Kod","tamamlandi":True},{"ad":"Spor","tamamlandi":False}]\nozet_yazdir(gorevler)',
-        migo: "Temel yolu tamamladın — harika iş!",
+        migo: "ozet_yazdir fonksiyonunda for ile tamamlananları say. len ve f-string ile toplam, tamamlanan ve yüzde yazdır.",
         validation: {
           validationMode: "habitTrackerSummaryFunction",
         },
@@ -879,4 +881,4 @@ export const basicLessons: Record<string, LessonContent> = {
     ],
     "basic",
   ),
-};
+});

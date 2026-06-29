@@ -53,11 +53,11 @@ const GENERIC_PRE_HINTS: Partial<Record<LessonStepType, string>> = {
   "match-concept":
     "Her kavramın yaptığı işi düşün: biri ekrana çıktı verir, biri bilgiyi saklar.",
   "code-writing":
-    "Ekrana metin yazdırırken print yapısını kullanırsın. Metin yazdırırken tırnakları unutma.",
+    "Bu görevde gerekli Python yapılarını düşün. input(), dönüşüm ve print(...) adımlarını sırayla planla.",
   "project-step":
-    "Görevi küçük parçalara ayır: önce bilgiyi hazırla, sonra ekrana yazdır.",
+    "Bu adımda birkaç kavram birleşir. Veriyi hazırla, işlemi yap, sonucu yazdır — adım adım düşün.",
   "mini-task":
-    "Görev metnindeki anahtar kelimelere dikkat et ve ona uygun bir kod yaz.",
+    "Görev metnindeki anahtar kelimelere dikkat et. Kodun ne yapması gerektiğini küçük adımlara böl.",
   info: "Bir sonraki adımda göreceğin görev için bu bilgiyi aklında tut.",
 };
 
@@ -205,13 +205,31 @@ export function getGenericPreAnswerHint(stepType: LessonStepType): string {
 
 export function getPreAnswerMigoMessage(step: LessonStep): string | null {
   const raw = step.migoMessage?.trim();
-  if (!raw) return null;
 
-  if (messageLeaksAnswer(raw, step)) {
+  if (raw && !messageLeaksAnswer(raw, step)) {
+    return raw;
+  }
+
+  if (raw && messageLeaksAnswer(raw, step)) {
     return getGenericPreAnswerHint(step.type);
   }
 
-  return raw;
+  if (
+    step.type === "multiple-choice" ||
+    step.type === "fill-blank" ||
+    step.type === "output-quiz" ||
+    step.type === "code-order" ||
+    step.type === "debug-choice" ||
+    step.type === "match-concept" ||
+    step.type === "code-writing" ||
+    step.type === "project-step" ||
+    step.type === "mini-task" ||
+    step.type === "info"
+  ) {
+    return getGenericPreAnswerHint(step.type);
+  }
+
+  return null;
 }
 
 export function getPostCorrectMigoMessage(step: LessonStep): string | null {

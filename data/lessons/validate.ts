@@ -7,6 +7,7 @@ import {
   VALIDATION_MODES,
 } from "@/lib/lesson-code-validation";
 import { messageLeaksAnswer } from "@/lib/lesson-migo-safety";
+import { MIGO_REQUIRED_STEP_TYPES } from "./applyMigoHints";
 import type { LessonContent, LessonStep, LessonStepType } from "./types";
 import {
   isTaskStepType,
@@ -67,6 +68,70 @@ function correctInOptions(step: LessonStep): boolean {
   return step.options.some((option) =>
     answersMatch(option, step.correctAnswer!, mode),
   );
+}
+
+const MIN_MIGO_LENGTH = 20;
+
+const MIGO_FORBIDDEN_PATTERNS = [
+  /\bdoğru\s+(cevap|şık|seçenek)/i,
+  /\bcevap\s*:/i,
+  /\bşıkkı\s+seç/i,
+  /\b[ABCD]\s+şıkk/i,
+  /\bharika\s+(gidiyorsun|iş)/i,
+  /\bhadi\s+deneyelim/i,
+  /\bdikkatli\s+bak/i,
+  /\bbunu\s+yapabilirsin/i,
+  /\bkodunu\s+kontrol/i,
+  /\bprompt\s+metinlerini/i,
+];
+
+function migoIsTooGeneric(message: string): string | null {
+  for (const pattern of MIGO_FORBIDDEN_PATTERNS) {
+    if (pattern.test(message)) {
+      return `Migo hint matches forbidden pattern: ${pattern.source}`;
+    }
+  }
+  return null;
+}
+
+function validateMigoHint(
+  issues: LessonValidationIssue[],
+  lesson: LessonContent,
+  step: LessonStep,
+): void {
+  if (!MIGO_REQUIRED_STEP_TYPES.has(step.type)) {
+    return;
+  }
+
+  const message = step.migoMessage?.trim();
+  if (!message) {
+    pushIssue(
+      issues,
+      lesson,
+      step,
+      `Missing migoMessage on ${step.type} step`,
+    );
+    return;
+  }
+
+  if (message.length < MIN_MIGO_LENGTH) {
+    pushIssue(
+      issues,
+      lesson,
+      step,
+      `Migo hint too short (${message.length} chars, min ${MIN_MIGO_LENGTH})`,
+    );
+  }
+
+  const generic = migoIsTooGeneric(message);
+  if (generic) {
+    pushIssue(issues, lesson, step, generic);
+  }
+
+  const leak = migoHintLeakReason(message, step);
+  if (leak) {
+    pushIssue(issues, lesson, step, leak);
+  }
 }
 
 function migoHintLeakReason(message: string, step: LessonStep): string | null {
@@ -221,12 +286,7 @@ export function validateLessonsForDev(
         continue;
       }
 
-      if (step.migoMessage) {
-        const leak = migoHintLeakReason(step.migoMessage, step);
-        if (leak) {
-          pushIssue(issues, lesson, step, leak);
-        }
-      }
+      validateMigoHint(issues, lesson, step);
 
       if (step.feedback?.incorrect) {
         const leak = migoHintLeakReason(step.feedback.incorrect, step);
