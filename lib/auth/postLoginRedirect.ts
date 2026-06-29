@@ -1,14 +1,14 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
-import { isOnboardingProfileComplete } from "@/lib/onboarding-data";
+import { hasCompletedOnboarding } from "@/lib/onboarding-data";
 
 export const ONBOARDING_PATH = "/onboarding";
 
 export function isEmptyOnboardingProfile(raw: unknown): boolean {
-  return !isOnboardingProfileComplete(raw);
+  return !hasCompletedOnboarding(raw);
 }
 
 export function hasOnboardingProfile(raw: unknown): boolean {
-  return isOnboardingProfileComplete(raw);
+  return hasCompletedOnboarding(raw);
 }
 
 export function resolvePostLoginPath(

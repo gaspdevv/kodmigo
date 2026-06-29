@@ -12,7 +12,7 @@ import { createClient } from "@/lib/supabase/client";
 import { SUPABASE_ENV_HINT } from "@/lib/supabase/env";
 import { validateUsername } from "@/lib/username";
 
-const SIGN_IN_LINK = "/auth/sign-in?redirect=/dashboard";
+const SIGN_IN_LINK = "/auth/sign-in?redirect=/onboarding";
 
 const EMAIL_VERIFICATION_MESSAGE =
   "Kaydını tamamlamak için e-posta adresine gönderdiğimiz doğrulama bağlantısına tıkla.";

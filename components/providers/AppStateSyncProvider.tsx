@@ -86,8 +86,12 @@ export function AppStateSyncProvider({ children }: { children: ReactNode }) {
   }, [user, loading, runSync]);
 
   const value = useMemo(
-    () => ({ syncing, syncedUserId }),
-    [syncing, syncedUserId],
+    () => ({
+      syncing:
+        syncing || (Boolean(user) && !loading && syncedUserId !== user?.id),
+      syncedUserId,
+    }),
+    [syncing, syncedUserId, user, loading],
   );
 
   return (

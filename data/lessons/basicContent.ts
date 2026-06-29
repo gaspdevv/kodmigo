@@ -546,7 +546,7 @@ export const basicLessons: Record<string, LessonContent> = {
         checklist: ["3+ eleman", "sum veya döngü", "toplam print"],
         exampleSolution: "h = [10, 20, 30]\nprint(sum(h))",
         validation: {
-          validationMode: "miniProject",
+          validationMode: "spendingSummaryTotal",
           mustIncludePrint: true,
           minLength: 20,
         },
@@ -556,10 +556,8 @@ export const basicLessons: Record<string, LessonContent> = {
         exampleSolution:
           'h = [100, 50, 200]\nprint(f"Toplam: {sum(h)}")\nprint(f"Ortalama: {sum(h)/len(h)}")\nprint(f"En yüksek: {max(h)}")',
         validation: {
-          validationMode: "miniProject",
-          requiresFString: true,
+          validationMode: "spendingSummaryReport",
           mustIncludePrint: true,
-          minPrintCount: 3,
           minLength: 40,
         },
       }),
@@ -627,11 +625,8 @@ export const basicLessons: Record<string, LessonContent> = {
         checklist: ["def ve parametre", "return bool", "test print"],
         exampleSolution: "def cift_mi(n):\n    return n % 2 == 0\n\nprint(cift_mi(4))",
         validation: {
-          validationMode: "miniProject",
-          mustIncludeDef: true,
+          validationMode: "booleanHelperFunction",
           mustIncludePrint: true,
-          requiresBoolean: true,
-          requiredPatterns: ["return"],
           minLength: 25,
         },
       }),
@@ -665,15 +660,11 @@ export const basicLessons: Record<string, LessonContent> = {
           "topla, çıkar, çarp gibi fonksiyonlar tanımla; input ile sayı al ve sonucu yazdır.",
       }),
       miniTaskStep("step-2", "Toplama", "İki sayı alan topla fonksiyonu ve print.", {
-        checklist: ["def topla", "input/float", "çağrı ve print"],
+        checklist: ["def topla", "return", "çağrı ve print"],
         exampleSolution:
-          "def topla(a, b):\n    return a + b\nx = float(input('x: '))\ny = float(input('y: '))\nprint(topla(x, y))",
+          "def topla(a, b):\n    return a + b\nprint(topla(5, 7))",
         validation: {
-          validationMode: "miniProject",
-          mustIncludeDef: true,
-          mustIncludePrint: true,
-          requiredPatterns: ["input\\s*\\(", "return"],
-          minLength: 35,
+          validationMode: "mathFunctionAddAndPrint",
         },
       }),
       projectStep("step-3", "Dört işlem", "En az 3 işlem fonksiyonu; kullanıcı seçim yapsın (metin input).", {
@@ -780,25 +771,19 @@ export const basicLessons: Record<string, LessonContent> = {
           "En az 3 alışkanlıklı liste oluştur ve her birini okunur şekilde yazdır.",
       }),
       projectStep("step-2", "Liste oluştur", "En az 3 alışkanlıklı liste yazdır.", {
-        checklist: ["3+ alışkanlık", "for veya çoklu print", "okunur çıktı"],
-        exampleSolution: 'h = ["Meditasyon", "Kod", "Yürüyüş"]\nfor x in h:\n    print(x)',
+        checklist: ["3+ alışkanlık", "liste tanımla", "print ile yazdır"],
+        exampleSolution:
+          'aliskanliklar = ["Meditasyon", "Kod", "Yürüyüş"]\nprint(aliskanliklar)',
         validation: {
-          validationMode: "miniProject",
-          mustIncludeLoop: true,
-          mustIncludePrint: true,
-          minLength: 25,
+          validationMode: "simpleListAndPrint",
         },
       }),
       projectStep("step-3", "Tamamlandı dict", "Her alışkanlık için dict: ad ve tamamlandi (bool).", {
-        checklist: ["dict listesi", "bool alan", "yazdırma"],
+        checklist: ["dict listesi", "ad ve tamamlandi", "print ile yazdır"],
         exampleSolution:
-          'gorevler = [\n    {"ad": "Spor", "tamamlandi": True},\n    {"ad": "Okuma", "tamamlandi": False}\n]\nfor g in gorevler:\n    print(g["ad"], g["tamamlandi"])',
+          'aliskanliklar = [\n    {"ad": "Spor", "tamamlandi": True},\n    {"ad": "Okuma", "tamamlandi": False}\n]\nprint(aliskanliklar)',
         validation: {
-          validationMode: "miniProject",
-          mustIncludeLoop: true,
-          mustIncludePrint: true,
-          requiresBoolean: true,
-          minLength: 35,
+          validationMode: "habitDictList",
         },
       }),
       completeStep("step-4", 40, "Proje: Alışkanlık takipçisi — Adım 2"),
@@ -830,15 +815,11 @@ export const basicLessons: Record<string, LessonContent> = {
         },
       }),
       projectStep("step-3", "Yüzde", "Tamamlanma yüzdesini f-string ile göster.", {
-        checklist: ["yüzde formülü", "f-string", "0 bölme kontrolü opsiyonel"],
+        checklist: ["for + if", "len ve yüzde", "f-string print"],
         exampleSolution:
-          'g = [{"ad":"A","tamamlandi":True},{"ad":"B","tamamlandi":True},{"ad":"C","tamamlandi":False}]\nt=sum(1 for x in g if x["tamamlandi"])\nprint(f"Tamamlanan: %{t/len(g)*100:.0f}")',
+          'aliskanliklar = [{"ad":"A","tamamlandi":True},{"ad":"B","tamamlandi":True},{"ad":"C","tamamlandi":False}]\nt=0\nfor x in aliskanliklar:\n    if x["tamamlandi"]: t+=1\nyuzde=t/len(aliskanliklar)*100\nprint(f"Tamamlanan: %{yuzde}")',
         validation: {
-          validationMode: "miniProject",
-          mustIncludeLoop: true,
-          requiresFString: true,
-          mustIncludePrint: true,
-          minLength: 35,
+          validationMode: "habitCompletionPercentage",
         },
       }),
       completeStep("step-4", 40, "Proje: Alışkanlık takipçisi — Adım 3"),
@@ -869,16 +850,12 @@ export const basicLessons: Record<string, LessonContent> = {
         },
       }),
       projectStep("step-3", "Tam proje", "ozet_yazdir(gorevler) fonksiyonu: toplam, tamamlanan, yüzde.", {
-        checklist: ["fonksiyon tanımlı", "özet istatistik", "en az 2 alışkanlık örneği"],
+        checklist: ["ozet_yazdir fonksiyonu", "toplam/tamamlanan/yüzde", "f-string print"],
         exampleSolution:
-          'def ozet_yazdir(g):\n    t = len(g)\n    c = sum(1 for x in g if x["tamamlandi"])\n    print(f"{c}/{t} tamamlandı (%{c/t*100:.0f})")\n\ng = [{"ad":"Kod","tamamlandi":True},{"ad":"Spor","tamamlandi":False}]\nozet_yazdir(g)',
+          'def ozet_yazdir(gorevler):\n    toplam = len(gorevler)\n    tamamlanan = 0\n    for g in gorevler:\n        if g["tamamlandi"]: tamamlanan += 1\n    yuzde = tamamlanan / toplam * 100\n    print(f"Toplam: {toplam}")\n    print(f"Tamamlanan: {tamamlanan}")\n    print(f"Yüzde: %{yuzde}")\n\ngorevler = [{"ad":"Kod","tamamlandi":True},{"ad":"Spor","tamamlandi":False}]\nozet_yazdir(gorevler)',
         migo: "Temel yolu tamamladın — harika iş!",
         validation: {
-          validationMode: "miniProject",
-          mustIncludeDef: true,
-          requiresFString: true,
-          mustIncludePrint: true,
-          minLength: 45,
+          validationMode: "habitTrackerSummaryFunction",
         },
       }),
       completeStep("step-4", 40, "Python Orta Yolu", {

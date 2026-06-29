@@ -135,14 +135,18 @@ export function parseOnboardingProfile(raw: unknown): OnboardingProfile | null {
   return null;
 }
 
-export function isOnboardingProfileComplete(raw: unknown): boolean {
-  const parsed = parseOnboardingProfile(raw);
+export function hasCompletedOnboarding(profile: unknown): boolean {
+  if (!profile || typeof profile !== "object" || Array.isArray(profile)) {
+    return false;
+  }
+
+  const data = profile as Record<string, unknown>;
+  if (Object.keys(data).length === 0) return false;
+
+  const parsed = parseOnboardingProfile(profile);
   if (!parsed) return false;
 
   if (parsed.completedAt) return true;
-
-  if (!raw || typeof raw !== "object" || Array.isArray(raw)) return false;
-  const data = raw as Record<string, unknown>;
 
   const hasLevel =
     data.codingLevel !== undefined ||
@@ -152,6 +156,21 @@ export function isOnboardingProfileComplete(raw: unknown): boolean {
   const hasTime = data.dailyTime !== undefined || data.time !== undefined;
 
   return hasLevel && hasGoal && hasTime;
+}
+
+export function isOnboardingProfileComplete(raw: unknown): boolean {
+  return hasCompletedOnboarding(raw);
+}
+
+export function clearOnboardingProfileStorage(): void {
+  if (typeof window === "undefined") return;
+
+  try {
+    localStorage.removeItem(ONBOARDING_PROFILE_KEY);
+    localStorage.removeItem(ONBOARDING_STORAGE_KEY);
+  } catch {
+    // localStorage kullanılamıyorsa sessizce geç
+  }
 }
 
 export function getOnboardingProfile(): OnboardingProfile | null {
@@ -188,8 +207,8 @@ export function getActivePathLevel(): PathLevel {
   return getOnboardingProfile()?.codingLevel ?? "beginner";
 }
 
-export function hasCompletedOnboarding(): boolean {
-  return isOnboardingProfileComplete(getOnboardingProfile());
+export function hasCompletedLocalOnboarding(): boolean {
+  return hasCompletedOnboarding(getOnboardingProfile());
 }
 
 export function saveOnboardingProfile(profile: OnboardingProfile): void {

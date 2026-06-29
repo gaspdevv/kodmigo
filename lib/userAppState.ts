@@ -9,8 +9,9 @@ import {
   type UserProgress,
 } from "@/lib/progress";
 import {
+  clearOnboardingProfileStorage,
   getOnboardingProfile,
-  isOnboardingProfileComplete,
+  hasCompletedOnboarding,
   parseOnboardingProfile,
   saveOnboardingProfile,
   type OnboardingProfile,
@@ -224,7 +225,7 @@ function parseRemoteStreakProgress(raw: unknown): StreakProgress | null {
 function parseRemoteOnboardingProfile(raw: unknown): OnboardingProfile | null {
   if (isEmptyJson(raw)) return null;
   const parsed = parseOnboardingProfile(raw);
-  if (!parsed || !isOnboardingProfileComplete(raw)) return null;
+  if (!parsed || !hasCompletedOnboarding(raw)) return null;
   return parsed;
 }
 
@@ -323,6 +324,8 @@ export function writeLocalAppState(state: AppState): void {
 
     if (state.onboardingProfile) {
       saveOnboardingProfile(state.onboardingProfile);
+    } else {
+      clearOnboardingProfileStorage();
     }
   });
 }
@@ -401,13 +404,14 @@ function mergeProfile(
 function mergeOnboardingProfile(
   local: OnboardingProfile | null,
   remote: OnboardingProfile | null,
+  options?: { remoteRowExists?: boolean },
 ): OnboardingProfile | null {
-  const remoteComplete =
-    remote !== null && isOnboardingProfileComplete(remote);
-  const localComplete = local !== null && isOnboardingProfileComplete(local);
+  if (remote !== null && hasCompletedOnboarding(remote)) return remote;
 
-  if (remoteComplete) return remote;
-  if (localComplete && remote === null) return local;
+  // Sunucuda kayıt varsa boş onboarding, eski local veriyi yeni hesaba taşıma.
+  if (options?.remoteRowExists) return null;
+
+  if (local !== null && hasCompletedOnboarding(local)) return local;
 
   return null;
 }
@@ -416,10 +420,12 @@ export function mergeAppState(
   local: AppState,
   remote: AppState,
   authUsername?: string | null,
+  options?: { remoteRowExists?: boolean },
 ): AppState {
   const onboardingProfile = mergeOnboardingProfile(
     local.onboardingProfile,
     remote.onboardingProfile,
+    options,
   );
 
   return {
@@ -552,7 +558,9 @@ export async function syncRemoteToLocal(
 
   if (hasRemote && remoteState) {
     if (isSameUser && hasAnyLocalAppState()) {
-      merged = mergeAppState(local, remoteState, authUsername);
+      merged = mergeAppState(local, remoteState, authUsername, {
+        remoteRowExists: true,
+      });
     } else {
       merged = { ...remoteState };
       if (authUsername) {
@@ -562,12 +570,15 @@ export async function syncRemoteToLocal(
           authUsername,
         );
       }
+      if (!hasCompletedOnboarding(merged.onboardingProfile)) {
+        merged.onboardingProfile = null;
+      }
     }
   } else if (isSameUser && hasAnyLocalAppState()) {
     merged = {
       ...local,
       profile: mergeProfile(local.profile, getDefaultProfile(), authUsername),
-      onboardingProfile: isOnboardingProfileComplete(local.onboardingProfile)
+      onboardingProfile: hasCompletedOnboarding(local.onboardingProfile)
         ? local.onboardingProfile
         : null,
     };

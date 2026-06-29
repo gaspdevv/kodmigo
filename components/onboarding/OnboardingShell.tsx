@@ -16,7 +16,7 @@ import {
   getLevelLabel,
   getPathLevelLabel,
   goalOptions,
-  isOnboardingProfileComplete,
+  hasCompletedOnboarding,
   levelOptions,
   pathLevelFromCodingLevel,
   saveOnboardingProfile,
@@ -86,7 +86,7 @@ function getPreviousScreen(screen: Screen): Screen | null {
 export default function OnboardingShell() {
   const router = useRouter();
   const { user, loading: authLoading } = useAuthUser();
-  const { syncing } = useAppStateSync();
+  const { syncing, syncedUserId } = useAppStateSync();
   const [screen, setScreen] = useState<Screen>("welcome");
   const [selections, setSelections] = useState<OnboardingSelections>({
     level: null,
@@ -102,12 +102,12 @@ export default function OnboardingShell() {
       return;
     }
 
-    if (syncing) return;
+    if (syncing || syncedUserId !== user.id) return;
 
-    if (isOnboardingProfileComplete(getLocalAppState().onboardingProfile)) {
+    if (hasCompletedOnboarding(getLocalAppState().onboardingProfile)) {
       router.replace("/dashboard");
     }
-  }, [authLoading, user, syncing, router]);
+  }, [authLoading, user, syncing, syncedUserId, router]);
 
   const progressStep = getProgressStep(screen);
   const showProgress = progressStep !== null;
@@ -157,7 +157,11 @@ export default function OnboardingShell() {
     router.push("/dashboard");
   }
 
-  if (authLoading || syncing || !user) {
+  const waitingForAppState = Boolean(
+    user && (syncing || syncedUserId !== user.id),
+  );
+
+  if (authLoading || waitingForAppState || !user) {
     return (
       <main className="flex min-h-screen items-center justify-center bg-background">
         <p className="text-sm text-slate-500">Yükleniyor...</p>

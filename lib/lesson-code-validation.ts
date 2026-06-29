@@ -19,8 +19,16 @@ export const VALIDATION_MODES = [
   "personalizedAgeOutput",
   "ticketPriceRules",
   "listAppendAndPrint",
+  "simpleListAndPrint",
+  "habitDictList",
+  "habitCompletionPercentage",
+  "habitTrackerSummaryFunction",
   "listLoopSummary",
+  "spendingSummaryTotal",
+  "spendingSummaryReport",
   "functionReturnAndPrint",
+  "mathFunctionAddAndPrint",
+  "booleanHelperFunction",
   "twoGreetingFunctions",
   "quizFunctionProject",
 ] as const;
@@ -173,6 +181,52 @@ const DEFAULT_HINTS = {
     "append() işlemini oluşturduğun liste değişkeni üzerinde kullanmalısın.",
   missingListPrint:
     "Listeyi ekrana yazdırmak için print(...) kullanmalısın.",
+  missingSimpleListMinElements:
+    "Bu görevde listede en az 3 eleman olmalı.",
+  missingSimpleListQuotedElements:
+    "Liste içindeki metinleri tırnak içinde yazmalısın.",
+  missingHabitDictList:
+    "Bu görevde birden fazla alışkanlığı dict olarak liste içinde yazmalısın.",
+  missingHabitDictFields:
+    "Her dict içinde ad ve tamamlandi alanları olmalı.",
+  missingHabitDictBooleanNotString:
+    "tamamlandi değeri metin değil, boolean olmalı: True veya False.",
+  missingHabitCompletionList:
+    "Bu görevde alışkanlıkları liste içinde tutmalısın.",
+  missingHabitCompletionDictFields:
+    "Her alışkanlığı ad ve tamamlandi alanları olan dict olarak yazmalısın.",
+  missingHabitCompletionForLoop:
+    "Tamamlanan alışkanlıkları saymak için for döngüsü kullanmalısın.",
+  missingHabitCompletionIfCheck:
+    "tamamlandi değerini kontrol etmek için if kullanmalısın.",
+  missingHabitCompletionLen:
+    "Toplam alışkanlık sayısını bulmak için len(...) kullanmalısın.",
+  missingHabitCompletionPercentage:
+    "Yüzde hesabı için tamamlanan sayısını toplam sayıya bölüp 100 ile çarpmalısın.",
+  missingHabitCompletionFString:
+    "Sonucu göstermek için f-string kullanmalısın.",
+  missingHabitCompletionPrint:
+    "Yüzde sonucunu ekrana yazdırmak için print(...) kullanmalısın.",
+  missingHabitTrackerFunction:
+    "Bu görevde ozet_yazdir(...) adlı bir fonksiyon tanımlamalısın.",
+  missingHabitTrackerParam:
+    "ozet_yazdir fonksiyonu görev listesini parametre olarak almalı.",
+  missingHabitTrackerDictStructure:
+    "Görevleri ad ve tamamlandi alanları olan dict'lerden oluşan bir listeyle temsil etmelisin.",
+  missingHabitTrackerLen:
+    "Toplam görev sayısını bulmak için len(...) kullanmalısın.",
+  missingHabitTrackerForLoop:
+    "Tamamlanan görevleri saymak için for döngüsü kullanmalısın.",
+  missingHabitTrackerIfCheck:
+    "tamamlandi değerini kontrol etmek için if kullanmalısın.",
+  missingHabitTrackerPercentage:
+    "Yüzde hesabı için tamamlanan sayısını toplam sayıya bölüp 100 ile çarpmalısın.",
+  missingHabitTrackerFString:
+    "Sonuçları göstermek için f-string kullanmalısın.",
+  missingHabitTrackerPrint:
+    "Toplam, tamamlanan ve yüzde değerlerini print(...) ile yazdırmalısın.",
+  missingHabitTrackerCall:
+    "Yazdığın ozet_yazdir(...) fonksiyonunu görev listesiyle çağırmalısın.",
   missingListLoopDefinition:
     "Bu görevde bir liste oluşturmalısın.",
   missingListLoopAppend:
@@ -187,6 +241,30 @@ const DEFAULT_HINTS = {
     "Toplam ürün sayısını yazdırmak için len(liste) kullanmalısın.",
   missingListLoopPrint:
     "Listeyi ekrana yazdırmak için print(...) kullanmalısın.",
+  missingSpendingListDefinition:
+    "Bu görevde harcamaları köşeli parantezlerle bir liste içinde yazmalısın: [...]",
+  missingSpendingListMinElements:
+    "Bu görevde listede en az 3 harcama değeri olmalı.",
+  missingSpendingSum:
+    "Liste toplamını hesaplamak için sum(...) kullanmalısın.",
+  missingSpendingSumTarget:
+    "sum(...) içinde oluşturduğun harcama listesini kullanmalısın.",
+  missingSpendingPrint:
+    "Toplam harcamayı ekrana yazdırmak için print(...) kullanmalısın.",
+  wrongCaseSum:
+    "Python'da sum küçük harfle yazılır: sum(...)",
+  missingSpendingReportSum:
+    "Toplam harcamayı hesaplamak için sum(...) kullanmalısın.",
+  missingSpendingReportAverage:
+    "Ortalama harcamayı bulmak için toplamı eleman sayısına bölmelisin: toplam / len(liste)",
+  missingSpendingReportMax:
+    "En yüksek harcamayı bulmak için max(...) kullanmalısın.",
+  missingSpendingReportPrint:
+    "Toplam, ortalama ve en yüksek harcamayı ekrana yazdırmak için print(...) kullanmalısın.",
+  missingSpendingReportOutputs:
+    "Bu görevde toplam, ortalama ve en yüksek harcamayı ayrı ayrı yazdırmalısın.",
+  wrongCaseReportBuiltins:
+    "Python'da sum, len ve max küçük harfle yazılır.",
   missingFunctionDef:
     "Bu görevde def ile bir fonksiyon tanımlamalısın.",
   missingFunctionParam:
@@ -201,6 +279,22 @@ const DEFAULT_HINTS = {
     "Fonksiyonu bir isim vererek çağırmalısın.",
   missingFunctionPrint:
     "Fonksiyon sonucunu ekrana yazdırmak için print(...) kullanmalısın.",
+  missingMathFunctionTwoParams:
+    "Fonksiyon iki sayı parametresi almalı.",
+  missingMathFunctionReturn:
+    "Bu görevde sonucu return ile döndürmelisin.",
+  missingMathFunctionCall:
+    "Yazdığın fonksiyonu örnek iki sayı ile çağırmalısın.",
+  missingBooleanHelperParam:
+    "Fonksiyon bir sayı parametresi almalı.",
+  missingBooleanHelperModulo:
+    "Sayının çift olup olmadığını kontrol etmek için % 2 kullanmalısın.",
+  missingBooleanHelperBooleanCheck:
+    "Fonksiyon True veya False döndüren bir kontrol yapmalı.",
+  missingBooleanHelperReturn:
+    "Bu görevde sonucu return ile döndürmelisin.",
+  missingBooleanHelperCall:
+    "Yazdığın fonksiyonu örnek bir sayı ile çağırmalısın.",
   missingTwoFunctions:
     "Bu görevde iki farklı fonksiyon tanımlamalısın.",
   missingGreetingOneParam:
@@ -772,6 +866,8 @@ function validateTicketPriceRulesMode(
 type ListDefinition = {
   varName: string;
   elementCount: number;
+  numericElementCount: number;
+  inner: string;
 };
 
 function hasWrongCaseAppend(input: string): boolean {
@@ -787,10 +883,10 @@ function hasWrongCaseAppend(input: string): boolean {
   return false;
 }
 
-function countListElements(inner: string): number {
+function splitListElements(inner: string): string[] {
   const trimmed = inner.trim();
   if (!trimmed) {
-    return 0;
+    return [];
   }
 
   const elements: string[] = [];
@@ -825,7 +921,17 @@ function countListElements(inner: string): number {
     elements.push(current.trim());
   }
 
-  return elements.length;
+  return elements;
+}
+
+function countListElements(inner: string): number {
+  return splitListElements(inner).length;
+}
+
+function countNumericListElements(inner: string): number {
+  return splitListElements(inner).filter((element) =>
+    /^-?\d+(\.\d+)?$/.test(element.trim()),
+  ).length;
 }
 
 function parseListDefinitions(input: string): ListDefinition[] {
@@ -836,9 +942,12 @@ function parseListDefinitions(input: string): ListDefinition[] {
       continue;
     }
 
+    const inner = match[2] ?? "";
     defs.push({
       varName: match[1] ?? "",
-      elementCount: countListElements(match[2] ?? ""),
+      elementCount: countListElements(inner),
+      numericElementCount: countNumericListElements(inner),
+      inner,
     });
   }
   return defs;
@@ -861,6 +970,548 @@ function printUsesListVar(input: string, varName: string): boolean {
     "i",
   );
   return nonEmptyLines(input).some((line) => pattern.test(line));
+}
+
+function isValidListElement(element: string): boolean {
+  const trimmed = element.trim();
+  if (/^(["'])([\s\S]*)\1$/.test(trimmed)) {
+    return true;
+  }
+  if (/^-?\d+(\.\d+)?$/.test(trimmed)) {
+    return true;
+  }
+  return false;
+}
+
+function listInnerHasUnquotedElements(inner: string): boolean {
+  const elements = splitListElements(inner);
+  if (elements.length === 0) {
+    return false;
+  }
+  return elements.some((element) => !isValidListElement(element));
+}
+
+function validateSimpleListAndPrintMode(
+  input: string,
+  rules: StepValidation,
+): ValidationResult {
+  const minElements = rules.minListElements ?? 3;
+  const listDefs = parseListDefinitions(input);
+
+  if (listDefs.length === 0) {
+    return { valid: false, message: pickHint(rules, "missingListDefinition") };
+  }
+
+  for (const def of listDefs) {
+    if (listInnerHasUnquotedElements(def.inner)) {
+      return {
+        valid: false,
+        message: pickHint(rules, "missingSimpleListQuotedElements"),
+      };
+    }
+  }
+
+  const qualifiedLists = listDefs.filter((def) => def.elementCount >= minElements);
+  if (qualifiedLists.length === 0) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingSimpleListMinElements"),
+    };
+  }
+
+  if (!hasPrintCall(input)) {
+    return { valid: false, message: pickHint(rules, "missingListPrint") };
+  }
+
+  const printedList = qualifiedLists.find((def) =>
+    printUsesListVar(input, def.varName),
+  );
+  if (!printedList) {
+    return { valid: false, message: pickHint(rules, "missingListPrint") };
+  }
+
+  return { valid: true };
+}
+
+function extractBracketListAssignments(
+  input: string,
+): { varName: string; inner: string }[] {
+  const results: { varName: string; inner: string }[] = [];
+  const flat = input.replace(/\r\n/g, "\n");
+  const pattern = /([a-zA-Z_]\w*)\s*=\s*\[/g;
+  let match: RegExpExecArray | null;
+
+  while ((match = pattern.exec(flat)) !== null) {
+    const varName = match[1] ?? "";
+    const startBracket = match.index + match[0].length - 1;
+    let depth = 0;
+    let inString: string | null = null;
+    let inner = "";
+
+    for (let i = startBracket; i < flat.length; i++) {
+      const ch = flat[i] ?? "";
+      if (inString) {
+        if (depth > 0) {
+          inner += ch;
+        }
+        if (ch === inString && flat[i - 1] !== "\\") {
+          inString = null;
+        }
+        continue;
+      }
+      if (ch === '"' || ch === "'") {
+        inString = ch;
+        if (depth > 0) {
+          inner += ch;
+        }
+        continue;
+      }
+      if (ch === "[") {
+        depth += 1;
+        if (depth > 1) {
+          inner += ch;
+        }
+        continue;
+      }
+      if (ch === "]") {
+        depth -= 1;
+        if (depth === 0) {
+          results.push({ varName, inner });
+          break;
+        }
+        inner += ch;
+        continue;
+      }
+      if (depth > 0) {
+        inner += ch;
+      }
+    }
+  }
+
+  return results;
+}
+
+function splitDictElements(inner: string): string[] {
+  const elements: string[] = [];
+  let current = "";
+  let depth = 0;
+  let inString: string | null = null;
+
+  for (let i = 0; i < inner.length; i++) {
+    const ch = inner[i] ?? "";
+    if (inString) {
+      current += ch;
+      if (ch === inString && inner[i - 1] !== "\\") {
+        inString = null;
+      }
+      continue;
+    }
+    if (ch === '"' || ch === "'") {
+      inString = ch;
+      current += ch;
+      continue;
+    }
+    if (ch === "{") {
+      depth += 1;
+      current += ch;
+      continue;
+    }
+    if (ch === "}") {
+      depth -= 1;
+      current += ch;
+      continue;
+    }
+    if (ch === "," && depth === 0) {
+      if (current.trim()) {
+        elements.push(current.trim());
+      }
+      current = "";
+      continue;
+    }
+    current += ch;
+  }
+
+  if (current.trim()) {
+    elements.push(current.trim());
+  }
+
+  return elements.filter((element) => element.startsWith("{"));
+}
+
+function hasDictKey(dictStr: string, key: string): boolean {
+  return new RegExp(`["']${key}["']\\s*:`).test(dictStr);
+}
+
+function getTamamlandiValue(dictStr: string): string | null {
+  const match = dictStr.match(/["']tamamlandi["']\s*:\s*([^,}]+)/);
+  return match?.[1]?.trim() ?? null;
+}
+
+function validateTamamlandiValue(
+  value: string,
+  rules: StepValidation,
+): ValidationResult | null {
+  const trimmed = value.trim();
+  if (trimmed === "True" || trimmed === "False") {
+    return null;
+  }
+  if (trimmed === "true" || trimmed === "false") {
+    return {
+      valid: false,
+      message: pickHint(rules, "invalidBooleanCase"),
+    };
+  }
+  if (/^["']/.test(trimmed)) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingHabitDictBooleanNotString"),
+    };
+  }
+  return {
+    valid: false,
+    message: pickHint(rules, "missingHabitDictBooleanNotString"),
+  };
+}
+
+function hasStandaloneDictAssignment(input: string): boolean {
+  return /^\s*[a-zA-Z_]\w*\s*=\s*\{/m.test(input);
+}
+
+function validateHabitDictListMode(
+  input: string,
+  rules: StepValidation,
+): ValidationResult {
+  const minDicts = rules.minHabitDictCount ?? 2;
+  const listAssignments = extractBracketListAssignments(input);
+
+  if (listAssignments.length === 0) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingHabitDictList"),
+    };
+  }
+
+  const qualifiedLists = listAssignments
+    .map((assignment) => ({
+      ...assignment,
+      dicts: splitDictElements(assignment.inner),
+    }))
+    .filter((assignment) => assignment.dicts.length >= minDicts);
+
+  if (qualifiedLists.length === 0) {
+    if (hasStandaloneDictAssignment(input)) {
+      return {
+        valid: false,
+        message: pickHint(rules, "missingHabitDictList"),
+      };
+    }
+    return {
+      valid: false,
+      message: pickHint(rules, "missingHabitDictList"),
+    };
+  }
+
+  const primary = qualifiedLists[0]!;
+
+  for (const dictStr of primary.dicts) {
+    if (!hasDictKey(dictStr, "ad") || !hasDictKey(dictStr, "tamamlandi")) {
+      return {
+        valid: false,
+        message: pickHint(rules, "missingHabitDictFields"),
+      };
+    }
+
+    const tamamlandiValue = getTamamlandiValue(dictStr);
+    if (!tamamlandiValue) {
+      return {
+        valid: false,
+        message: pickHint(rules, "missingHabitDictFields"),
+      };
+    }
+
+    const tamamlandiError = validateTamamlandiValue(tamamlandiValue, rules);
+    if (tamamlandiError) {
+      return tamamlandiError;
+    }
+  }
+
+  if (!hasPrintCall(input)) {
+    return { valid: false, message: pickHint(rules, "missingListPrint") };
+  }
+
+  if (!printUsesListVar(input, primary.varName)) {
+    return { valid: false, message: pickHint(rules, "missingListPrint") };
+  }
+
+  return { valid: true };
+}
+
+function hasTamamlandiIfCheck(input: string): boolean {
+  return /if\s+.*\[["']tamamlandi["']\]/i.test(input);
+}
+
+function hasLenCall(input: string): boolean {
+  return /\blen\s*\(/i.test(input);
+}
+
+function hasPercentageCalculation(input: string): boolean {
+  const stripped = stripStringLiterals(input);
+  return /\//.test(stripped) && /\*\s*100/.test(stripped);
+}
+
+function hasFStringPrint(input: string): boolean {
+  return nonEmptyLines(input).some((line) => /print\s*\(\s*f["']/i.test(line));
+}
+
+function validateHabitDictStructureForCompletion(
+  input: string,
+  rules: StepValidation,
+): ValidationResult | null {
+  const minDicts = rules.minHabitDictCount ?? 2;
+  const listAssignments = extractBracketListAssignments(input);
+
+  if (listAssignments.length === 0) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingHabitCompletionList"),
+    };
+  }
+
+  const qualifiedLists = listAssignments
+    .map((assignment) => ({
+      ...assignment,
+      dicts: splitDictElements(assignment.inner),
+    }))
+    .filter((assignment) => assignment.dicts.length >= minDicts);
+
+  if (qualifiedLists.length === 0) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingHabitCompletionList"),
+    };
+  }
+
+  const primary = qualifiedLists[0]!;
+
+  for (const dictStr of primary.dicts) {
+    if (!hasDictKey(dictStr, "ad") || !hasDictKey(dictStr, "tamamlandi")) {
+      return {
+        valid: false,
+        message: pickHint(rules, "missingHabitCompletionDictFields"),
+      };
+    }
+
+    const tamamlandiValue = getTamamlandiValue(dictStr);
+    if (!tamamlandiValue) {
+      return {
+        valid: false,
+        message: pickHint(rules, "missingHabitCompletionDictFields"),
+      };
+    }
+
+    const tamamlandiError = validateTamamlandiValue(tamamlandiValue, rules);
+    if (tamamlandiError) {
+      return tamamlandiError;
+    }
+  }
+
+  return null;
+}
+
+function validateHabitCompletionPercentageMode(
+  input: string,
+  rules: StepValidation,
+): ValidationResult {
+  const dictError = validateHabitDictStructureForCompletion(input, rules);
+  if (dictError) {
+    return dictError;
+  }
+
+  if (!/^\s*for\s+\w+\s+in\s+/im.test(input)) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingHabitCompletionForLoop"),
+    };
+  }
+
+  if (!hasTamamlandiIfCheck(input)) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingHabitCompletionIfCheck"),
+    };
+  }
+
+  if (!hasLenCall(input)) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingHabitCompletionLen"),
+    };
+  }
+
+  if (!hasPercentageCalculation(input)) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingHabitCompletionPercentage"),
+    };
+  }
+
+  if (!hasFStringPrint(input)) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingHabitCompletionFString"),
+    };
+  }
+
+  if (!hasPrintCall(input)) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingHabitCompletionPrint"),
+    };
+  }
+
+  return { valid: true };
+}
+
+function validateHabitTrackerDictStructure(
+  input: string,
+  rules: StepValidation,
+): ValidationResult | null {
+  const minDicts = rules.minHabitDictCount ?? 2;
+  const listAssignments = extractBracketListAssignments(input);
+
+  if (listAssignments.length === 0) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingHabitTrackerDictStructure"),
+    };
+  }
+
+  const qualifiedLists = listAssignments
+    .map((assignment) => ({
+      ...assignment,
+      dicts: splitDictElements(assignment.inner),
+    }))
+    .filter((assignment) => assignment.dicts.length >= minDicts);
+
+  if (qualifiedLists.length === 0) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingHabitTrackerDictStructure"),
+    };
+  }
+
+  const primary = qualifiedLists[0]!;
+
+  for (const dictStr of primary.dicts) {
+    if (!hasDictKey(dictStr, "ad") || !hasDictKey(dictStr, "tamamlandi")) {
+      return {
+        valid: false,
+        message: pickHint(rules, "missingHabitTrackerDictStructure"),
+      };
+    }
+
+    const tamamlandiValue = getTamamlandiValue(dictStr);
+    if (!tamamlandiValue) {
+      return {
+        valid: false,
+        message: pickHint(rules, "missingHabitTrackerDictStructure"),
+      };
+    }
+
+    const tamamlandiError = validateTamamlandiValue(tamamlandiValue, rules);
+    if (tamamlandiError) {
+      return tamamlandiError;
+    }
+  }
+
+  return null;
+}
+
+function countFStringPrints(text: string): number {
+  return nonEmptyLines(text).filter((line) =>
+    /print\s*\(\s*f["']/i.test(line),
+  ).length;
+}
+
+function validateHabitTrackerSummaryFunctionMode(
+  input: string,
+  rules: StepValidation,
+): ValidationResult {
+  const defs = extractFunctionDefs(input);
+  const summaryFunc = defs.find((def) => def.name === "ozet_yazdir");
+
+  if (!summaryFunc) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingHabitTrackerFunction"),
+    };
+  }
+
+  if (summaryFunc.params.length === 0) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingHabitTrackerParam"),
+    };
+  }
+
+  const dictError = validateHabitTrackerDictStructure(input, rules);
+  if (dictError) {
+    return dictError;
+  }
+
+  const bodyLines = getFunctionBodyLines(input, summaryFunc.name);
+  const bodyText = bodyLines.join("\n");
+
+  if (!hasLenCall(bodyText)) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingHabitTrackerLen"),
+    };
+  }
+
+  if (!/^\s*for\s+\w+\s+in\s+/im.test(bodyText)) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingHabitTrackerForLoop"),
+    };
+  }
+
+  if (!hasTamamlandiIfCheck(bodyText)) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingHabitTrackerIfCheck"),
+    };
+  }
+
+  if (!hasPercentageCalculation(bodyText)) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingHabitTrackerPercentage"),
+    };
+  }
+
+  if (countFStringPrints(bodyText) < 3) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingHabitTrackerFString"),
+    };
+  }
+
+  if (!bodyLines.some((line) => /^print\s*\(/i.test(line))) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingHabitTrackerPrint"),
+    };
+  }
+
+  if (countTopLevelFunctionCalls(input, summaryFunc.name) === 0) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingHabitTrackerCall"),
+    };
+  }
+
+  return { valid: true };
 }
 
 function validateListAppendAndPrintMode(
@@ -1024,6 +1675,288 @@ function hasWrongCasePrint(input: string): boolean {
     }
   }
   return false;
+}
+
+function hasWrongCaseBuiltin(input: string, builtin: string): boolean {
+  const matches = [...input.matchAll(/([a-zA-Z_]\w*)\s*\(/g)];
+  for (const match of matches) {
+    const name = match[1] ?? "";
+    if (name.toLowerCase() === builtin && name !== builtin) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function hasWrongCaseSum(input: string): boolean {
+  return hasWrongCaseBuiltin(input, "sum");
+}
+
+function hasWrongCaseReportBuiltins(input: string): boolean {
+  return (
+    hasWrongCaseBuiltin(input, "sum") ||
+    hasWrongCaseBuiltin(input, "len") ||
+    hasWrongCaseBuiltin(input, "max")
+  );
+}
+
+function usesBuiltinOnListVar(
+  input: string,
+  builtin: "sum" | "len" | "max",
+  listVars: Set<string>,
+): boolean {
+  const pattern = new RegExp(
+    `\\b${builtin}\\s*\\(\\s*([a-zA-Z_][a-zA-Z0-9_]*)\\s*\\)`,
+    "g",
+  );
+  for (const match of input.matchAll(pattern)) {
+    if (listVars.has(match[1] ?? "")) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function findAssignedVariables(
+  input: string,
+  rhsPattern: RegExp,
+): Set<string> {
+  const vars = new Set<string>();
+  for (const line of nonEmptyLines(input)) {
+    const match = line.match(/^\s*([a-zA-Z_]\w*)\s*=\s*(.+)$/);
+    if (!match?.[1]) continue;
+    if (rhsPattern.test(match[2] ?? "")) {
+      vars.add(match[1]);
+    }
+  }
+  return vars;
+}
+
+function hasAverageCalculation(input: string, listVars: Set<string>): boolean {
+  for (const line of nonEmptyLines(input)) {
+    if (!/\//.test(line)) continue;
+    for (const listVar of listVars) {
+      if (new RegExp(`\\blen\\s*\\(\\s*${listVar}\\s*\\)`).test(line)) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+function printLineShowsTotal(
+  line: string,
+  sumVars: Set<string>,
+): boolean {
+  if (/\bsum\s*\(/.test(line)) return true;
+  for (const varName of sumVars) {
+    if (new RegExp(`\\b${varName}\\b`).test(line)) return true;
+  }
+  return false;
+}
+
+function printLineShowsAverage(
+  line: string,
+  listVars: Set<string>,
+  avgVars: Set<string>,
+): boolean {
+  if (/\//.test(line) && /\blen\s*\(/.test(line)) {
+    for (const listVar of listVars) {
+      if (new RegExp(`\\blen\\s*\\(\\s*${listVar}\\s*\\)`).test(line)) {
+        return true;
+      }
+    }
+  }
+  for (const varName of avgVars) {
+    if (new RegExp(`\\b${varName}\\b`).test(line)) return true;
+  }
+  return false;
+}
+
+function printLineShowsMax(
+  line: string,
+  maxVars: Set<string>,
+): boolean {
+  if (/\bmax\s*\(/.test(line)) return true;
+  for (const varName of maxVars) {
+    if (new RegExp(`\\b${varName}\\b`).test(line)) return true;
+  }
+  return false;
+}
+
+function reportMetricsPrinted(
+  input: string,
+  listVars: Set<string>,
+  sumVars: Set<string>,
+  avgVars: Set<string>,
+  maxVars: Set<string>,
+): { total: boolean; average: boolean; max: boolean } {
+  const printLines = nonEmptyLines(input).filter((line) => /^print\s*\(/i.test(line));
+  const result = { total: false, average: false, max: false };
+
+  for (const line of printLines) {
+    if (!result.total && printLineShowsTotal(line, sumVars)) {
+      result.total = true;
+    }
+    if (!result.average && printLineShowsAverage(line, listVars, avgVars)) {
+      result.average = true;
+    }
+    if (!result.max && printLineShowsMax(line, maxVars)) {
+      result.max = true;
+    }
+  }
+
+  return result;
+}
+
+function findSumCallsOnVars(input: string): { listVar: string }[] {
+  const calls: { listVar: string }[] = [];
+  const pattern = /\bsum\s*\(\s*([a-zA-Z_]\w*)\s*\)/g;
+  for (const match of input.matchAll(pattern)) {
+    calls.push({ listVar: match[1] ?? "" });
+  }
+  return calls;
+}
+
+function findSumResultVariables(input: string): Set<string> {
+  const vars = new Set<string>();
+  for (const line of nonEmptyLines(input)) {
+    const match = line.match(/^\s*([a-zA-Z_]\w*)\s*=\s*sum\s*\(/);
+    if (match?.[1]) {
+      vars.add(match[1]);
+    }
+  }
+  return vars;
+}
+
+function printShowsSpendingTotal(input: string, sumResultVars: Set<string>): boolean {
+  return nonEmptyLines(input).some((line) => {
+    if (!/^print\s*\(/i.test(line)) {
+      return false;
+    }
+    if (/\bsum\s*\(/.test(line)) {
+      return true;
+    }
+    for (const varName of sumResultVars) {
+      if (new RegExp(`\\b${varName}\\b`).test(line)) {
+        return true;
+      }
+    }
+    return false;
+  });
+}
+
+function validateSpendingSummaryTotalMode(
+  input: string,
+  rules: StepValidation,
+): ValidationResult {
+  if (hasWrongCaseSum(input)) {
+    return { valid: false, message: pickHint(rules, "wrongCaseSum") };
+  }
+
+  const listDefs = parseListDefinitions(input);
+  if (listDefs.length === 0) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingSpendingListDefinition"),
+    };
+  }
+
+  const qualifiedLists = listDefs.filter((def) => def.numericElementCount >= 3);
+  if (qualifiedLists.length === 0) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingSpendingListMinElements"),
+    };
+  }
+
+  const qualifiedVarNames = new Set(qualifiedLists.map((def) => def.varName));
+  const sumCalls = findSumCallsOnVars(input);
+
+  if (sumCalls.length === 0) {
+    return { valid: false, message: pickHint(rules, "missingSpendingSum") };
+  }
+
+  const sumUsesQualifiedList = sumCalls.some((call) =>
+    qualifiedVarNames.has(call.listVar),
+  );
+  if (!sumUsesQualifiedList) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingSpendingSumTarget"),
+    };
+  }
+
+  if (!hasPrintCall(input)) {
+    return { valid: false, message: pickHint(rules, "missingSpendingPrint") };
+  }
+
+  const sumResultVars = findSumResultVariables(input);
+  if (!printShowsSpendingTotal(input, sumResultVars)) {
+    return { valid: false, message: pickHint(rules, "missingSpendingSum") };
+  }
+
+  return { valid: true };
+}
+
+function validateSpendingSummaryReportMode(
+  input: string,
+  rules: StepValidation,
+): ValidationResult {
+  if (hasWrongCaseReportBuiltins(input)) {
+    return { valid: false, message: pickHint(rules, "wrongCaseReportBuiltins") };
+  }
+
+  const listDefs = parseListDefinitions(input);
+  if (listDefs.length === 0) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingSpendingListDefinition"),
+    };
+  }
+
+  const qualifiedLists = listDefs.filter((def) => def.numericElementCount >= 3);
+  if (qualifiedLists.length === 0) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingSpendingListMinElements"),
+    };
+  }
+
+  const listVars = new Set(qualifiedLists.map((def) => def.varName));
+
+  if (!usesBuiltinOnListVar(input, "sum", listVars)) {
+    return { valid: false, message: pickHint(rules, "missingSpendingReportSum") };
+  }
+
+  if (!hasAverageCalculation(input, listVars)) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingSpendingReportAverage"),
+    };
+  }
+
+  if (!usesBuiltinOnListVar(input, "max", listVars)) {
+    return { valid: false, message: pickHint(rules, "missingSpendingReportMax") };
+  }
+
+  if (!hasPrintCall(input)) {
+    return { valid: false, message: pickHint(rules, "missingSpendingReportPrint") };
+  }
+
+  const sumVars = findAssignedVariables(input, /\bsum\s*\(/);
+  const avgVars = findAssignedVariables(input, /\/.*\blen\s*\(/);
+  const maxVars = findAssignedVariables(input, /\bmax\s*\(/);
+  const printed = reportMetricsPrinted(input, listVars, sumVars, avgVars, maxVars);
+
+  if (!printed.total || !printed.average || !printed.max) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingSpendingReportOutputs"),
+    };
+  }
+
+  return { valid: true };
 }
 
 function nonEmptyLines(input: string): string[] {
@@ -1526,6 +2459,146 @@ function hasDefinedFunctionCallWithString(
     `\\b${funcName}\\s*\\(\\s*["'][^"']*["']\\s*\\)`,
     "i",
   ).test(input);
+}
+
+function hasValidBooleanEvenLogic(bodyText: string): boolean {
+  if (!/%\s*2/.test(bodyText)) {
+    return false;
+  }
+
+  if (/%\s*2\s*==\s*0/.test(bodyText)) {
+    return true;
+  }
+
+  if (
+    /\breturn\s+True\b/.test(bodyText) &&
+    /\breturn\s+False\b/.test(bodyText)
+  ) {
+    return true;
+  }
+
+  for (const line of bodyText.split("\n")) {
+    if (!/\breturn\b/.test(line)) {
+      continue;
+    }
+    if (/%\s*2/.test(line) && !/==/.test(line)) {
+      return false;
+    }
+    if (/^\s*return\s+[a-zA-Z_]\w*\s*$/.test(line.trim())) {
+      return false;
+    }
+  }
+
+  return false;
+}
+
+function validateBooleanHelperFunctionMode(
+  input: string,
+  rules: StepValidation,
+): ValidationResult {
+  const defs = extractFunctionDefs(input);
+  if (defs.length === 0) {
+    return { valid: false, message: pickHint(rules, "missingFunctionDef") };
+  }
+
+  const primary = defs[0]!;
+  if (primary.params.length === 0) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingBooleanHelperParam"),
+    };
+  }
+
+  const bodyLines = getFunctionBodyLines(input, primary.name);
+  const bodyText = bodyLines.join("\n");
+
+  if (!/%\s*2/.test(bodyText)) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingBooleanHelperModulo"),
+    };
+  }
+
+  if (!hasValidBooleanEvenLogic(bodyText)) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingBooleanHelperBooleanCheck"),
+    };
+  }
+
+  const hasReturnInBody = bodyLines.some((line) => /^\s*return\b/.test(line));
+  if (!hasReturnInBody) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingBooleanHelperReturn"),
+    };
+  }
+
+  const calledOutsideDef = nonEmptyLines(input).some((line) => {
+    if (/^\s*def\s+/.test(line)) {
+      return false;
+    }
+    return new RegExp(`\\b${primary.name}\\s*\\(\\s*[^)]+\\s*\\)`).test(line);
+  });
+  if (!calledOutsideDef) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingBooleanHelperCall"),
+    };
+  }
+
+  if (!isFunctionPrinted(input, primary.name)) {
+    return { valid: false, message: pickHint(rules, "missingFunctionPrint") };
+  }
+
+  return { valid: true };
+}
+
+function validateMathFunctionAddAndPrintMode(
+  input: string,
+  rules: StepValidation,
+): ValidationResult {
+  const defs = extractFunctionDefs(input);
+  if (defs.length === 0) {
+    return { valid: false, message: pickHint(rules, "missingFunctionDef") };
+  }
+
+  const primary = defs[0]!;
+  if (primary.params.length < 2) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingMathFunctionTwoParams"),
+    };
+  }
+
+  const bodyLines = getFunctionBodyLines(input, primary.name);
+  const bodyText = bodyLines.join("\n");
+
+  const returnMap = getFunctionReturnMap(input);
+  const returnExpr = returnMap.get(primary.name);
+  if (!returnExpr) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingMathFunctionReturn"),
+    };
+  }
+
+  if (!hasAdditionOutsideStrings(bodyText)) {
+    return { valid: false, message: pickHint(rules, "missingAddition") };
+  }
+
+  if (!isFunctionPrinted(input, primary.name)) {
+    return { valid: false, message: pickHint(rules, "missingFunctionPrint") };
+  }
+
+  if (countTopLevelFunctionCalls(input, primary.name) === 0) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingMathFunctionCall"),
+    };
+  }
+
+  return { valid: true };
 }
 
 function validateFunctionReturnAndPrintMode(
@@ -2063,10 +3136,26 @@ function validateByMode(
       return validateTicketPriceRulesMode(input, rules);
     case "listAppendAndPrint":
       return validateListAppendAndPrintMode(input, rules);
+    case "simpleListAndPrint":
+      return validateSimpleListAndPrintMode(input, rules);
+    case "habitDictList":
+      return validateHabitDictListMode(input, rules);
+    case "habitCompletionPercentage":
+      return validateHabitCompletionPercentageMode(input, rules);
+    case "habitTrackerSummaryFunction":
+      return validateHabitTrackerSummaryFunctionMode(input, rules);
     case "listLoopSummary":
       return validateListLoopSummaryMode(input, rules);
+    case "spendingSummaryTotal":
+      return validateSpendingSummaryTotalMode(input, rules);
+    case "spendingSummaryReport":
+      return validateSpendingSummaryReportMode(input, rules);
     case "functionReturnAndPrint":
       return validateFunctionReturnAndPrintMode(input, rules);
+    case "mathFunctionAddAndPrint":
+      return validateMathFunctionAddAndPrintMode(input, rules);
+    case "booleanHelperFunction":
+      return validateBooleanHelperFunctionMode(input, rules);
     case "twoGreetingFunctions":
       return validateTwoGreetingFunctionsMode(input, rules);
     case "quizFunctionProject":
@@ -2362,13 +3451,59 @@ function applyModeDefaults(rules: StepValidation): void {
       rules.mustLookLikePython = true;
       rules.mustIncludeAssignment = true;
       break;
+    case "simpleListAndPrint":
+      rules.mustLookLikePython = true;
+      rules.mustIncludeAssignment = false;
+      rules.mustIncludeLoop = false;
+      break;
+    case "habitDictList":
+      rules.mustLookLikePython = true;
+      rules.mustIncludeAssignment = false;
+      rules.mustIncludeLoop = false;
+      rules.requiresBoolean = false;
+      break;
+    case "habitCompletionPercentage":
+      rules.mustLookLikePython = true;
+      rules.mustIncludeAssignment = false;
+      rules.mustIncludeLoop = false;
+      rules.requiresFString = false;
+      rules.requiresBoolean = false;
+      break;
+    case "habitTrackerSummaryFunction":
+      rules.mustLookLikePython = true;
+      rules.mustIncludeAssignment = false;
+      rules.mustIncludeLoop = false;
+      rules.requiresFString = false;
+      rules.requiresBoolean = false;
+      rules.mustIncludeDef = false;
+      break;
     case "listLoopSummary":
       rules.mustIncludePrint = true;
       rules.mustLookLikePython = true;
       rules.mustIncludeLoop = true;
       break;
+    case "spendingSummaryTotal":
+      rules.mustIncludePrint = true;
+      rules.mustLookLikePython = true;
+      rules.mustIncludeAssignment = false;
+      break;
+    case "spendingSummaryReport":
+      rules.mustIncludePrint = true;
+      rules.mustLookLikePython = true;
+      rules.mustIncludeAssignment = false;
+      break;
     case "functionReturnAndPrint":
       rules.mustLookLikePython = true;
+      break;
+    case "mathFunctionAddAndPrint":
+      rules.mustLookLikePython = true;
+      rules.mustIncludeAssignment = false;
+      break;
+    case "booleanHelperFunction":
+      rules.mustLookLikePython = true;
+      rules.mustIncludeDef = true;
+      rules.mustIncludePrint = true;
+      rules.mustIncludeAssignment = false;
       break;
     case "twoGreetingFunctions":
       rules.mustLookLikePython = true;
@@ -3151,6 +4286,145 @@ export const CODE_VALIDATION_FIXTURES: {
     expectMessage: /append küçük harfle/,
   },
   {
+    name: "spendingSummaryTotal — kullanıcı cevabı kabul",
+    mode: "spendingSummaryTotal",
+    input:
+      'harcamalar = [150, 45, 220]\ntoplam = sum(harcamalar)\n\nprint(f"Toplam harcama tutarı: {toplam} TL")',
+    expectValid: true,
+  },
+  {
+    name: "spendingSummaryTotal — doğrudan print(sum) kabul",
+    mode: "spendingSummaryTotal",
+    input: "liste = [10, 20, 30]\nprint(sum(liste))",
+    expectValid: true,
+  },
+  {
+    name: "spendingSummaryTotal — farklı değişken adı kabul",
+    mode: "spendingSummaryTotal",
+    input:
+      'harcamalar = [100, 200, 50]\nsonuc = sum(harcamalar)\nprint("Toplam:", sonuc)',
+    expectValid: true,
+  },
+  {
+    name: "spendingSummaryTotal — float değer kabul",
+    mode: "spendingSummaryTotal",
+    input:
+      "harcamalar = [100.5, 25, 80]\ntoplam = sum(harcamalar)\nprint(f\"Toplam: {toplam}\")",
+    expectValid: true,
+  },
+  {
+    name: "spendingSummaryTotal — iki elemanlı liste ret",
+    mode: "spendingSummaryTotal",
+    input: "harcamalar = [150, 45]\ntoplam = sum(harcamalar)\nprint(toplam)",
+    expectValid: false,
+    expectMessage: /en az 3 harcama/,
+  },
+  {
+    name: "spendingSummaryTotal — sum yok ret",
+    mode: "spendingSummaryTotal",
+    input: "harcamalar = [150, 45, 220]\nprint(harcamalar)",
+    expectValid: false,
+    expectMessage: /sum/,
+  },
+  {
+    name: "spendingSummaryTotal — sum olmadan liste atama ret",
+    mode: "spendingSummaryTotal",
+    input: "harcamalar = [150, 45, 220]\ntoplam = harcamalar\nprint(toplam)",
+    expectValid: false,
+    expectMessage: /sum/,
+  },
+  {
+    name: "spendingSummaryTotal — string liste ret",
+    mode: "spendingSummaryTotal",
+    input:
+      'harcamalar = "150, 45, 220"\ntoplam = sum(harcamalar)\nprint(toplam)',
+    expectValid: false,
+    expectMessage: /köşeli parantezlerle/,
+  },
+  {
+    name: "spendingSummaryTotal — Sum büyük harf ret",
+    mode: "spendingSummaryTotal",
+    input: "harcamalar = [150, 45, 220]\ntoplam = Sum(harcamalar)\nprint(toplam)",
+    expectValid: false,
+    expectMessage: /sum küçük harfle/,
+  },
+  {
+    name: "spendingSummaryTotal — Print büyük harf ret",
+    mode: "spendingSummaryTotal",
+    input:
+      "harcamalar = [150, 45, 220]\ntoplam = sum(harcamalar)\nPrint(toplam)",
+    expectValid: false,
+    expectMessage: /print küçük harfle/,
+  },
+  {
+    name: "spendingSummaryReport — kullanıcı cevabı kabul",
+    mode: "spendingSummaryReport",
+    input:
+      'harcamalar = [150, 45, 220, 85]\n\ntoplam = sum(harcamalar)\nortalama = toplam / len(harcamalar)\nen_yuksek = max(harcamalar)\n\nprint(f"Toplam Harcama: {toplam} TL")\nprint(f"Ortalama Harcama: {ortalama:.2f} TL")\nprint(f"En Yüksek Harcama: {en_yuksek} TL")',
+    expectValid: true,
+  },
+  {
+    name: "spendingSummaryReport — doğrudan print kabul",
+    mode: "spendingSummaryReport",
+    input:
+      'liste = [10, 20, 30]\nprint("Toplam:", sum(liste))\nprint("Ortalama:", sum(liste) / len(liste))\nprint("En yüksek:", max(liste))',
+    expectValid: true,
+  },
+  {
+    name: "spendingSummaryReport — farklı değişken adları kabul",
+    mode: "spendingSummaryReport",
+    input:
+      "harcamalar = [100, 250, 75, 40]\ntoplam = sum(harcamalar)\nortalama = toplam / len(harcamalar)\nbuyuk = max(harcamalar)\nprint(toplam)\nprint(ortalama)\nprint(buyuk)",
+    expectValid: true,
+  },
+  {
+    name: "spendingSummaryReport — iki elemanlı liste ret",
+    mode: "spendingSummaryReport",
+    input:
+      "harcamalar = [150, 45]\ntoplam = sum(harcamalar)\nortalama = toplam / len(harcamalar)\nen_yuksek = max(harcamalar)\nprint(toplam)\nprint(ortalama)\nprint(en_yuksek)",
+    expectValid: false,
+    expectMessage: /en az 3 harcama/,
+  },
+  {
+    name: "spendingSummaryReport — max yok ret",
+    mode: "spendingSummaryReport",
+    input:
+      "harcamalar = [150, 45, 220]\ntoplam = sum(harcamalar)\nortalama = toplam / len(harcamalar)\nprint(toplam)\nprint(ortalama)",
+    expectValid: false,
+    expectMessage: /max/,
+  },
+  {
+    name: "spendingSummaryReport — ortalama yok ret",
+    mode: "spendingSummaryReport",
+    input:
+      "harcamalar = [150, 45, 220]\ntoplam = sum(harcamalar)\nen_yuksek = max(harcamalar)\nprint(toplam)\nprint(en_yuksek)",
+    expectValid: false,
+    expectMessage: /Ortalama|len/,
+  },
+  {
+    name: "spendingSummaryReport — sum yok ret",
+    mode: "spendingSummaryReport",
+    input: "harcamalar = [150, 45, 220]\nen_yuksek = max(harcamalar)\nprint(en_yuksek)",
+    expectValid: false,
+    expectMessage: /sum/,
+  },
+  {
+    name: "spendingSummaryReport — büyük harf fonksiyonlar ret",
+    mode: "spendingSummaryReport",
+    input:
+      "harcamalar = [150, 45, 220]\ntoplam = Sum(harcamalar)\nortalama = toplam / Len(harcamalar)\nen_yuksek = Max(harcamalar)\nprint(toplam)\nprint(ortalama)\nprint(en_yuksek)",
+    expectValid: false,
+    expectMessage: /küçük harfle/,
+  },
+  {
+    name: "spendingSummaryReport — Print büyük harf ret",
+    mode: "spendingSummaryReport",
+    input:
+      "harcamalar = [150, 45, 220]\ntoplam = sum(harcamalar)\nortalama = toplam / len(harcamalar)\nen_yuksek = max(harcamalar)\nPrint(toplam)",
+    expectValid: false,
+    expectMessage: /print küçük harfle/,
+  },
+  {
     name: "multiplePrintStringLiteral — iki print kabul",
     mode: "multiplePrintStringLiteral",
     input: 'print("Merhaba")\nprint("Dünya")',
@@ -3184,6 +4458,61 @@ export const CODE_VALIDATION_FIXTURES: {
     rules: { mustIncludeLoop: true, mustIncludePrint: true },
     input: 'for i in range(3):\n    print(i)',
     expectValid: true,
+  },
+  {
+    name: "booleanHelperFunction — kullanıcı cevabı kabul",
+    mode: "booleanHelperFunction",
+    input:
+      "def cift_mi(n):\nsonuc = (n % 2 == 0)\nreturn sonuc\n\nprint(cift_mi(4))",
+    expectValid: true,
+  },
+  {
+    name: "booleanHelperFunction — doğrudan return kabul",
+    mode: "booleanHelperFunction",
+    input: "def cift_mi(sayi):\nreturn sayi % 2 == 0\n\nprint(cift_mi(10))",
+    expectValid: true,
+  },
+  {
+    name: "booleanHelperFunction — if/else True/False kabul",
+    mode: "booleanHelperFunction",
+    input:
+      "def cift_mi(n):\nif n % 2 == 0:\nreturn True\nelse:\nreturn False\n\nprint(cift_mi(6))",
+    expectValid: true,
+  },
+  {
+    name: "booleanHelperFunction — return yok ret",
+    mode: "booleanHelperFunction",
+    input: "def cift_mi(n):\nprint(n % 2 == 0)\n\ncift_mi(4)",
+    expectValid: false,
+    expectMessage: /return/,
+  },
+  {
+    name: "booleanHelperFunction — parametre yok ret",
+    mode: "booleanHelperFunction",
+    input: "def cift_mi():\nreturn True\n\nprint(cift_mi())",
+    expectValid: false,
+    expectMessage: /parametre/,
+  },
+  {
+    name: "booleanHelperFunction — çiftlik kontrolü yok ret",
+    mode: "booleanHelperFunction",
+    input: "def cift_mi(n):\nreturn n\n\nprint(cift_mi(4))",
+    expectValid: false,
+    expectMessage: /% 2/,
+  },
+  {
+    name: "booleanHelperFunction — return n % 2 ret",
+    mode: "booleanHelperFunction",
+    input: "def cift_mi(n):\nreturn n % 2\n\nprint(cift_mi(4))",
+    expectValid: false,
+    expectMessage: /True veya False/,
+  },
+  {
+    name: "booleanHelperFunction — Print büyük harf ret",
+    mode: "booleanHelperFunction",
+    input: "def cift_mi(n):\nreturn n % 2 == 0\n\nPrint(cift_mi(4))",
+    expectValid: false,
+    expectMessage: /print küçük harfle/,
   },
   {
     name: "functionReturnAndPrint — kullanıcı cevabı kabul",
@@ -3364,6 +4693,291 @@ export const CODE_VALIDATION_FIXTURES: {
     mode: "quizFunctionProject",
     input:
       'def soru_sor(metin, dogru):\ncevap = input("Cevap: ")\nif cevap == dogru:\nPrint("Doğru")\n\nsoru_sor("Soru 1", "cevap")\nsoru_sor("Soru 2", "cevap")\nprint("Bitti")',
+    expectValid: false,
+    expectMessage: /print küçük harfle/,
+  },
+  {
+    name: "mathFunctionAddAndPrint — kullanıcı cevabı kabul",
+    mode: "mathFunctionAddAndPrint",
+    input:
+      "def topla(a, b):\nsonuc = a + b\nreturn sonuc\n\nprint(topla(5, 7))",
+    expectValid: true,
+  },
+  {
+    name: "mathFunctionAddAndPrint — doğrudan return kabul",
+    mode: "mathFunctionAddAndPrint",
+    input: "def topla(x, y):\nreturn x + y\n\nprint(topla(3, 4))",
+    expectValid: true,
+  },
+  {
+    name: "mathFunctionAddAndPrint — farklı fonksiyon adı kabul",
+    mode: "mathFunctionAddAndPrint",
+    input:
+      "def toplama(sayi1, sayi2):\ntoplam = sayi1 + sayi2\nreturn toplam\n\nprint(toplama(10, 20))",
+    expectValid: true,
+  },
+  {
+    name: "mathFunctionAddAndPrint — return yok ret",
+    mode: "mathFunctionAddAndPrint",
+    input:
+      "def topla(a, b):\nsonuc = a + b\nprint(sonuc)\n\ntopla(5, 7)",
+    expectValid: false,
+    expectMessage: /return/,
+  },
+  {
+    name: "mathFunctionAddAndPrint — tek parametre ret",
+    mode: "mathFunctionAddAndPrint",
+    input: "def topla(a):\nreturn a\n\nprint(topla(5))",
+    expectValid: false,
+    expectMessage: /iki sayı parametresi/,
+  },
+  {
+    name: "mathFunctionAddAndPrint — toplama yok ret",
+    mode: "mathFunctionAddAndPrint",
+    input: "def topla(a, b):\nreturn a - b\n\nprint(topla(5, 7))",
+    expectValid: false,
+    expectMessage: /\+ işlemini/,
+  },
+  {
+    name: "mathFunctionAddAndPrint — print yok ret",
+    mode: "mathFunctionAddAndPrint",
+    input: "def topla(a, b):\nreturn a + b\n\ntopla(5, 7)",
+    expectValid: false,
+    expectMessage: /print/,
+  },
+  {
+    name: "mathFunctionAddAndPrint — Print büyük harf ret",
+    mode: "mathFunctionAddAndPrint",
+    input: "def topla(a, b):\nreturn a + b\n\nPrint(topla(5, 7))",
+    expectValid: false,
+    expectMessage: /print küçük harfle/,
+  },
+  {
+    name: "simpleListAndPrint — kullanıcı cevabı kabul",
+    mode: "simpleListAndPrint",
+    input:
+      'aliskanliklar = ["Kitap okumak", "Spor yapmak", "Su içmek"]\nprint(aliskanliklar)',
+    expectValid: true,
+  },
+  {
+    name: "simpleListAndPrint — farklı liste adı kabul",
+    mode: "simpleListAndPrint",
+    input: 'liste = ["kitap", "spor", "su"]\nprint(liste)',
+    expectValid: true,
+  },
+  {
+    name: "simpleListAndPrint — tek tırnak kabul",
+    mode: "simpleListAndPrint",
+    input: "hobiler = ['müzik', 'koşu', 'kod yazmak']\nprint(hobiler)",
+    expectValid: true,
+  },
+  {
+    name: "simpleListAndPrint — iki eleman ret",
+    mode: "simpleListAndPrint",
+    input:
+      'aliskanliklar = ["Kitap okumak", "Spor yapmak"]\nprint(aliskanliklar)',
+    expectValid: false,
+    expectMessage: /en az 3 eleman/,
+  },
+  {
+    name: "simpleListAndPrint — print yok ret",
+    mode: "simpleListAndPrint",
+    input: 'aliskanliklar = ["Kitap okumak", "Spor yapmak", "Su içmek"]',
+    expectValid: false,
+    expectMessage: /print/,
+  },
+  {
+    name: "simpleListAndPrint — string liste ret",
+    mode: "simpleListAndPrint",
+    input:
+      'aliskanliklar = "Kitap okumak, Spor yapmak, Su içmek"\nprint(aliskanliklar)',
+    expectValid: false,
+    expectMessage: /köşeli parantez/,
+  },
+  {
+    name: "simpleListAndPrint — tırnaksız eleman ret",
+    mode: "simpleListAndPrint",
+    input:
+      "aliskanliklar = [Kitap okumak, Spor yapmak, Su içmek]\nprint(aliskanliklar)",
+    expectValid: false,
+    expectMessage: /tırnak/,
+  },
+  {
+    name: "simpleListAndPrint — Print büyük harf ret",
+    mode: "simpleListAndPrint",
+    input:
+      'aliskanliklar = ["Kitap okumak", "Spor yapmak", "Su içmek"]\nPrint(aliskanliklar)',
+    expectValid: false,
+    expectMessage: /print küçük harfle/,
+  },
+  {
+    name: "habitDictList — kullanıcı cevabı kabul",
+    mode: "habitDictList",
+    input:
+      'aliskanliklar = [\n{"ad": "Kitap okumak", "tamamlandi": False},\n{"ad": "Spor yapmak", "tamamlandi": True},\n{"ad": "Su içmek", "tamamlandi": False}\n]\n\nprint(aliskanliklar)',
+    expectValid: true,
+  },
+  {
+    name: "habitDictList — tek dict ret",
+    mode: "habitDictList",
+    input:
+      'aliskanlik = {\n"ad": "Kitap okumak",\n"tamamlandi": False\n}\n\nprint(aliskanlik)',
+    expectValid: false,
+    expectMessage: /birden fazla alışkanlığı dict olarak liste/,
+  },
+  {
+    name: "habitDictList — eksik tamamlandi ret",
+    mode: "habitDictList",
+    input:
+      'aliskanliklar = [\n{"ad": "Kitap okumak"},\n{"ad": "Spor yapmak"}\n]\n\nprint(aliskanliklar)',
+    expectValid: false,
+    expectMessage: /ad ve tamamlandi/,
+  },
+  {
+    name: "habitDictList — string boolean ret",
+    mode: "habitDictList",
+    input:
+      'aliskanliklar = [\n{"ad": "Kitap okumak", "tamamlandi": "False"},\n{"ad": "Spor yapmak", "tamamlandi": "True"}\n]\n\nprint(aliskanliklar)',
+    expectValid: false,
+    expectMessage: /boolean olmalı/,
+  },
+  {
+    name: "habitDictList — küçük harf boolean ret",
+    mode: "habitDictList",
+    input:
+      'aliskanliklar = [\n{"ad": "Kitap okumak", "tamamlandi": false},\n{"ad": "Spor yapmak", "tamamlandi": true}\n]\n\nprint(aliskanliklar)',
+    expectValid: false,
+    expectMessage: /büyük harfle/,
+  },
+  {
+    name: "habitDictList — print yok ret",
+    mode: "habitDictList",
+    input:
+      'aliskanliklar = [\n{"ad": "Kitap okumak", "tamamlandi": False},\n{"ad": "Spor yapmak", "tamamlandi": True}\n]',
+    expectValid: false,
+    expectMessage: /print/,
+  },
+  {
+    name: "habitCompletionPercentage — kullanıcı cevabı kabul",
+    mode: "habitCompletionPercentage",
+    input:
+      'aliskanliklar = [\n{"ad": "Kitap okumak", "tamamlandi": True},\n{"ad": "Spor yapmak", "tamamlandi": False},\n{"ad": "Su içmek", "tamamlandi": True}\n]\n\ntamamlanan_sayi = 0\n\nfor aliskanlik in aliskanliklar:\nif aliskanlik["tamamlandi"]:\ntamamlanan_sayi += 1\n\nyuzde = tamamlanan_sayi / len(aliskanliklar) * 100\n\nprint(f"Tamamlanma yüzdesi: %{yuzde}")',
+    expectValid: true,
+  },
+  {
+    name: "habitCompletionPercentage — farklı değişken adları kabul",
+    mode: "habitCompletionPercentage",
+    input:
+      'aliskanliklar = [\n{"ad": "Kitap", "tamamlandi": True},\n{"ad": "Spor", "tamamlandi": False},\n{"ad": "Su", "tamamlandi": True}\n]\n\ntamamlanan = 0\n\nfor item in aliskanliklar:\nif item["tamamlandi"]:\ntamamlanan += 1\n\noran = tamamlanan / len(aliskanliklar) * 100\nprint(f"Tamamlanma oranı: %{oran}")',
+    expectValid: true,
+  },
+  {
+    name: "habitCompletionPercentage — string boolean ret",
+    mode: "habitCompletionPercentage",
+    input:
+      'aliskanliklar = [\n{"ad": "Kitap okumak", "tamamlandi": "True"},\n{"ad": "Spor yapmak", "tamamlandi": "False"}\n]',
+    expectValid: false,
+    expectMessage: /boolean olmalı/,
+  },
+  {
+    name: "habitCompletionPercentage — küçük harf boolean ret",
+    mode: "habitCompletionPercentage",
+    input:
+      'aliskanliklar = [\n{"ad": "Kitap okumak", "tamamlandi": true},\n{"ad": "Spor yapmak", "tamamlandi": false}\n]',
+    expectValid: false,
+    expectMessage: /büyük harfle/,
+  },
+  {
+    name: "habitCompletionPercentage — yüzde hesabı yok ret",
+    mode: "habitCompletionPercentage",
+    input:
+      'aliskanliklar = [\n{"ad": "Kitap okumak", "tamamlandi": True},\n{"ad": "Spor yapmak", "tamamlandi": False}\n]\n\nprint(aliskanliklar)',
+    expectValid: false,
+    expectMessage: /for döngüsü/,
+  },
+  {
+    name: "habitCompletionPercentage — for if len yüzde yok ret",
+    mode: "habitCompletionPercentage",
+    input:
+      'aliskanliklar = [\n{"ad": "Kitap okumak", "tamamlandi": True},\n{"ad": "Spor yapmak", "tamamlandi": False}\n]\n\ntamamlanan = 1\nprint(f"Tamamlanan: {tamamlanan}")',
+    expectValid: false,
+    expectMessage: /for döngüsü/,
+  },
+  {
+    name: "habitCompletionPercentage — f-string yok ret",
+    mode: "habitCompletionPercentage",
+    input:
+      'aliskanliklar = [\n{"ad": "Kitap okumak", "tamamlandi": True},\n{"ad": "Spor yapmak", "tamamlandi": False}\n]\n\ntamamlanan = 0\n\nfor aliskanlik in aliskanliklar:\nif aliskanlik["tamamlandi"]:\ntamamlanan += 1\n\nyuzde = tamamlanan / len(aliskanliklar) * 100\n\nprint("Tamamlanma yüzdesi: %{yuzde}")',
+    expectValid: false,
+    expectMessage: /f-string/,
+  },
+  {
+    name: "habitTrackerSummaryFunction — kullanıcı cevabı kabul",
+    mode: "habitTrackerSummaryFunction",
+    input:
+      'def ozet_yazdir(gorevler):\ntoplam = len(gorevler)\ntamamlanan = 0\n\nfor gorev in gorevler:\n    if gorev["tamamlandi"]:\n        tamamlanan += 1\n\nyuzde = tamamlanan / toplam * 100\n\nprint(f"Toplam görev: {toplam}")\nprint(f"Tamamlanan görev: {tamamlanan}")\nprint(f"Tamamlanma yüzdesi: %{yuzde}")\n\ngorevler = [\n{"ad": "Kitap okumak", "tamamlandi": True},\n{"ad": "Spor yapmak", "tamamlandi": False},\n{"ad": "Su içmek", "tamamlandi": True}\n]\n\nozet_yazdir(gorevler)',
+    expectValid: true,
+  },
+  {
+    name: "habitTrackerSummaryFunction — farklı parametre adı kabul",
+    mode: "habitTrackerSummaryFunction",
+    input:
+      'def ozet_yazdir(liste):\ntoplam = len(liste)\ntamamlanan = 0\n\nfor item in liste:\n    if item["tamamlandi"]:\n        tamamlanan += 1\n\noran = tamamlanan / toplam * 100\n\nprint(f"Toplam: {toplam}")\nprint(f"Tamamlanan: {tamamlanan}")\nprint(f"Yüzde: %{oran}")\n\ngorevler = [\n{"ad": "Kitap", "tamamlandi": True},\n{"ad": "Spor", "tamamlandi": False},\n{"ad": "Su", "tamamlandi": True}\n]\n\nozet_yazdir(gorevler)',
+    expectValid: true,
+  },
+  {
+    name: "habitTrackerSummaryFunction — fonksiyon yok ret",
+    mode: "habitTrackerSummaryFunction",
+    input:
+      'gorevler = [\n{"ad": "Kitap okumak", "tamamlandi": True},\n{"ad": "Spor yapmak", "tamamlandi": False}\n]\n\nprint(gorevler)',
+    expectValid: false,
+    expectMessage: /ozet_yazdir/,
+  },
+  {
+    name: "habitTrackerSummaryFunction — özet hesabı yok ret",
+    mode: "habitTrackerSummaryFunction",
+    input:
+      'def ozet_yazdir(gorevler):\nprint(gorevler)\n\ngorevler = [\n{"ad": "Kitap okumak", "tamamlandi": True},\n{"ad": "Spor yapmak", "tamamlandi": False}\n]\n\nozet_yazdir(gorevler)',
+    expectValid: false,
+    expectMessage: /len/,
+  },
+  {
+    name: "habitTrackerSummaryFunction — sadece toplam ret",
+    mode: "habitTrackerSummaryFunction",
+    input:
+      'def ozet_yazdir(gorevler):\ntoplam = len(gorevler)\nprint(f"Toplam: {toplam}")\n\ngorevler = [\n{"ad": "Kitap okumak", "tamamlandi": True},\n{"ad": "Spor yapmak", "tamamlandi": False}\n]\n\nozet_yazdir(gorevler)',
+    expectValid: false,
+    expectMessage: /for döngüsü/,
+  },
+  {
+    name: "habitTrackerSummaryFunction — yüzde yok ret",
+    mode: "habitTrackerSummaryFunction",
+    input:
+      'def ozet_yazdir(gorevler):\ntoplam = len(gorevler)\ntamamlanan = 0\n\nfor gorev in gorevler:\n    if gorev["tamamlandi"]:\n        tamamlanan += 1\n\nprint(f"Toplam: {toplam}")\nprint(f"Tamamlanan: {tamamlanan}")\n\ngorevler = [\n{"ad": "Kitap okumak", "tamamlandi": True},\n{"ad": "Spor yapmak", "tamamlandi": False}\n]\n\nozet_yazdir(gorevler)',
+    expectValid: false,
+    expectMessage: /100 ile çarp/,
+  },
+  {
+    name: "habitTrackerSummaryFunction — f-string yok ret",
+    mode: "habitTrackerSummaryFunction",
+    input:
+      'def ozet_yazdir(gorevler):\ntoplam = len(gorevler)\ntamamlanan = 0\n\nfor gorev in gorevler:\n    if gorev["tamamlandi"]:\n        tamamlanan += 1\n\nyuzde = tamamlanan / toplam * 100\n\nprint("Toplam görev: {toplam}")\nprint("Tamamlanan görev: {tamamlanan}")\nprint("Tamamlanma yüzdesi: %{yuzde}")\n\ngorevler = [\n{"ad": "Kitap okumak", "tamamlandi": True},\n{"ad": "Spor yapmak", "tamamlandi": False}\n]\n\nozet_yazdir(gorevler)',
+    expectValid: false,
+    expectMessage: /f-string/,
+  },
+  {
+    name: "habitTrackerSummaryFunction — string boolean ret",
+    mode: "habitTrackerSummaryFunction",
+    input:
+      'def ozet_yazdir(gorevler):\ntoplam = len(gorevler)\ntamamlanan = 0\n\nfor gorev in gorevler:\n    if gorev["tamamlandi"]:\n        tamamlanan += 1\n\nyuzde = tamamlanan / toplam * 100\n\nprint(f"Toplam görev: {toplam}")\nprint(f"Tamamlanan görev: {tamamlanan}")\nprint(f"Tamamlanma yüzdesi: %{yuzde}")\n\ngorevler = [\n{"ad": "Kitap okumak", "tamamlandi": "True"},\n{"ad": "Spor yapmak", "tamamlandi": "False"}\n]\n\nozet_yazdir(gorevler)',
+    expectValid: false,
+    expectMessage: /boolean olmalı/,
+  },
+  {
+    name: "habitTrackerSummaryFunction — Print büyük harf ret",
+    mode: "habitTrackerSummaryFunction",
+    input:
+      'def ozet_yazdir(gorevler):\ntoplam = len(gorevler)\ntamamlanan = 0\n\nfor gorev in gorevler:\n    if gorev["tamamlandi"]:\n        tamamlanan += 1\n\nyuzde = tamamlanan / toplam * 100\n\nPrint(f"Toplam görev: {toplam}")\n\ngorevler = [\n{"ad": "Kitap okumak", "tamamlandi": True},\n{"ad": "Spor yapmak", "tamamlandi": False}\n]\n\nozet_yazdir(gorevler)',
     expectValid: false,
     expectMessage: /print küçük harfle/,
   },

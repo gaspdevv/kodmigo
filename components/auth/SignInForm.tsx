@@ -70,7 +70,7 @@ export default function SignInForm() {
     router.replace(destination);
   };
 
-  if (authLoading) {
+  if (authLoading || user) {
     return (
       <main className="flex min-h-screen items-center justify-center bg-background">
         <p className="text-sm text-slate-500">Yükleniyor...</p>
