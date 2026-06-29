@@ -45,7 +45,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
       ),
       matchStep(
         "step-3",
-        "Kavram eşleştir",
+        "Hangi kavram hangi açıklamayla eşleşir?",
         "Python ile yapılabilecek iş",
         [
           "Web sitesi ve otomasyon geliştirmek",
@@ -56,20 +56,34 @@ export const beginnerLessons: Record<string, LessonContent> = {
         "Web sitesi ve otomasyon geliştirmek",
         { migo: "Python çok yönlü bir dildir." },
       ),
-      outputStep(
+      infoStep(
         "step-4",
-        "Bu kod ne yazar?",
-        'print("Merhaba Kodmigo")',
-        ["Merhaba Kodmigo", "print", "Hata", "Kodmigo Merhaba"],
-        "Merhaba Kodmigo",
+        "print() nedir?",
+        "Kod yazarken ekrana bir şey göstermek için print() kullanılır. Parantez içine tırnaklı metin yazarsın; Python bu metni ekranda gösterir.",
         {
-          migo: "print(...) gördüğünde ekrana ne yazdırılacağını tahmin etmeye çalış.",
-          migoAfterCorrect: "print() parantez içindeki metni olduğu gibi ekrana yazar.",
+          code: 'print("Merhaba Kodmigo")',
+          migo: "print(...) içindeki metin ekranda görünür. Metin yazarken tırnak kullanmayı unutma.",
         },
       ),
-      completeStep("step-5", 10, "print() ile çıktı üretme", {
+      mcStep(
+        "step-5",
+        "print() ne yapar?",
+        [
+          "Ekrana yazı veya sayı yazdırır",
+          "Bilgisayarı kapatır",
+          "Yeni dosya oluşturur",
+          "Değişken siler",
+        ],
+        "Ekrana yazı veya sayı yazdırır",
+        {
+          code: 'print("Merhaba Kodmigo")',
+          migo: "Bu komutun amacını düşün — ekranda bir çıktı üretmek için kullanılır.",
+          migoAfterCorrect: "print() ekrana çıktı vermek için kullanılır. Bir sonraki derste bunu uygulayacaksın.",
+        },
+      ),
+      completeStep("step-6", 10, "print() ile çıktı üretme", {
         content:
-          "Python'un ne olduğunu öğrendin. Artık basit bir print örneğinin çıktısını tahmin edebilirsin.",
+          "Python'un ne olduğunu ve print() komutunun ne işe yaradığını öğrendin. Şimdi print ile kod yazmayı deneyeceksin.",
       }),
     ],
     "beginner",
@@ -120,12 +134,12 @@ export const beginnerLessons: Record<string, LessonContent> = {
       ),
       codeOrderLinesStep(
         "step-4",
-        "Değişken ve print sırası",
-        ['name = "Migo"', "print(name)"],
+        "Kod satırlarını doğru sıraya koy",
+        ['print("Merhaba")', 'print("Dünya")'],
         {
-          content: "Önce değişkeni ata, sonra yazdır.",
-          migo: "Kod satırlarını yukarıdan aşağıya takip et — önce ne tanımlanıyor?",
-          migoAfterCorrect: "Değişken atanmadan print ile kullanılamaz; atama her zaman önce gelir.",
+          content: "Üstteki satır önce çalışır.",
+          migo: "Python kodunu yukarıdan aşağıya sırayla oku.",
+          migoAfterCorrect: "Her print() ekrana ayrı satır yazar; sıra önemlidir.",
         },
       ),
       outputStep(
@@ -178,7 +192,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
       ),
       outputStep(
         "step-2",
-        "İlk tahmin",
+        "Bu kodun çıktısı nedir?",
         'print("Kodmigo")\nprint("Python")',
         ["Kodmigo\nPython", "Python\nKodmigo", "KodmigoPython", "Hata"],
         "Kodmigo\nPython",
@@ -189,7 +203,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
       ),
       debugStep(
         "step-3",
-        "Hatayı bul",
+        "Bu kodda hangi hata var?",
         'print("Merhaba"\nprint("Dünya")',
         [
           "İlk satırda kapanmayan parantez",
@@ -227,7 +241,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
           exampleSolution: 'print("Merhaba")\nprint("Dünya")',
         },
       ),
-      completeStep("step-6", 15, "Mini görev: Kendini tanıtan çıktı", {
+      completeStep("step-6", 15, "Değişken mantığı", {
         content: "Kodu okuyup çıktıyı tahmin etme pratiği yaptın.",
       }),
     ],
@@ -312,8 +326,8 @@ export const beginnerLessons: Record<string, LessonContent> = {
           },
         },
       ),
-      completeStep("step-6", 25, "Değişken mantığı", {
-        content: "print() ile kendini tanıtmayı öğrendin. Ünite 1'de harika iş çıkardın!",
+      completeStep("step-6", 25, "Migo'nun Tanışma Kartı", {
+        content: "print() ile kendini tanıtmayı öğrendin. Değişkenleri de küçük bir görevde kullandın.",
       }),
     ],
     "beginner",
@@ -337,7 +351,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
       ),
       matchPairsStep(
         "step-2",
-        "Kavramları eşleştir",
+        "Hangi kavram hangi açıklamayla eşleşir?",
         [
           { concept: "Değişken", answer: "İsimle saklanan değer" },
           { concept: "Değer", answer: "Değişkende tutulan bilgi" },
@@ -361,7 +375,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
       ),
       outputStep(
         "step-4",
-        "Çıktı tahmini",
+        "Bu kodun çıktısı nedir?",
         'puan = 90\nprint(puan)',
         ["Hata", "print", "puan", "90"],
         "90",
@@ -384,7 +398,23 @@ export const beginnerLessons: Record<string, LessonContent> = {
           exampleSolution: 'sehir = "Ankara"\nprint(sehir)',
         },
       ),
-      completeStep("step-6", 10, "İsimlendirme kuralları"),
+      codeWritingStep(
+        "step-6",
+        "Float değişkeni nasıl oluşturup yazdırırsın?",
+        "Bir fiyat değişkenine ondalıklı sayı (float) ata ve print() ile yazdır.",
+        {
+          validation: {
+            validationMode: "variableAndPrint",
+            mustIncludeAssignment: true,
+            mustIncludePrint: true,
+            requiredPatterns: ["=\\s*\\d+\\.\\d"],
+            minLength: 15,
+          },
+          exampleSolution: "fiyat = 29.90\nprint(fiyat)",
+          migo: "Ondalıklı sayı yazarken nokta kullan — örneğin 29.90.",
+        },
+      ),
+      completeStep("step-7", 10, "İsimlendirme kuralları"),
     ],
     "beginner",
   ),
@@ -407,7 +437,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
       ),
       debugStep(
         "step-2",
-        "Geçersiz ad",
+        "Bu kodda hangi hata var?",
         "urun-fiyati = 19.99\nprint(urun-fiyati)",
         [
           "Tire değişken adında kullanılamaz",
@@ -428,13 +458,13 @@ export const beginnerLessons: Record<string, LessonContent> = {
       ),
       codeOrderLinesStep(
         "step-4",
-        "Atama sırası",
+        "Kod satırlarını doğru sıraya koy",
         ["urun_fiyati = 19.99", "print(urun_fiyati)"],
         { content: "Önce değişkeni tanımla, sonra yazdır.", migo: "Değişken kullanılmadan önce tanımlanmalı." },
       ),
       fillStep(
         "step-5",
-        "Doğru adı yaz",
+        "Geçerli değişken adı için boşluğa ne gelmeli?",
         "____ = 19.99",
         ["urun_fiyati", "urun-fiyati", "urun fiyati", "19.99"],
         "urun_fiyati",
@@ -458,27 +488,36 @@ export const beginnerLessons: Record<string, LessonContent> = {
     [
       infoStep(
         "step-1",
-        "İki temel tür",
-        "Tırnak içindeki değerler metin (str), tırnaksız sayılar ise sayı (int/float) türündedir.",
+        "Metin ve sayı türleri",
+        "Python'da üç temel türle sık karşılaşırsın: metin (str) tırnak içinde yazılır; tam sayı (int) ve ondalık sayı (float) tırnaksız yazılır. Float, nokta içeren ondalıklı değerlerdir.",
         {
-          code: 'isim = "Migo"\nyas = 30',
-          migo: "\"30\" metin, 30 sayıdır — karıştırmamaya dikkat et.",
+          code: 'print("Migo")\nprint(100)\nprint(29.90)',
+          migo: "Tırnak varsa metin, yoksa sayıdır. 29.90 gibi noktalı değerler float türündedir.",
         },
       ),
       matchPairsStep(
         "step-2",
-        "Tür eşleştir",
+        "Hangi değer hangi veri türüne aittir?",
         [
           { concept: '"100"', answer: "Metin (str)" },
           { concept: "100", answer: "Tam sayı (int)" },
           { concept: "3.14", answer: "Ondalık sayı (float)" },
         ],
         ["Boolean", "Liste", "Fonksiyon"],
-        { migo: "Tırnak varsa metin, yoksa sayı olabilir." },
+        { migo: "Her değerin türünü eşleştirirken tırnak ve ondalık noktaya dikkat et." },
+      ),
+      infoStep(
+        "intro-float",
+        "Ondalıklı sayı (float)",
+        "Fiyat gibi kesirli değerler float ile tutulur. Nokta içeren sayılar ondalıklı sayıdır ve matematikte kullanılabilir.",
+        {
+          code: "print(29.90)\nprint(3.14)",
+          migo: "Ondalıklı sayıları yazarken nokta kullanırsın — virgül değil.",
+        },
       ),
       outputStep(
         "step-3",
-        "Çıktı ne olur?",
+        "Bu kodun çıktısı nedir?",
         'print("5" + "3")',
         ["53", "8", "Hata", "5 3"],
         "53",
@@ -487,35 +526,28 @@ export const beginnerLessons: Record<string, LessonContent> = {
           migoAfterCorrect: "Metinlerde + birleştirme yapar; sayısal toplama değil.",
         },
       ),
-      debugStep(
+      outputStep(
         "step-4",
-        "Tür hatası",
-        'yas = "25"\nprint(yas + 1)',
-        [
-          "Metin ile sayı toplanamaz",
-          "print yanlış",
-          "Değişken adı hatalı",
-          "Kod doğru çalışır",
-        ],
-        "Metin ile sayı toplanamaz",
-        { migo: "Sayısal işlem için int() ile dönüştürmen gerekir." },
-      ),
-      codeWritingStep(
-        "step-5",
-        "Sayı ata ve yazdır",
-        "Bir fiyat değişkenine ondalıklı sayı ata ve print() ile yazdır.",
+        "Bu kodun çıktısı nedir?",
+        "print(5 + 3)",
+        ["8", "53", "Hata", "5 3"],
+        "8",
         {
-          validation: {
-            validationMode: "variableAndPrint",
-            mustIncludeAssignment: true,
-            mustIncludePrint: true,
-            requiredPatterns: ["=\\s*\\d"],
-            minLength: 15,
-          },
-          exampleSolution: "fiyat = 29.90\nprint(fiyat)",
+          migo: "Tırnaksız sayılarda + matematiksel toplama yapar.",
+          migoAfterCorrect: "int ve float değerlerle + toplama işlemi yapar.",
         },
       ),
-      completeStep("step-6", 10, "Migo'nun Tanışma Kartı"),
+      mcStep(
+        "step-5",
+        "Hangisi float?",
+        ["29.90", '"29.90"', "29", '"float"'],
+        "29.90",
+        {
+          migo: "Ondalık nokta içeren ve tırnaksız yazılan değeri düşün.",
+          migoAfterCorrect: "29.90 ondalıklı bir sayıdır (float). Tırnaklı olanlar metindir.",
+        },
+      ),
+      completeStep("step-6", 10, "Değişken mantığı"),
     ],
     "beginner",
   ),
@@ -632,8 +664,8 @@ export const beginnerLessons: Record<string, LessonContent> = {
       ),
       matchStep(
         "step-2",
-        "Boolean değer",
         "Hangisi boolean türündedir?",
+        "Tırnaklı ve tırnaksız değerlerden boolean olanı seç.",
         ["False", '"False"', "0", '"True"'],
         "False",
         {
@@ -643,13 +675,13 @@ export const beginnerLessons: Record<string, LessonContent> = {
       ),
       codeOrderLinesStep(
         "step-3",
-        "f-string sırası",
+        "Kod satırlarını doğru sıraya koy",
         ['isim = "Can"', 'print(f"Merhaba, {isim}")'],
         { migo: "Önce değişken, sonra f-string print." },
       ),
       outputStep(
         "step-4",
-        "f-string çıktısı",
+        "Bu kodun çıktısı nedir?",
         'yas = 22\nprint(f"Yaşım: {yas}")',
         ["Yaşım: 22", "Yaşım: yas", "Hata", "22"],
         "Yaşım: 22",
@@ -691,8 +723,14 @@ export const beginnerLessons: Record<string, LessonContent> = {
           migo: "Önce verileri değişkenlere koy, sonra print ile birleştir.",
         },
       ),
-      codeWritingStep(
+      codeOrderLinesStep(
         "step-2",
+        "Profil satırları sırası",
+        ['ad = "Selin"', 'meslek = "Tasarımcı"', 'print(f"{ad} — {meslek}")'],
+        { content: "Değişkenler print'ten önce tanımlanmalı.", migo: "Önce veriler, sonra yazdırma." },
+      ),
+      codeWritingStep(
+        "step-3",
         "Temel kart",
         "En az 2 değişken ve print() ile kısa profil çıktısı yaz.",
         {
@@ -709,15 +747,9 @@ export const beginnerLessons: Record<string, LessonContent> = {
             "Çıktı okunabilir bir profil kartı",
           ],
           exampleSolution:
-            'ad = "Efe"\nsehir = "Ankara"\nprint(f"Ad: {ad}")\nprint(f"Şehir: {sehir}")',
+            'ad = "Efe"\nsehir = "Ankara"\nprint("Ad:", ad)\nprint("Şehir:", sehir)',
           migo: "Başlık satırı eklemek kartı daha düzenli gösterir.",
         },
-      ),
-      codeOrderLinesStep(
-        "step-3",
-        "Profil satırları sırası",
-        ['ad = "Selin"', 'meslek = "Tasarımcı"', 'print(f"{ad} — {meslek}")'],
-        { content: "Değişkenler print'ten önce tanımlanmalı.", migo: "Önce veriler, sonra yazdırma." },
       ),
       projectStep(
         "step-4",
@@ -765,13 +797,13 @@ export const beginnerLessons: Record<string, LessonContent> = {
       ),
       codeOrderLinesStep(
         "step-2",
-        "input sırası",
+        "Kod satırlarını doğru sıraya koy",
         ['isim = input("Adın: ")', "print(isim)"],
         { content: "Önce input ile al, sonra yazdır.", migo: "input() kullanıcıdan veri alır." },
       ),
       debugStep(
         "step-3",
-        "input hatası",
+        "Bu kodda hangi hata var?",
         'yas = input("Yaşın: ")\nprint(yas + 1)',
         [
           "input metin döndürür, sayıya çevrilmeli",
@@ -837,14 +869,14 @@ export const beginnerLessons: Record<string, LessonContent> = {
       ),
       mcStep(
         "step-2",
-        "Doğru dönüşüm",
+        "Hangisi geçerli bir int dönüşümüdür?",
         ['sayi = int("42")', 'sayi = int("kırk")', 'sayi = int(True)', 'sayi = int("42.5")'],
         'sayi = int("42")',
         { migo: "int() yalnızca tam sayı metinlerinde sorunsuz çalışır." },
       ),
       fillStep(
         "step-3",
-        "float dönüşümü",
+        "Kullanıcı girdisini almak için boşluğa ne gelmeli?",
         'fiyat = float(____("Fiyat: "))',
         ["input", "print", "str", "int"],
         "input",
@@ -856,7 +888,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
       ),
       outputStep(
         "step-4",
-        "Toplama",
+        "Bu kodun çıktısı nedir?",
         'a = int("10")\nb = int("5")\nprint(a + b)',
         ["15", "105", "Hata", "10 5"],
         "15",
@@ -888,7 +920,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
       ),
       outputStep(
         "step-2",
-        "Çarpım",
+        "Bu kodun çıktısı nedir?",
         'x = int("6")\ny = int("7")\nprint(x * y)',
         ["42", "67", "13", "Hata"],
         "42",
@@ -915,7 +947,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
       ),
       fillStep(
         "step-4",
-        "Ortalama",
+        "Ortalama hesaplamak için boşluğa ne yazılmalı?",
         'not1 = int(input("Not 1: "))\nnot2 = int(input("Not 2: "))\nprint((not1 + not2) / ____)',
         ["2", "not1", "0", "1"],
         "2",
@@ -946,7 +978,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
       ),
       miniTaskStep(
         "step-2",
-        "Temel hesap",
+        "Doğum yılından yaş nasıl hesaplanır?",
         "Doğum yılını al, yaşı hesapla ve yazdır.",
         {
           checklist: [
@@ -1022,13 +1054,13 @@ export const beginnerLessons: Record<string, LessonContent> = {
       ),
       outputStep(
         "step-4",
-        "Çıktı tahmini",
+        "Bu kodun çıktısı nedir?",
         'sicaklik = 30\nif sicaklik > 25:\n    print("Sıcak")',
         ["Sıcak", "Hiçbir şey", "Hata", "30"],
         "Sıcak",
         { migo: "Karşılaştırma sonucunu düşün: koşul doğruysa hangi blok çalışır?" },
       ),
-      completeStep("step-5", 10, "Karşılaştırmalar"),
+      completeStep("step-5", 10, "else kullanımı"),
     ],
     "beginner",
   ),
@@ -1051,28 +1083,32 @@ export const beginnerLessons: Record<string, LessonContent> = {
       ),
       mcStep(
         "step-2",
-        "Sonuç ne?",
+        "Bu kodun çıktısı nedir?",
         ["True", "False", "10", "Hata"],
         "False",
         { code: 'print("a" == "A")', migo: "Python'da büyük/küçük harf duyarlıdır." },
       ),
       fillStep(
         "step-3",
-        "Eşit değil",
-        'if sifre != ____:\n    print("Yanlış şifre")',
-        ['"1234"', "1234", "sifre", "!="],
-        '"1234"',
-        { content: "Şifre 1234 değilse uyarı ver.", migo: "Metin karşılaştırması tırnaklı yazılır." },
+        "Eşit değil mi?",
+        "print(10 ____ 3)",
+        ["==", "!=", "=", ">"],
+        "!=",
+        {
+          content: "10 ile 3 eşit değil — hangi operatör bunu kontrol eder?",
+          migo: "Eşitlik == ile kontrol edilir; eşit olmama için başka bir operatör vardır.",
+          migoAfterCorrect: "!= operatörü 'eşit değildir' anlamına gelir.",
+        },
       ),
       outputStep(
         "step-4",
-        "Sayı karşılaştırma",
+        "Bu kodun çıktısı nedir?",
         "notu = 45\nprint(notu >= 50)",
         ["False", "True", "45", "Hata"],
         "False",
         { migo: "Karşılaştırma operatörünün True veya False döndürdüğünü hatırla." },
       ),
-      completeStep("step-5", 10, "else kullanımı"),
+      completeStep("step-5", 10, "if mantığı"),
     ],
     "beginner",
   ),
@@ -1103,7 +1139,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
       ),
       mcStep(
         "step-3",
-        "Doğru yapı",
+        "Hangisi geçerli if/else yapısıdır?",
         [
           "if x > 0:\n    print('pozitif')\nelse:\n    print('değil')",
           "if x > 0:\nelse:\n    print('değil')",
@@ -1115,7 +1151,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
       ),
       fillStep(
         "step-4",
-        "Tamamla",
+        "else dalını tamamlamak için boşluğa ne gelmeli?",
         'if bakiye >= fiyat:\n    print("Alındı")\n____:\n    print("Yetersiz bakiye")',
         ["else", "elif", "then", "if"],
         "else",
@@ -1147,7 +1183,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
       ),
       outputStep(
         "step-2",
-        "Harf notu",
+        "Bu kodun çıktısı nedir?",
         'notu = 82\nif notu >= 90:\n    print("A")\nelif notu >= 80:\n    print("B")\nelse:\n    print("C")',
         ["B", "A", "C", "82"],
         "B",
@@ -1165,7 +1201,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
       ),
       fillStep(
         "step-4",
-        "Sıcaklık",
+        "İkinci sıcaklık dalı için boşluğa ne gelmeli?",
         'sicaklik = 15\nif sicaklik >= 30:\n    print("Sıcak")\n____ sicaklik >= 20:\n    print("Ilık")\nelse:\n    print("Soğuk")',
         ["elif", "else", "if", "then"],
         "elif",
@@ -1268,7 +1304,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
       ),
       fillStep(
         "step-3",
-        "Boş liste",
+        "Boş liste oluşturmak için boşluğa ne yazılmalı?",
         "gorevler = ____",
         ["[]", "{}", "()", '""'],
         "[]",
@@ -1280,7 +1316,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
       ),
       outputStep(
         "step-4",
-        "Liste çıktısı",
+        "Bu kodun çıktısı nedir?",
         'renkler = ["kırmızı", "mavi"]\nprint(renkler)',
         ['["kırmızı", "mavi"]', "kırmızı", "mavi", "Hata"],
         '["kırmızı", "mavi"]',
@@ -1320,7 +1356,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
       ),
       fillStep(
         "step-3",
-        "Eleman ekle",
+        "Sona eleman eklemek için boşluğa ne gelmeli?",
         'alisveris = ["süt", "ekmek"]\nalisveris.____("yumurta")',
         ["append", "add", "push", "insert"],
         "append",
@@ -1331,7 +1367,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
       ),
       outputStep(
         "step-4",
-        "İlk eleman",
+        "Bu kodun çıktısı nedir?",
         'sehirler = ["Ankara", "İzmir", "Bursa"]\nprint(sehirler[0])',
         ["Ankara", "İzmir", "0", "Hata"],
         "Ankara",
@@ -1360,7 +1396,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
       ),
       outputStep(
         "step-2",
-        "Uzunluk",
+        "Bu kodun çıktısı nedir?",
         'sayilar = [10, 20, 30, 40]\nprint(len(sayilar))',
         ["4", "40", "3", "Hata"],
         "4",
@@ -1371,7 +1407,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
       ),
       mcStep(
         "step-3",
-        "append sonrası",
+        "Bu kodun çıktısı nedir?",
         ["3", "2", "4", "Hata"],
         "3",
         {
@@ -1382,7 +1418,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
       ),
       fillStep(
         "step-4",
-        "Kontrol",
+        "Liste dolu mu kontrolü için boşluğa hangi operatör gelmeli?",
         'urunler = ["kalem", "defter"]\nif len(urunler) ____ 0:\n    print("Liste dolu")',
         [">", "<", "=", "=="],
         ">",
@@ -1412,7 +1448,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
       ),
       miniTaskStep(
         "step-2",
-        "Liste oluştur",
+        "En az 3 elemanlı liste nasıl oluşturulur?",
         "En az 2 elemanlı liste oluştur, 1 append yap ve listeyi yazdır.",
         {
           checklist: [
@@ -1430,7 +1466,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
       ),
       projectStep(
         "step-3",
-        "Özet çıktı",
+        "Toplam ve ürün sayısı nasıl yazdırılır?",
         "Alışveriş listesine 2 ürün ekle; her ürünü ayrı satırda ve toplam ürün sayısını yazdır.",
         {
           checklist: [
@@ -1470,7 +1506,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
       ),
       outputStep(
         "step-2",
-        "Çıktı",
+        "Bu kodun çıktısı nedir?",
         'for harf in ["A", "B"]:\n    print(harf)',
         ["A\nB", "AB", "harf", "Hata"],
         "A\nB",
@@ -1478,7 +1514,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
       ),
       fillStep(
         "step-3",
-        "Döngü yaz",
+        "Döngü gövdesini tamamlamak için boşluğa ne gelmeli?",
         "for sehir in sehirler:\n    ____",
         ["print(sehir)", "print sehir", "sehir.print()", "print(sehirler)"],
         "print(sehir)",
@@ -1518,7 +1554,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
       ),
       outputStep(
         "step-2",
-        "range(4)",
+        "Bu kodun çıktısı nedir?",
         "for n in range(4):\n    print(n)",
         ["0\n1\n2\n3", "1\n2\n3\n4", "4", "Hata"],
         "0\n1\n2\n3",
@@ -1536,7 +1572,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
       ),
       fillStep(
         "step-4",
-        "1'den 3'e",
+        "1'den 3'e saymak için range nasıl tamamlanır?",
         "for i in range(____, 4):\n    print(i)",
         ["1", "0", "4", "3"],
         "1",
@@ -1569,7 +1605,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
       ),
       outputStep(
         "step-2",
-        "Toplam biriktirme",
+        "Bu kodun çıktısı nedir?",
         'toplam = 0\nfor n in [10, 20, 5]:\n    toplam = toplam + n\nprint(toplam)',
         ["35", "10", "0", "Hata"],
         "35",
@@ -1577,7 +1613,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
       ),
       miniTaskStep(
         "step-3",
-        "Liste yazdır",
+        "Liste elemanları for ile nasıl yazdırılır?",
         "3 elemanlı bir listeyi for ile her satıra bir eleman yazdır.",
         {
           checklist: [
@@ -1627,7 +1663,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
       ),
       miniTaskStep(
         "step-2",
-        "Basit liste",
+        "Basit görev listesi for ile nasıl yazdırılır?",
         "En az 3 görevli listeyi for ile her satıra bir görev yazdır.",
         {
           checklist: [
@@ -1647,7 +1683,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
       ),
       projectStep(
         "step-3",
-        "Numaralı görevler",
+        "Görevler numaralandırılarak nasıl yazdırılır?",
         "Görevleri \"1. ...\" formatında numaralandırarak yazdır.",
         {
           checklist: [
@@ -1690,7 +1726,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
       ),
       mcStep(
         "step-2",
-        "Ana fayda",
+        "Fonksiyon kullanmanın ana faydası nedir?",
         [
           "Kod tekrarını azaltmak",
           "Python'u hızlandırmak",
@@ -1714,7 +1750,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
       ),
       fillStep(
         "step-4",
-        "Tanım",
+        "Fonksiyon tanımlamak için boşluğa ne yazılmalı?",
         "____ mesaj_yaz():\n    print(\"Tamam\")",
         ["def", "function", "fn", "fun"],
         "def",
@@ -1746,7 +1782,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
       ),
       fillStep(
         "step-2",
-        "Fonksiyon tanımla",
+        "Fonksiyon tanımlamak için boşluğa ne yazılmalı?",
         "____ topla():\n    print(2 + 3)",
         ["def", "function", "return", "call"],
         "def",
@@ -1757,7 +1793,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
       ),
       outputStep(
         "step-3",
-        "Çağrı sonrası",
+        "Bu kodun çıktısı nedir?",
         'def yaz():\n    print("OK")\n\nyaz()\nyaz()',
         ["OK\nOK", "OK", "yaz", "Hata"],
         "OK\nOK",
@@ -1768,7 +1804,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
       ),
       mcStep(
         "step-4",
-        "Doğru çağrı",
+        "Tanımlı fonksiyon nasıl doğru çağrılır?",
         ["merhaba()", "call merhaba", "def merhaba()", "print def merhaba"],
         "merhaba()",
         {
@@ -1807,7 +1843,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
       ),
       outputStep(
         "step-3",
-        "return sonucu",
+        "Bu kodun çıktısı nedir?",
         "def iki_kat(x):\n    return x * 2\n\nprint(iki_kat(5))",
         ["10", "5", "x", "Hata"],
         "10",
@@ -1852,7 +1888,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
       ),
       miniTaskStep(
         "step-2",
-        "Tek fonksiyon",
+        "Parametre alan bir selamlama fonksiyonu nasıl yazılır?",
         "İsim parametresi alan ve \"Merhaba, X\" döndüren fonksiyon yaz; sonucu print et.",
         {
           checklist: [
@@ -1870,7 +1906,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
       ),
       projectStep(
         "step-3",
-        "İki fonksiyon",
+        "İki farklı selamlama fonksiyonu nasıl yazılır?",
         "selamla(isim) ve resmi_selam(isim, soyisim) fonksiyonlarını yaz ve ikisini de çağır.",
         {
           checklist: [
@@ -1932,7 +1968,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
       ),
       projectStep(
         "step-3",
-        "Puan ekle",
+        "Doğru cevapta puan nasıl eklenir?",
         "Doğru cevapta +10 puan göster; yanlışta doğru cevabı açıkla.",
         {
           checklist: [
@@ -1974,7 +2010,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
       ),
       projectStep(
         "step-2",
-        "İki soru",
+        "İki soruluk quiz nasıl yazılır?",
         "En az 2 soruluk quiz yaz; her doğru +10 puan; sonunda toplam puanı yazdır.",
         {
           checklist: [
@@ -1983,7 +2019,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
             "Son satırda toplam puan",
           ],
           exampleSolution:
-            'puan = 0\ncevap1 = input("2+2? ")\nif cevap1 == "4":\n    puan += 10\ncevap2 = input("Python dili? ")\nif cevap2.lower() == "python":\n    puan += 10\nprint(f"Toplam puan: {puan}")',
+            'puan = 0\ncevap1 = input("2+2? ")\nif cevap1 == "4":\n    puan += 10\ncevap2 = input("Python dili? ")\nif cevap2 == "python":\n    puan += 10\nprint(f"Toplam puan: {puan}")',
           validation: {
             validationMode: "miniProject",
             mustIncludeIf: true,
@@ -1995,7 +2031,7 @@ export const beginnerLessons: Record<string, LessonContent> = {
       ),
       projectStep(
         "step-3",
-        "Fonksiyonlu quiz",
+        "Fonksiyonla quiz nasıl yazılır?",
         "soru_sor(metin, dogru) fonksiyonu ile en az 2 soru sor ve bitiş mesajı ekle.",
         {
           checklist: [

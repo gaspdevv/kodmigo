@@ -2,7 +2,7 @@ import { makeLesson, type PathMeta, type Unit } from "./types";
 
 export const beginnerPathMeta: PathMeta = {
   pathLevel: "beginner",
-  levelLabel: "Başlangıç",
+  levelLabel: "Başlangıç Seviyesi",
   title: "Python Başlangıç Yolu",
   description:
     "Sıfırdan başlayarak print, değişkenler, koşullar, listeler, döngüler ve mini projelerle Python temellerini öğren.",
@@ -19,7 +19,6 @@ export const beginnerPathUnits: Unit[] = [
       makeLesson("beg-u1-l1", "python-what-is-python", "Python ile ne yapılır?", "5 dk", "Kısa ders"),
       makeLesson("beg-u1-l2", "python-print", "print() ile çıktı üretme", "5 dk", "Kısa ders"),
       makeLesson("beg-u1-l3", "beg-output-prediction", "Kodun çıktısını tahmin et", "5 dk", "Pratik"),
-      makeLesson("beg-u1-l4", "python-intro-task", "Mini görev: Kendini tanıtan çıktı", "7 dk", "Mini görev"),
     ],
   },
   {
@@ -27,12 +26,13 @@ export const beginnerPathUnits: Unit[] = [
     title: "Değişkenler ve Veri Türleri",
     description: "Verileri isimlerle saklamayı ve farklı türleri tanımayı öğren.",
     lessons: [
-      makeLesson("beg-u2-l1", "beg-variables-intro", "Değişken mantığı", "5 dk", "Kısa ders"),
-      makeLesson("beg-u2-l2", "beg-naming-rules", "İsimlendirme kuralları", "5 dk", "Kısa ders"),
-      makeLesson("beg-u2-l3", "beg-strings-numbers", "Metinler ve sayılar", "5 dk", "Kısa ders"),
-      makeLesson("beg-u2-l4", "beg-migo-intro-card", "Migo'nun Tanışma Kartı", "6 dk", "Mini Proje"),
-      makeLesson("beg-u2-l5", "beg-boolean-fstring", "Boolean ve f-string", "6 dk", "Kısa ders"),
-      makeLesson("beg-u2-l6", "beg-profile-card-project", "Mini proje: Profil kartı", "7 dk", "Mini görev"),
+      makeLesson("beg-u2-l1", "beg-strings-numbers", "Metinler ve sayılar", "5 dk", "Kısa ders"),
+      makeLesson("beg-u2-l2", "beg-variables-intro", "Değişken mantığı", "5 dk", "Kısa ders"),
+      makeLesson("beg-u2-l3", "beg-naming-rules", "İsimlendirme kuralları", "5 dk", "Kısa ders"),
+      makeLesson("beg-u2-l4", "python-intro-task", "Mini görev: Kendini tanıtan çıktı", "7 dk", "Mini görev"),
+      makeLesson("beg-u2-l5", "beg-migo-intro-card", "Migo'nun Tanışma Kartı", "6 dk", "Mini Proje"),
+      makeLesson("beg-u2-l6", "beg-boolean-fstring", "Boolean ve f-string", "6 dk", "Kısa ders"),
+      makeLesson("beg-u2-l7", "beg-profile-card-project", "Mini proje: Profil kartı", "7 dk", "Mini görev"),
     ],
   },
   {
@@ -51,8 +51,8 @@ export const beginnerPathUnits: Unit[] = [
     title: "Koşullar",
     description: "Kodunun karar vermesini sağlayan if/elif/else yapılarını öğren.",
     lessons: [
-      makeLesson("beg-u4-l1", "beg-if-basics", "if mantığı", "5 dk", "Kısa ders"),
-      makeLesson("beg-u4-l2", "beg-comparisons", "Karşılaştırmalar", "5 dk", "Kısa ders"),
+      makeLesson("beg-u4-l1", "beg-comparisons", "Karşılaştırmalar", "5 dk", "Kısa ders"),
+      makeLesson("beg-u4-l2", "beg-if-basics", "if mantığı", "5 dk", "Kısa ders"),
       makeLesson("beg-u4-l3", "beg-else", "else kullanımı", "5 dk", "Kısa ders"),
       makeLesson("beg-u4-l4", "beg-elif", "elif ile birden fazla durum", "6 dk", "Pratik"),
       makeLesson("beg-u4-l5", "beg-ticket-price", "Mini proje: Bilet fiyatı", "7 dk", "Mini görev"),

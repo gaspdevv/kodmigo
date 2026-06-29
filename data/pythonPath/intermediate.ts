@@ -2,12 +2,12 @@ import { makeLesson, type PathMeta, type Unit } from "./types";
 
 export const intermediatePathMeta: PathMeta = {
   pathLevel: "intermediate",
-  levelLabel: "Orta",
-  title: "Python Orta Yolu",
+  levelLabel: "İleri Seviye",
+  title: "Python İleri Seviye Yolu",
   description:
     "Fonksiyonlar, koleksiyonlar, string işlemleri ve proje tasarımıyla uygulamalı ilerle.",
   migoTip:
-    "Bu yolda teoriden çok problem çözme ve proje odaklı ilerleyeceksin. Kodu parçalara ayırmayı alışkanlık et.",
+    "Bu yolda adım adım öğrenip problem çözme ve proje odaklı ilerleyeceksin. Kodu parçalara ayırmayı alışkanlık et.",
 };
 
 export const intermediatePathUnits: Unit[] = [
@@ -16,8 +16,8 @@ export const intermediatePathUnits: Unit[] = [
     title: "Sağlam Fonksiyonlar",
     description: "Fonksiyonları parçalayarak daha okunabilir kod yaz.",
     lessons: [
-      makeLesson("int-u1-l1", "int-function-split", "Fonksiyonları parçalamak", "6 dk", "Kısa ders"),
-      makeLesson("int-u1-l2", "int-return-power", "return mantığını güçlendirmek", "6 dk", "Kısa ders"),
+      makeLesson("int-u1-l1", "int-return-power", "return mantığını güçlendirmek", "6 dk", "Kısa ders"),
+      makeLesson("int-u1-l2", "int-function-split", "Fonksiyonları parçalamak", "6 dk", "Kısa ders"),
       makeLesson("int-u1-l3", "int-conditional-functions", "Fonksiyon içinde koşul", "6 dk", "Pratik"),
       makeLesson("int-u1-l4", "int-score-function", "Mini görev: Puan hesaplama fonksiyonu", "8 dk", "Mini görev"),
     ],
@@ -28,8 +28,8 @@ export const intermediatePathUnits: Unit[] = [
     description: "Arama, filtreleme ve basit veri modelleri oluştur.",
     lessons: [
       makeLesson("int-u2-l1", "int-list-dict-practice", "Liste ve dict pratikleri", "6 dk", "Pratik"),
-      makeLesson("int-u2-l2", "int-search-filter", "Arama ve filtreleme", "6 dk", "Uygulama"),
-      makeLesson("int-u2-l3", "int-data-model", "Basit veri modeli", "6 dk", "Kısa ders"),
+      makeLesson("int-u2-l2", "int-data-model", "Basit veri modeli", "6 dk", "Kısa ders"),
+      makeLesson("int-u2-l3", "int-search-filter", "Arama ve filtreleme", "6 dk", "Uygulama"),
       makeLesson("int-u2-l4", "int-student-grades", "Mini proje: Öğrenci not listesi", "8 dk", "Mini görev"),
     ],
   },
@@ -38,8 +38,8 @@ export const intermediatePathUnits: Unit[] = [
     title: "Döngü + Koşul Kombinasyonları",
     description: "Listelerde koşullu işlem ve sayaç mantığını uygula.",
     lessons: [
-      makeLesson("int-u3-l1", "int-conditional-loop", "Listede koşullu işlem", "6 dk", "Pratik"),
-      makeLesson("int-u3-l2", "int-counter-logic", "Sayaç mantığı", "5 dk", "Kısa ders"),
+      makeLesson("int-u3-l1", "int-counter-logic", "Sayaç mantığı", "5 dk", "Kısa ders"),
+      makeLesson("int-u3-l2", "int-conditional-loop", "Listede koşullu işlem", "6 dk", "Pratik"),
       makeLesson("int-u3-l3", "int-min-max", "En büyük / en küçük bulma", "6 dk", "Uygulama"),
       makeLesson("int-u3-l4", "int-expense-analysis", "Mini proje: Harcama analizi", "8 dk", "Mini görev"),
     ],

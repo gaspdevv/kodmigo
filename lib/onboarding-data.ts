@@ -76,11 +76,11 @@ export function pathLevelFromCodingLevel(level: CodingLevel): PathLevel {
 export function getPathLevelLabel(level: PathLevel): string {
   switch (level) {
     case "beginner":
-      return "Başlangıç";
+      return "Başlangıç Seviyesi";
     case "basic":
-      return "Temel";
+      return "Temel Seviye";
     case "intermediate":
-      return "Orta";
+      return "İleri Seviye";
     default:
       return "Başlangıç";
   }

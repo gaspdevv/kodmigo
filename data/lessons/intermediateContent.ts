@@ -24,13 +24,13 @@ export const intermediateLessons: Record<string, LessonContent> = {
     "6 dk",
     10,
     [
-      infoStep("step-1", "Parçalama", "Her fonksiyon tek bir sorumluluk alsın.", {
-        code: "def format_para(tutar):\n    return f'{tutar:.2f} TL'\n\ndef yazdir_fatura(urun, fiyat):\n    print(urun, format_para(fiyat))",
-        migo: "format_para sadece biçimlendirme yapar — yeniden kullanılabilir.",
+      infoStep("step-1", "Fonksiyonları parçalamak", "Büyük işleri küçük fonksiyonlara bölersin. Her fonksiyon tek bir sorumluluk alır — biri hesaplar (return), diğeri yazdırır (print).", {
+        code: "def hesapla_toplam(a, b):\n    return a + b\n\ndef yazdir_toplam(a, b):\n    print(hesapla_toplam(a, b))\n\nyazdir_toplam(3, 5)",
+        migo: "Hesaplama ve yazdırma ayrı fonksiyonlarda olursa kod okunur ve test edilir.",
       }),
       matchPairsStep(
         "step-2",
-        "Sorumluluk eşleştir",
+        "Hangi fonksiyon hangi sorumluluğa sahiptir?",
         [
           { concept: "format_para", answer: "Sadece para biçimlendirir" },
           { concept: "yazdir_fatura", answer: "Ürün ve fiyatı yazdırır" },
@@ -40,7 +40,7 @@ export const intermediateLessons: Record<string, LessonContent> = {
       ),
       debugStep(
         "step-3",
-        "Fonksiyon hatası",
+        "Bu kodda hangi hata var?",
         "def topla(a, b)\n    return a + b",
         [
           "def satırında iki nokta eksik",
@@ -52,25 +52,26 @@ export const intermediateLessons: Record<string, LessonContent> = {
       ),
       codeOrderLinesStep(
         "step-4",
-        "Refactor sırası",
+        "Kod satırlarını doğru sıraya koy",
         ["def hesapla(): return 10", "def goster(): print(hesapla())", "goster()"],
         { content: "Önce fonksiyonlar, sonra çağrı.", migo: "Sıralama yaparken önce hangi satırın diğerleri için gerekli olduğunu düşün." },
       ),
       codeWritingStep(
         "step-5",
         "Küçük yardımcı fonksiyon",
-        "İki sayıyı toplayan kısa bir fonksiyon yaz.",
+        "İki sayıyı toplayıp ekrana yazdıran kısa bir fonksiyon yaz (def ve print kullan).",
         {
           validation: {
             validationMode: "miniProject",
             mustIncludeDef: true,
-            requiredPatterns: ["return"],
+            mustIncludePrint: true,
             minLength: 20,
           },
-          exampleSolution: "def topla(a, b):\n    return a + b",
+          exampleSolution: "def yazdir_toplam(a, b):\n    print(a + b)",
+          migo: "def ile tanımla, parametreleri kullan ve sonucu print ile göster.",
         },
       ),
-      completeStep("step-6", 10, "return mantığını güçlendirmek"),
+      completeStep("step-6", 10, "Fonksiyon içinde koşul"),
     ],
     "intermediate",
   ),
@@ -82,13 +83,14 @@ export const intermediateLessons: Record<string, LessonContent> = {
     "6 dk",
     10,
     [
-      infoStep("step-1", "Erken return", "Koşul sağlanınca hemen dön — gereksiz else azalır.", {
-        code: "def mutlak(n):\n    if n < 0:\n        return -n\n    return n",
+      infoStep("step-1", "return ne işe yarar?", "return, fonksiyonun hesapladığı sonucu dışarı verir. print sadece ekrana yazar; return ile sonucu değişkende saklayıp tekrar kullanabilirsin.", {
+        code: "def mutlak(n):\n    if n < 0:\n        return -n\n    return n\n\nprint(mutlak(-5))",
+        migo: "Koşul sağlanınca erken return kullanabilirsin — gereksiz else azalır.",
       }),
-      outputStep("step-2", "Sonuç", "def sign(n):\n    if n > 0: return 1\n    if n < 0: return -1\n    return 0\nprint(sign(-5))", ["-1", "1", "0", "5"], "-1"),
+      outputStep("step-2", "Bu kodun çıktısı nedir?", "def sign(n):\n    if n > 0: return 1\n    if n < 0: return -1\n    return 0\nprint(sign(-5))", ["-1", "1", "0", "5"], "-1"),
       debugStep(
         "step-3",
-        "return hatası",
+        "Bu kodda hangi hata var?",
         "def kare(n):\nreturn n * n",
         [
           "return satırı girintisiz",
@@ -100,7 +102,7 @@ export const intermediateLessons: Record<string, LessonContent> = {
       ),
       matchStep(
         "step-4",
-        "return değeri",
+        "kare(4) için fonksiyon ne döndürür?",
         "def kare(n): return n * n sonucu kare(4) için?",
         ["16", "8", "4", "n*n"],
         "16",
@@ -108,7 +110,7 @@ export const intermediateLessons: Record<string, LessonContent> = {
       ),
       codeWritingStep(
         "step-5",
-        "mutlak değer",
+        "Negatif sayıyı pozitife çeviren fonksiyon nasıl yazılır?",
         "Negatif sayıyı pozitife çeviren kısa bir fonksiyon yaz.",
         {
           validation: {
@@ -122,7 +124,7 @@ export const intermediateLessons: Record<string, LessonContent> = {
             "def mutlak(n):\n    if n < 0:\n        return -n\n    return n",
         },
       ),
-      completeStep("step-6", 10, "Fonksiyon içinde koşul"),
+      completeStep("step-6", 10, "Fonksiyonları parçalamak"),
     ],
     "intermediate",
   ),
@@ -134,8 +136,9 @@ export const intermediateLessons: Record<string, LessonContent> = {
     "6 dk",
     15,
     [
-      infoStep("step-1", "Koşullu fonksiyon", "gecerli_mi, indirimli_fiyat gibi karar fonksiyonları.", {
+      infoStep("step-1", "Koşullu fonksiyon", "Fonksiyon içinde if kullanarak karar verebilirsin. Parametreye göre farklı sonuç döndürürsün.", {
         code: "def indirimli(fiyat, ogrenci):\n    if ogrenci:\n        return fiyat * 0.8\n    return fiyat",
+        migo: "return ve if birlikte çalışır — koşul doğruysa erken return yapabilirsin.",
       }),
       matchStep(
         "step-2",
@@ -147,20 +150,20 @@ export const intermediateLessons: Record<string, LessonContent> = {
       ),
       codeOrderLinesStep(
         "step-3",
-        "Fonksiyon sırası",
+        "Kod satırlarını doğru sıraya koy",
         ["def selam(isim):", '    return f"Merhaba {isim}"', 'print(selam("Migo"))'],
         { migo: "Önce fonksiyon tanımı, sonra çağrı." },
       ),
       debugStep(
         "step-4",
-        "Hata",
+        "Bu kodda hangi hata var?",
         "def max2(a,b):\nif a>b:\n    return a\nreturn b",
         ["if satırı girintisiz", "return eksik", "a tanımsız", "def yanlış"],
         "if satırı girintisiz",
       ),
       codeWritingStep(
         "step-5",
-        "gecildi_mi",
+        "Geçme durumunu kontrol eden fonksiyon nasıl yazılır?",
         "notu >= 50 ise True dönen bir fonksiyon yaz.",
         {
           validation: {
@@ -192,7 +195,7 @@ export const intermediateLessons: Record<string, LessonContent> = {
       }),
       codeWritingStep(
         "step-2",
-        "Basit puan",
+        "Doğru sayısından puan döndüren fonksiyon nasıl yazılır?",
         "dogru sayısı * 10 dönen bir fonksiyon yaz.",
         {
           validation: {
@@ -206,14 +209,14 @@ export const intermediateLessons: Record<string, LessonContent> = {
       ),
       outputStep(
         "step-3",
-        "Formül çıktısı",
+        "Bu kodun çıktısı nedir?",
         "def hesapla_puan(dogru, yanlis):\n    return dogru * 10 - yanlis * 2\nprint(hesapla_puan(5, 1))",
         ["48", "50", "40", "Hata"],
         "48",
       ),
       debugStep(
         "step-4",
-        "Parametre hatası",
+        "Bu kodda hangi hata var?",
         "def puan(dogru, yanlis):\nreturn dogru * 10",
         [
           "return satırı girintisiz",
@@ -223,7 +226,7 @@ export const intermediateLessons: Record<string, LessonContent> = {
         ],
         "return satırı girintisiz",
       ),
-      projectStep("step-5", "Tam puan", "dogru ve yanlis al; negatif puanı 0'a sabitle.", {
+      projectStep("step-5", "Negatif puanı sıfıra sabitle", "dogru ve yanlis al; negatif puanı 0'a sabitle.", {
         checklist: ["iki parametre", "max(0, ...) veya if", "print örnek"],
         exampleSolution:
           "def puan(d, y):\n    p = d * 10 - y * 2\n    return max(0, p)\nprint(puan(5, 1))",
@@ -244,12 +247,13 @@ export const intermediateLessons: Record<string, LessonContent> = {
     "6 dk",
     15,
     [
-      infoStep("step-1", "İç içe", "Liste içinde dict yaygın veri modelidir.", {
-        code: 'ogrenciler = [{"ad": "Ali", "not": 85}, {"ad": "Ayşe", "not": 92}]',
+      infoStep("step-1", "Liste ve sözlük", "Liste köşeli parantezle sıralı veri tutar. Dict süslü parantezle anahtar-değer çiftleri saklar. Birden fazla kayıt için dict'leri liste içinde tutabilirsin.", {
+        code: 'sehirler = ["Ankara", "İzmir"]\nkisi = {"ad": "Efe", "yas": 28}\nogrenciler = [{"ad": "Ali", "not": 85}]',
+        migo: "Liste sırayı, dict alan adlarını tutar. İkisi birlikte güçlü veri modelleri oluşturur.",
       }),
       matchPairsStep(
         "step-2",
-        "Yapı eşleştir",
+        "Hangi veri yapısı hangi açıklamayla eşleşir?",
         [
           { concept: "Liste", answer: "Sıralı öğe koleksiyonu" },
           { concept: "Dict", answer: "Anahtar-değer çiftleri" },
@@ -259,7 +263,7 @@ export const intermediateLessons: Record<string, LessonContent> = {
       ),
       debugStep(
         "step-3",
-        "Erişim hatası",
+        "Bu kodda hangi hata var?",
         'ogrenci = {"ad": "Ali"}\nprint(ogrenci["yas"])',
         [
           "yas anahtarı yok",
@@ -269,10 +273,10 @@ export const intermediateLessons: Record<string, LessonContent> = {
         ],
         "yas anahtarı yok",
       ),
-      outputStep("step-4", "Erişim", 'd = {"a": [1, 2]}\nprint(d["a"][1])', ["2", "1", "a", "Hata"], "2"),
+      outputStep("step-4", "Bu kodun çıktısı nedir?", 'd = {"a": [1, 2]}\nprint(d["a"][1])', ["2", "1", "a", "Hata"], "2"),
       codeWritingStep(
         "step-5",
-        "Dict oluştur",
+        "Öğrenci dict'i nasıl oluşturulur?",
         "ad ve not anahtarları olan bir öğrenci dict'i oluştur ve bir alanı yazdır.",
         {
           validation: {
@@ -285,7 +289,7 @@ export const intermediateLessons: Record<string, LessonContent> = {
             'ogrenci = {"ad": "Ali", "not": 85}\nprint(ogrenci["ad"])',
         },
       ),
-      completeStep("step-6", 15, "Arama ve filtreleme"),
+      completeStep("step-6", 15, "Basit veri modeli"),
     ],
     "intermediate",
   ),
@@ -300,7 +304,7 @@ export const intermediateLessons: Record<string, LessonContent> = {
       infoStep("step-1", "Filtreleme", "for + if ile koşula uyanları yeni listeye ekle.", {
         code: "gecenler = []\nfor o in ogrenciler:\n    if o['not'] >= 50:\n        gecenler.append(o)",
       }),
-      miniTaskStep("step-2", "Bul", "İsim listesinde 'Ali' var mı kontrol et (in).", {
+      miniTaskStep("step-2", "Liste içinde değer var mı?", "İsim listesinde 'Ali' var mı kontrol et (in).", {
         checklist: ["in operatörü", "print bool"],
         exampleSolution: 'isimler = ["Ali", "Can"]\nprint("Ali" in isimler)',
         validation: {
@@ -310,7 +314,7 @@ export const intermediateLessons: Record<string, LessonContent> = {
       }),
       codeOrderStep(
         "step-3",
-        "Filtre",
+        "Filtreleme kodunu doğru sıraya koy",
         [
           "notlar = [40, 60, 70]\nsonuc = []\nfor n in notlar:\n    if n >= 50:\n        sonuc.append(n)",
           "sonuc = []\nfor n in notlar:\n    if n >= 50:\n        sonuc.append(n)\nnotlar = [40, 60, 70]",
@@ -319,8 +323,8 @@ export const intermediateLessons: Record<string, LessonContent> = {
         ],
         "notlar = [40, 60, 70]\nsonuc = []\nfor n in notlar:\n    if n >= 50:\n        sonuc.append(n)",
       ),
-      outputStep("step-4", "in", 'print("py" in "python")', ["True", "False", "Hata", "py"], "True"),
-      completeStep("step-5", 15, "Basit veri modeli"),
+      outputStep("step-4", "Bu kodun çıktısı nedir?", 'print("py" in "python")', ["True", "False", "Hata", "py"], "True"),
+      completeStep("step-5", 15, "Mini proje: Öğrenci not listesi"),
     ],
     "intermediate",
   ),
@@ -332,21 +336,21 @@ export const intermediateLessons: Record<string, LessonContent> = {
     "6 dk",
     10,
     [
-      infoStep("step-1", "Modelleme", "Ürün: ad, fiyat, stok alanları olan dict.", {
+      infoStep("step-1", "Veri modelleme", "Önceki derste liste ve dict'i gördün. Şimdi gerçek problemi bu yapılarla modelleyeceksin: alanları belirle, her alanı dict anahtarı yap.", {
         code: 'urun = {"ad": "Kalem", "fiyat": 15.0, "stok": 100}',
-        migo: "Önce veriyi kağıtta alanlara ayır, sonra koda yaz.",
+        migo: "Önce kağıtta alanları belirle, sonra her alanı dict anahtarı yap.",
       }),
-      mcStep("step-2", "Sipariş modeli", ["dict veya dict listesi", "sadece print", "while zorunlu", "class şart"], "dict veya dict listesi"),
-      fillStep("step-3", "Alan ekle", 'urun["stok"] = ____', ["50", '"50"', "stok", "print"], "50"),
+      mcStep("step-2", "Sipariş verisi için hangi veri yapısı uygundur?", ["dict veya dict listesi", "sadece print", "while zorunlu", "class şart"], "dict veya dict listesi"),
+      fillStep("step-3", "Stok alanı eklemek için boşluğa ne yazılmalı?", 'urun["stok"] = ____', ["50", '"50"', "stok", "print"], "50"),
       matchStep(
         "step-4",
-        "Alan",
+        "Kullanıcı e-postası hangi dict anahtarıdır?",
         "Kullanıcı e-postası hangi anahtar?",
         ["email", "liste", "for", "len"],
         "email",
         { code: 'kullanici = {"ad": "Efe", "email": "e@test.com"}' },
       ),
-      completeStep("step-5", 10, "Mini proje: Öğrenci not listesi"),
+      completeStep("step-5", 10, "Arama ve filtreleme"),
     ],
     "intermediate",
   ),
@@ -363,7 +367,7 @@ export const intermediateLessons: Record<string, LessonContent> = {
           "Her öğrenci için ad ve not alanları olan dict oluştur; for döngüsüyle notları yazdır ve sınıf ortalamasını hesapla.",
         migo: "List comprehension ileride; şimdilik döngü yeterli.",
       }),
-      miniTaskStep("step-2", "Liste", "2 öğrencili dict listesi oluştur ve notları yazdır.", {
+      miniTaskStep("step-2", "Öğrenci dict listesi nasıl oluşturulur?", "2 öğrencili dict listesi oluştur ve notları yazdır.", {
         checklist: ["2 dict", "not alanı", "for ile print"],
         exampleSolution: 'o=[{"ad":"Ali","not":60},{"ad":"Zeynep","not":90}]\nfor x in o: print(x["ad"], x["not"])',
         validation: {
@@ -373,7 +377,7 @@ export const intermediateLessons: Record<string, LessonContent> = {
           minLength: 30,
         },
       }),
-      projectStep("step-3", "Ortalama", "Sınıf ortalamasını hesapla ve yazdır.", {
+      projectStep("step-3", "Sınıf ortalaması nasıl hesaplanır?", "Sınıf ortalamasını hesapla ve yazdır.", {
         checklist: ["notları topla", "len ile böl", "f-string özet"],
         exampleSolution:
           'o=[{"ad":"A","not":70},{"ad":"B","not":80},{"ad":"C","not":90}]\nt=sum(x["not"] for x in o)\nprint(f"Ortalama: {t/len(o)}")',
@@ -382,7 +386,7 @@ export const intermediateLessons: Record<string, LessonContent> = {
           minLength: 35,
         },
       }),
-      completeStep("step-4", 25, "Listede koşullu işlem"),
+      completeStep("step-4", 25, "Sayaç mantığı"),
     ],
     "intermediate",
   ),
@@ -394,11 +398,12 @@ export const intermediateLessons: Record<string, LessonContent> = {
     "6 dk",
     15,
     [
-      infoStep("step-1", "Koşullu döngü", "Sadece belirli elemanlarda işlem yap.", {
+      infoStep("step-1", "Koşullu döngü", "for döngüsü içinde if kullanarak sadece belirli elemanlarda işlem yaparsın. Örneğin listedeki çift sayıları veya geçen notları seçebilirsin.", {
         code: "for n in notlar:\n    if n >= 50:\n        print(f'Geçti: {n}')",
+        migo: "Döngü her elemanı gezer; if ile hangilerinde işlem yapılacağını seçersin.",
       }),
-      outputStep("step-2", "Say", "c=0\nfor x in [1,2,3,4]:\n    if x%2==0: c+=1\nprint(c)", ["2", "4", "1", "0"], "2"),
-      miniTaskStep("step-3", "Pozitifler", "Listedeki pozitif sayıları yazdır.", {
+      outputStep("step-2", "Çift sayıları say", "c=0\nfor x in [1,2,3,4]:\n    if x%2==0: c+=1\nprint(c)", ["2", "4", "1", "0"], "2"),
+      miniTaskStep("step-3", "Listedeki pozitif sayılar nasıl yazdırılır?", "Listedeki pozitif sayıları yazdır.", {
         checklist: ["for", "if > 0", "print"],
         exampleSolution: "for n in [-1, 2, 3, -4]:\n    if n > 0:\n        print(n)",
         validation: {
@@ -409,8 +414,8 @@ export const intermediateLessons: Record<string, LessonContent> = {
           minLength: 25,
         },
       }),
-      fillStep("step-4", "Eşik", "for p in fiyatlar:\n    if p ____ 100:\n        print(p)", [">", "<", "==", "="], ">", { content: "100 TL üzeri fiyatları yazdır." }),
-      completeStep("step-5", 15, "Sayaç mantığı"),
+      fillStep("step-4", "Eşik kontrolü için boşluğa hangi operatör gelmeli?", "for p in fiyatlar:\n    if p ____ 100:\n        print(p)", [">", "<", "==", "="], ">", { content: "100 TL üzeri fiyatları yazdır." }),
+      completeStep("step-5", 15, "En büyük / en küçük bulma"),
     ],
     "intermediate",
   ),
@@ -422,14 +427,15 @@ export const intermediateLessons: Record<string, LessonContent> = {
     "5 dk",
     10,
     [
-      infoStep("step-1", "Sayaç", "count = 0 ile başla; koşulda count += 1.", {
+      infoStep("step-1", "Sayaç mantığı", "Döngüde sayaç değişkeni kullanarak bir koşulu kaç kez sağladığını sayarsın. Genelde 0 ile başlar, koşul doğru olduğunda 1 artırırsın.", {
         code: "adet = 0\nfor kelime in metinler:\n    if len(kelime) > 5:\n        adet += 1",
+        migo: "count = 0 ile başla; koşul sağlanınca count += 1 yap.",
       }),
-      outputStep("step-2", "Adet", "c=0\nfor ch in 'aaa':\n    if ch=='a': c+=1\nprint(c)", ["3", "1", "0", "a"], "3"),
-      mcStep("step-3", "Başlangıç", ["0", "1", "None", "-1"], "0", { content: "Sayaç genelde hangi değerle başlar?" }),
+      outputStep("step-2", "Bu kodun çıktısı nedir?", "c=0\nfor ch in 'aaa':\n    if ch=='a': c+=1\nprint(c)", ["3", "1", "0", "a"], "3"),
+      mcStep("step-3", "Sayaç hangi değerle başlamalı?", ["0", "1", "None", "-1"], "0", { content: "Sayaç genelde hangi değerle başlar?" }),
       codeOrderStep(
         "step-4",
-        "Sayaç",
+        "Sayaç döngüsünü doğru sıraya koy",
         [
           "c = 0\nfor x in data:\n    if x:\n        c += 1\nprint(c)",
           "for x in data:\n    if x:\n        c += 1\nc = 0\nprint(c)",
@@ -438,7 +444,7 @@ export const intermediateLessons: Record<string, LessonContent> = {
         ],
         "c = 0\nfor x in data:\n    if x:\n        c += 1\nprint(c)",
       ),
-      completeStep("step-5", 10, "En büyük / en küçük bulma"),
+      completeStep("step-5", 10, "Listede koşullu işlem"),
     ],
     "intermediate",
   ),
@@ -450,21 +456,22 @@ export const intermediateLessons: Record<string, LessonContent> = {
     "6 dk",
     15,
     [
-      infoStep("step-1", "max/min", "max(liste) ve min(liste) veya döngü ile ilk elemanı referans al.", {
-        code: "nums = [3, 9, 1]\nprint(max(nums))\nprint(min(nums))",
+      infoStep("step-1", "sum, max ve min", "sum(liste) toplam, max(liste) en büyük, min(liste) en küçük değeri verir. Döngüyle de yapılabilir ama built-in fonksiyonlar kısa yoldur.", {
+        code: "nums = [3, 9, 1]\nprint(sum(nums))\nprint(max(nums))\nprint(min(nums))",
+        migo: "Liste boşken max/min hata verebilir — ileride kontrol eklenir.",
       }),
       outputStep(
         "step-2",
-        "Döngü max",
+        "Bu kodun çıktısı nedir?",
         "nums = [2, 8, 5]\nm = nums[0]\nfor n in nums[1:]:\n    if n > m:\n        m = n\nprint(m)",
         ["8", "2", "5", "Hata"],
         "8",
         { migo: "Döngü boyunca m değişkeninin nasıl güncellendiğini adım adım takip et." },
       ),
-      fillStep("step-3", "Built-in", "en_buyuk = ____(sayilar)", ["max", "min", "sum", "len"], "max"),
+      fillStep("step-3", "En büyük değeri bulmak için boşluğa hangi fonksiyon gelmeli?", "en_buyuk = ____(sayilar)", ["max", "min", "sum", "len"], "max"),
       debugStep(
         "step-4",
-        "Hata",
+        "Bu kodda hangi hata var?",
         "print(max([]))",
         ["Boş listede max ValueError", "0 döner", "None", "Hata yok"],
         "Boş listede max ValueError",
@@ -482,11 +489,13 @@ export const intermediateLessons: Record<string, LessonContent> = {
     "8 dk",
     25,
     [
-      infoStep("step-1", "Analiz", "Kategori bazlı harcama özeti oluşturacaksın.", {
+      infoStep("step-1", "Analiz", "Kategori bazlı harcama özeti oluşturacaksın. Liste içinde dict tutarak kategori ve tutar alanlarını bir arada saklarsın.", {
+        code: 'h = [{"kat": "Yemek", "tutar": 60}]\nprint(sum(x["tutar"] for x in h))',
         expectedBehavior:
           "dict listesi (kategori + tutar) oluştur; belirli kategorideki harcamaların toplamını hesapla ve yazdır.",
+        migo: "sum() ile tutarları toplayabilirsin. for + if ile kategori filtrelemesi yaparsın.",
       }),
-      miniTaskStep("step-2", "Toplam", "Harcama listesinden genel toplam.", {
+      miniTaskStep("step-2", "Harcama listesinden toplam nasıl hesaplanır?", "Harcama listesinden genel toplam.", {
         checklist: ["sum veya döngü", "print"],
         exampleSolution: 'h=[{"tutar":10},{"tutar":20}]\nprint(sum(x["tutar"] for x in h))',
         validation: {
@@ -495,7 +504,7 @@ export const intermediateLessons: Record<string, LessonContent> = {
           minLength: 25,
         },
       }),
-      projectStep("step-3", "Kategori", "Belirli kategorideki harcamaların toplamını bul.", {
+      projectStep("step-3", "Kategori toplamını bul", "Belirli kategorideki harcamaların toplamını bul.", {
         checklist: ["for + if kategori", "toplam biriktir", "f-string"],
         exampleSolution:
           'h=[{"kat":"Ulasim","tutar":40},{"kat":"Yemek","tutar":60},{"kat":"Yemek","tutar":25}]\nt=0\nfor x in h:\n    if x["kat"]=="Yemek": t+=x["tutar"]\nprint(f"Yemek: {t} TL")',
@@ -516,12 +525,13 @@ export const intermediateLessons: Record<string, LessonContent> = {
     "5 dk",
     10,
     [
-      infoStep("step-1", "lower/upper", "Kullanıcı girdisini normalize etmek için sık kullanılır.", {
+      infoStep("step-1", "lower ve upper", "lower() metni küçük harfe, upper() büyük harfe çevirir. Kullanıcı girdisini karşılaştırmadan önce normalize etmek için sık kullanılır.", {
         code: 'cevap = input("Evet/Hayır: ")\nif cevap.lower() == "evet":\n    print("Tamam")',
+        migo: "Büyük-küçük harf farkını yok saymak için önce lower() uygula.",
       }),
-      outputStep("step-2", "upper", 'print("kodmigo".upper())', ["KODMIGO", "değişmedi", "kod migo", "Hata"], "KODMIGO"),
-      fillStep("step-3", "Karşılaştır", 'if metin.____() == "python":', ["lower", "upper", "split", "len"], "lower"),
-      mcStep("step-4", "Sonuç", ["True", "False", "Hata", "PY"], "True", { code: 'print("Test" == "test".upper()[:1] + "est")' }),
+      outputStep("step-2", "Bu kodun çıktısı nedir?", 'print("kodmigo".upper())', ["KODMIGO", "değişmedi", "kod migo", "Hata"], "KODMIGO"),
+      fillStep("step-3", "Metni küçük harfe çevirmek için boşluğa ne gelmeli?", 'if metin.____() == "python":', ["lower", "upper", "split", "len"], "lower"),
+      mcStep("step-4", "Bu kodun çıktısı nedir?", ["True", "False", "Hata", "PY"], "True", { code: 'print("Test" == "test".upper()[:1] + "est")' }),
       completeStep("step-5", 10, "split ile parçalama"),
     ],
     "intermediate",
@@ -537,9 +547,9 @@ export const intermediateLessons: Record<string, LessonContent> = {
       infoStep("step-1", "split", "metin.split(',') virgülden böler; liste döner.", {
         code: 'parca = "elma,armut,muz".split(",")\nprint(parca)',
       }),
-      outputStep("step-2", "Parça sayısı", 'print(len("a b c".split()))', ["3", "1", "5", "Hata"], "3"),
-      fillStep("step-3", "Ayırıcı", 'kelimeler = cumle.split(____)', ['" "', "''", "split", "len"], '" "'),
-      matchStep("step-4", "Kullanım", "CSV satırını parçalamak?", ["split", "print", "if", "def"], "split"),
+      outputStep("step-2", "Bu kodun çıktısı nedir?", 'print(len("a b c".split()))', ["3", "1", "5", "Hata"], "3"),
+      fillStep("step-3", "Kelime ayırmak için split'e ne parametre gelmeli?", 'kelimeler = cumle.split(____)', ['" "', "''", "split", "len"], '" "'),
+      matchStep("step-4", "CSV satırını parçalamak için hangi yöntem kullanılır?", "CSV satırını parçalamak?", ["split", "print", "if", "def"], "split"),
       completeStep("step-5", 10, "in kontrolü ve temizleme"),
     ],
     "intermediate",
@@ -555,8 +565,8 @@ export const intermediateLessons: Record<string, LessonContent> = {
       infoStep("step-1", "in ve strip", "'spam' in email; metin.strip() baş/son boşluk siler.", {
         code: 'email = "  user@test.com  "\nprint(email.strip())',
       }),
-      outputStep("step-2", "in", 'print("@" in "a@b.com")', ["True", "False", "@", "Hata"], "True"),
-      miniTaskStep("step-3", "Temizle", "Kullanıcı girdisini strip ve lower ile normalize et.", {
+      outputStep("step-2", "Bu kodun çıktısı nedir?", 'print("@" in "a@b.com")', ["True", "False", "@", "Hata"], "True"),
+      miniTaskStep("step-3", "Girdiyi nasıl temizleyip küçültürüz?", "Kullanıcı girdisini strip ve lower ile normalize et.", {
         checklist: ["strip", "lower", "print sonuç"],
         exampleSolution: 'g = "  EVET  "\nprint(g.strip().lower())',
         validation: {
@@ -566,7 +576,7 @@ export const intermediateLessons: Record<string, LessonContent> = {
       }),
       debugStep(
         "step-4",
-        "Hata",
+        "Bu kodda hangi hata var?",
         'if "admin" in kullanici_adi:\nprint("Yasak")',
         ["print girintisiz", "in yanlış", "if eksik", "admin tanımsız"],
         "print girintisiz",
@@ -587,7 +597,7 @@ export const intermediateLessons: Record<string, LessonContent> = {
         expectedBehavior:
           "split() ile kelime listesi oluştur; len ile say. İstersen uzun kelimeleri ayrıca filtrele.",
       }),
-      miniTaskStep("step-2", "Say", "Bir cümledeki kelime sayısını yazdır.", {
+      miniTaskStep("step-2", "Kelime sayısını bul", "Bir cümledeki kelime sayısını yazdır.", {
         checklist: ["split", "len", "print"],
         exampleSolution: 't = "bir iki uc"\nprint(len(t.split()))',
         validation: {
@@ -595,7 +605,7 @@ export const intermediateLessons: Record<string, LessonContent> = {
           minLength: 20,
         },
       }),
-      projectStep("step-3", "Uzun kelimeler", "5 harften uzun kelimeleri say ve listele.", {
+      projectStep("step-3", "Uzun kelimeler nasıl sayılır ve listelenir?", "5 harften uzun kelimeleri say ve listele.", {
         checklist: ["split + for", "len(kelime) > 5", "sayaç veya liste"],
         exampleSolution:
           't = "kod python listeler"\nc=0\nfor w in t.split():\n    if len(w)>5: c+=1; print(w)\nprint(f"Adet: {c}")',
@@ -621,14 +631,14 @@ export const intermediateLessons: Record<string, LessonContent> = {
       }),
       debugStep(
         "step-2",
-        "Toplam",
+        "Bu kodda hangi hata var?",
         "t=0\nfor i in range(1,5):\n    t+=i\n# Beklenen 15",
         ["range üst sınırı 5 olmalı (1,6)", "t yanlış", "i tanımsız", "+= hatalı"],
         "range üst sınırı 5 olmalı (1,6)",
       ),
       debugStep(
         "step-3",
-        "Ortalama",
+        "Bu kodda hangi hata var?",
         "def ort(nums):\n    return sum(nums) / len(nums)\nprint(ort([]))",
         ["Boş liste sıfıra böler", "sum hatalı", "def yanlış", "print fazla"],
         "Boş liste sıfıra böler",
@@ -651,7 +661,7 @@ export const intermediateLessons: Record<string, LessonContent> = {
       }),
       codeOrderStep(
         "step-2",
-        "Refactor",
+        "Refactor edilmiş kodu doğru sıraya koy",
         [
           "def cizgi():\n    print('-' * 20)\nprint('Başlık')\ncizgi()\ncizgi()",
           "print('Başlık')\ndef cizgi():\n    print('-' * 20)\ncizgi()\ncizgi()",
@@ -661,7 +671,7 @@ export const intermediateLessons: Record<string, LessonContent> = {
         "def cizgi():\n    print('-' * 20)\nprint('Başlık')\ncizgi()\ncizgi()",
         { content: "Önce tanım, sonra kullanımlar." },
       ),
-      miniTaskStep("step-3", "Çek", "İki kez tekrarlanan print('---') satırını fonksiyona al.", {
+      miniTaskStep("step-3", "Tekrarlanan kod satırı fonksiyona nasıl alınır?", "İki kez tekrarlanan print('---') satırını fonksiyona al.", {
         checklist: ["def", "2 çağrı", "tekrar azaldı"],
         exampleSolution: "def ayraç():\n    print('---')\nayraç()\nprint('İçerik')\nayraç()",
         validation: {
@@ -690,13 +700,13 @@ export const intermediateLessons: Record<string, LessonContent> = {
       mcStep("step-2", "Daha iyi isim", ["toplam_fiyat", "t", "x1", "tmp"], "toplam_fiyat"),
       debugStep(
         "step-3",
-        "Karmaşık",
+        "Bu kodda okunabilirlik sorunu nedir?",
         "if a>0 and b>0 and c>0 and d>0:\n    print(a+b+c+d)",
         ["Hepsi pozitif kontrolü fonksiyona alınabilir — okunabilirlik", "if yanlış", "print hatalı", "and fazla"],
         "Hepsi pozitif kontrolü fonksiyona alınabilir — okunabilirlik",
         { migo: "hepsi_pozitif(a,b,c,d) gibi yardımcı isim okumayı kolaylaştırır." },
       ),
-      fillStep("step-4", "İsim", "def hesapla____(fiyat, oran):\n    return fiyat * oran", ["_kdv", "()", "print", "123"], "_kdv", {
+      fillStep("step-4", "Fonksiyon adını tamamlamak için boşluğa ne gelmeli?", "def hesapla____(fiyat, oran):\n    return fiyat * oran", ["_kdv", "()", "print", "123"], "_kdv", {
         content: "KDV hesaplayan fonksiyon adı",
       }),
       completeStep("step-5", 15, "Problemi adımlara ayırma"),
@@ -716,10 +726,10 @@ export const intermediateLessons: Record<string, LessonContent> = {
         migo: "Kodu yazmadan önce 4-5 maddelik plan yap.",
       }),
       mcStep("step-2", "İlk adım", ["Problemi anla ve veri yapısını seç", "Hemen 200 satır yaz", "Sadece import", "Renk seç"], "Problemi anla ve veri yapısını seç"),
-      matchStep("step-3", "Adım", "Kullanıcıdan görev adı almak?", ["input", "max", "split", "class"], "input"),
+      matchStep("step-3", "Kullanıcıdan görev adı almak için ne kullanılır?", "Kullanıcıdan görev adı almak?", ["input", "max", "split", "class"], "input"),
       codeOrderStep(
         "step-4",
-        "Proje sırası",
+        "Proje geliştirme adımlarını doğru sıraya koy",
         [
           "Problemi oku\nVeri yapısını tanımla\nFonksiyonları yaz\nAna akışı çalıştır",
           "Fonksiyonları yaz\nProblemi oku\nAna akışı çalıştır\nVeri yapısını tanımla",
@@ -754,7 +764,7 @@ export const intermediateLessons: Record<string, LessonContent> = {
           minLength: 25,
         },
       }),
-      projectStep("step-3", "listele", "listele(gorevler) her görevi satır satır yazdır.", {
+      projectStep("step-3", "Görevleri satır satır nasıl listeleriz?", "listele(gorevler) her görevi satır satır yazdır.", {
         checklist: ["fonksiyon", "for döngüsü", "ad gösterimi"],
         exampleSolution:
           'def listele(g):\n    for x in g:\n        print(f"- {x[\'ad\']} ({x[\'tamam\']})")\ng=[{"ad":"A","tamam":False}]\nlistele(g)',
@@ -782,7 +792,7 @@ export const intermediateLessons: Record<string, LessonContent> = {
         expectedBehavior:
           "tamamla fonksiyonu ile görevi tamamlandı olarak işaretle; ozet fonksiyonu ile toplam ve tamamlanan sayısını göster.",
       }),
-      projectStep("step-2", "Tamamla", "Görev adına göre tamam=True yap.", {
+      projectStep("step-2", "Ada göre görev nasıl tamamlanır?", "Görev adına göre tamam=True yap.", {
         checklist: ["for + if ad", "tamam güncelle", "test"],
         exampleSolution:
           'def tamamla(g, ad):\n    for x in g:\n        if x["ad"]==ad:\n            x["tamam"]=True\ng=[{"ad":"X","tamam":False}]\ntamamla(g,"X")\nprint(g)',
@@ -791,18 +801,18 @@ export const intermediateLessons: Record<string, LessonContent> = {
           minLength: 35,
         },
       }),
-      projectStep("step-3", "Tam proje", "ekle, listele, tamamla, ozet fonksiyonları ve örnek kullanım.", {
+      projectStep("step-3", "Tüm görev fonksiyonları nasıl bir arada kullanılır?", "ekle, listele, tamamla, ozet fonksiyonları ve örnek kullanım.", {
         checklist: ["4 fonksiyon veya 3+ ", "özet istatistik", "örnek senaryo"],
         exampleSolution:
           'def ozet(g):\n    t=len(g)\n    c=sum(1 for x in g if x["tamam"])\n    print(f"{c}/{t} bitti")\ng=[]\ng.append({"ad":"Kod","tamam":True})\ng.append({"ad":"Spor","tamam":False})\nozet(g)',
-        migo: "Orta yolu tamamladın — mükemmel ilerleme!",
+        migo: "İleri seviyeyi tamamladın — mükemmel ilerleme!",
         validation: {
           validationMode: "taskTrackerFullProject",
           minLength: 45,
         },
       }),
       completeStep("step-4", 40, "Öğrenmeye devam et", {
-        content: "Görev takipçisi projeni bitirdin. Orta yol tamamlandı!",
+        content: "Görev takipçisi projeni bitirdin. İleri seviye yolunu tamamladın!",
       }),
     ],
     "intermediate",
