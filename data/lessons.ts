@@ -10,6 +10,7 @@ export {
   isQuizStepType,
   isTaskStepType,
   isValidatedTaskStepType,
+  isWrongAnswerTrackedStepType,
 } from "./lessons/types";
 
 import type { LessonContent } from "./lessons/types";

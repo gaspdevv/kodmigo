@@ -369,3 +369,8 @@ export function isValidatedTaskStepType(type: LessonStepType): boolean {
     type === "mini-task"
   );
 }
+
+/** Steps where a wrong answer attempt reduces lesson XP (once per step). */
+export function isWrongAnswerTrackedStepType(type: LessonStepType): boolean {
+  return isQuizStepType(type) || isTaskStepType(type);
+}

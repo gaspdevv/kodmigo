@@ -18,6 +18,7 @@ import {
   isQuizStepType,
   isTaskStepType,
   isValidatedTaskStepType,
+  isWrongAnswerTrackedStepType,
 } from "@/data/lessons";
 import { getLessonXpReward, isLessonInChain } from "@/data/pythonPath";
 import { resolveLessonXpReward } from "@/lib/xp-rewards";
@@ -82,6 +83,9 @@ export default function LessonShell({ lesson, theme }: LessonShellProps) {
   const [orderedLines, setOrderedLines] = useState<string[]>([]);
   const [matchSelections, setMatchSelections] = useState<Record<string, string>>(
     {},
+  );
+  const [wrongActivityIds, setWrongActivityIds] = useState<Set<string>>(
+    () => new Set(),
   );
 
   const step = lesson.steps[stepIndex];
@@ -201,6 +205,16 @@ export default function LessonShell({ lesson, theme }: LessonShellProps) {
     }
   }, [authLoading, isAuthenticated, lesson.id, router]);
 
+  const markStepWrong = useCallback((currentStep: LessonStep) => {
+    if (!isWrongAnswerTrackedStepType(currentStep.type)) return;
+    setWrongActivityIds((prev) => {
+      if (prev.has(currentStep.id)) return prev;
+      const next = new Set(prev);
+      next.add(currentStep.id);
+      return next;
+    });
+  }, []);
+
   const resetAnswerState = useCallback(() => {
     setSelectedAnswer(null);
     setFeedbackState("none");
@@ -244,6 +258,7 @@ export default function LessonShell({ lesson, theme }: LessonShellProps) {
         setFeedbackState("correct");
         playCorrectSound();
       } else {
+        markStepWrong(step);
         setFeedbackState("incorrect");
         playWrongSound();
       }
@@ -264,6 +279,7 @@ export default function LessonShell({ lesson, theme }: LessonShellProps) {
         setFeedbackState("correct");
         playCorrectSound();
       } else {
+        markStepWrong(step);
         setFeedbackState("incorrect");
         playWrongSound();
       }
@@ -282,6 +298,7 @@ export default function LessonShell({ lesson, theme }: LessonShellProps) {
       setFeedbackState("correct");
       playCorrectSound();
     } else {
+      markStepWrong(step);
       setFeedbackState("incorrect");
       playWrongSound();
     }
@@ -291,6 +308,7 @@ export default function LessonShell({ lesson, theme }: LessonShellProps) {
     const result = validateTaskStep(taskInput, step);
 
     if (!result.valid) {
+      markStepWrong(step);
       setTaskError(result.message ?? "Cevabın henüz uygun değil.");
       setTaskRevealed(false);
       setFeedbackState("incorrect");
@@ -428,6 +446,7 @@ export default function LessonShell({ lesson, theme }: LessonShellProps) {
             step={step}
             theme={theme}
             xpReward={xpReward}
+            wrongCount={wrongActivityIds.size}
           />
         ) : (
           <>

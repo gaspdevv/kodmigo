@@ -10,7 +10,12 @@ import {
 } from "@/lib/lesson-completion";
 import { parseXpAmount } from "@/lib/rewards";
 import { isLessonCompleted } from "@/lib/progress";
-import { NORMAL_LESSON_XP, resolveLessonXpReward } from "@/lib/xp-rewards";
+import {
+  calculateLessonXpReward,
+  getLessonXpRewardMessage,
+  NORMAL_LESSON_XP,
+  resolveLessonXpReward,
+} from "@/lib/xp-rewards";
 import { playClickSound } from "@/lib/sounds";
 
 type LessonCompleteProps = {
@@ -18,6 +23,7 @@ type LessonCompleteProps = {
   step: LessonStep;
   theme: StageTheme;
   xpReward?: number;
+  wrongCount?: number;
 };
 
 export default function LessonComplete({
@@ -25,11 +31,17 @@ export default function LessonComplete({
   step,
   theme,
   xpReward: xpRewardProp,
+  wrongCount = 0,
 }: LessonCompleteProps) {
   const rewards = step.completeRewards;
-  const xpAmount = resolveLessonXpReward(
+  const baseXp = resolveLessonXpReward(
     xpRewardProp ??
       (rewards?.xp ? parseXpAmount(rewards.xp) : NORMAL_LESSON_XP),
+  );
+  const finalXp = calculateLessonXpReward(baseXp, wrongCount);
+  const xpMessage = useMemo(
+    () => getLessonXpRewardMessage(baseXp, wrongCount),
+    [baseXp, wrongCount],
   );
   const [isRepeatCompletion] = useState(() =>
     isLessonCompleted("python", lessonId),
@@ -37,9 +49,9 @@ export default function LessonComplete({
   const [learnPathHref, setLearnPathHref] = useState("/learn/python");
 
   useEffect(() => {
-    finalizeLessonCompletion(lessonId, xpAmount);
+    finalizeLessonCompletion(lessonId, finalXp);
     setLearnPathHref(getLearnPathHrefAfterLesson(lessonId));
-  }, [lessonId, xpAmount]);
+  }, [lessonId, finalXp]);
 
   const handleNavigate = () => {
     playClickSound();
@@ -85,10 +97,16 @@ export default function LessonComplete({
             className={`mb-6 overflow-hidden rounded-2xl border-2 text-left ${theme.cardBorder} ${theme.cardShadow}`}
           >
             <div className="bg-gradient-to-r from-emerald-500 to-teal-500 px-4 py-3">
-              <p className="text-lg font-bold text-white">+{xpAmount} XP</p>
-              <p className="text-xs font-medium text-emerald-50">
-                Deneyim puanı kazandın
-              </p>
+              <p className="text-lg font-bold text-white">{xpMessage.headline}</p>
+              {xpMessage.detail ? (
+                <p className="mt-1 text-xs font-medium text-emerald-50">
+                  {xpMessage.detail}
+                </p>
+              ) : (
+                <p className="text-xs font-medium text-emerald-50">
+                  Deneyim puanı kazandın
+                </p>
+              )}
             </div>
             <div className={`space-y-2 px-4 py-3 ${theme.cardBackground}`}>
               <p className={`text-sm font-medium ${theme.primaryText}`}>
