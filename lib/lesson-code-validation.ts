@@ -31,6 +31,15 @@ export const VALIDATION_MODES = [
   "booleanHelperFunction",
   "twoGreetingFunctions",
   "quizFunctionProject",
+  "scoreCalculatorFunction",
+  "listMembershipCheck",
+  "studentGradeAverage",
+  "categorySpendingTotal",
+  "inputNormalizeStripLower",
+  "wordCountInputSplitLen",
+  "longWordsFilterCount",
+  "taskMarkCompleteByName",
+  "taskTrackerFullProject",
 ] as const;
 
 export type ValidationMode = (typeof VALIDATION_MODES)[number];
@@ -185,6 +194,150 @@ const DEFAULT_HINTS = {
     "Bu görevde listede en az 3 eleman olmalı.",
   missingSimpleListQuotedElements:
     "Liste içindeki metinleri tırnak içinde yazmalısın.",
+  missingListMembershipDefinition:
+    "Bu görevde isimleri köşeli parantezlerle bir liste içinde yazmalısın: [...]",
+  missingListMembershipIn:
+    "Liste içinde arama yapmak için in operatörünü kullanmalısın.",
+  missingListMembershipPrint:
+    "Arama sonucunu ekrana yazdırmak için print(...) kullanmalısın.",
+  missingListMembershipQuotedElements:
+    "Liste içindeki metinleri tırnak içinde yazmalısın.",
+  missingListMembershipNotString:
+    "İsimleri tek metin olarak değil, liste olarak yazmalısın.",
+  missingStudentGradeList:
+    "Bu görevde öğrencileri liste içinde tutmalısın.",
+  missingStudentGradeDictFields:
+    "Her öğrenciyi ad ve not alanları olan dict olarak yazmalısın.",
+  missingStudentGradeNotField:
+    "Her öğrenci dict'inde not alanı olmalı.",
+  missingStudentGradeNumericNot:
+    "Öğrenci notları sayı olarak yazılmalı.",
+  missingStudentGradeMinCount:
+    "Ortalama hesaplamak için en az 2 öğrenci olmalı.",
+  missingStudentGradeTotal:
+    "Ortalama için önce notları toplamalısın.",
+  missingStudentGradeLen:
+    "Öğrenci sayısını bulmak için len(...) kullanmalısın.",
+  missingStudentGradeAverage:
+    "Ortalama için toplam notu öğrenci sayısına bölmelisin.",
+  missingStudentGradePrint:
+    "Ortalama sonucunu ekrana yazdırmak için print(...) kullanmalısın.",
+  missingCategorySpendingList:
+    "Bu görevde harcamaları liste içinde tutmalısın.",
+  missingCategorySpendingDictFields:
+    "Her harcamayı kategori ve tutar alanları olan dict olarak yazmalısın.",
+  missingCategorySpendingKategoriField:
+    "Her harcama dict'inde kategori alanı olmalı.",
+  missingCategorySpendingTutarField:
+    "Her harcama dict'inde tutar alanı olmalı.",
+  missingCategorySpendingNumericTutar:
+    "Harcama tutarları sayı olarak yazılmalı.",
+  missingCategorySpendingMinCount:
+    "Bu görevde listede en az 2 harcama olmalı.",
+  missingCategorySpendingForLoop:
+    "Harcamaları tek tek kontrol etmek için for döngüsü kullanmalısın.",
+  missingCategorySpendingIf:
+    "Belirli kategoriyi seçmek için if koşulu kullanmalısın.",
+  missingCategorySpendingFilter:
+    "Toplamı sadece belirli bir kategori için hesaplamalısın.",
+  missingCategorySpendingTotal:
+    "Seçilen kategorideki tutarları toplamalısın.",
+  missingCategorySpendingPrint:
+    "Kategori toplamını ekrana yazdırmak için print(...) kullanmalısın.",
+  missingInputNormalizeInput:
+    "Bu görevde kullanıcıdan veri almak için input() kullanmalısın.",
+  missingInputNormalizeStrip:
+    "Baştaki ve sondaki boşlukları temizlemek için strip() kullanmalısın.",
+  missingInputNormalizeLower:
+    "Girdiyi küçük harfe çevirmek için lower() kullanmalısın.",
+  missingInputNormalizePrint:
+    "Temizlenmiş girdiyi ekrana yazdırmak için print(...) kullanmalısın.",
+  wrongCaseStrip:
+    "Python'da strip küçük harfle yazılır: strip()",
+  wrongCaseLower:
+    "Python'da lower küçük harfle yazılır: lower()",
+  missingWordCountInput:
+    "Bu görevde kullanıcıdan cümle almak için input() kullanmalısın.",
+  missingWordCountSplit:
+    "Cümleyi kelimelere ayırmak için split() kullanmalısın.",
+  missingWordCountLen:
+    "Kelime sayısını bulmak için len(...) kullanmalısın.",
+  missingWordCountPrint:
+    "Kelime sayısını ekrana yazdırmak için print(...) kullanmalısın.",
+  missingWordCountLenSplit:
+    "Kelime sayısını bulmak için split() sonucunu len(...) ile saymalısın.",
+  missingLongWordsInput:
+    "Bu görevde kullanıcıdan cümle almak için input() kullanmalısın.",
+  missingLongWordsSplit:
+    "Cümleyi kelimelere ayırmak için split() kullanmalısın.",
+  missingLongWordsFor:
+    "Kelimeleri tek tek kontrol etmek için for döngüsü kullanmalısın.",
+  missingLongWordsIf:
+    "5 harften uzun kelimeleri seçmek için if koşulu kullanmalısın.",
+  missingLongWordsLen:
+    "Kelimenin uzunluğunu kontrol etmek için len(...) kullanmalısın.",
+  missingLongWordsLengthCheck:
+    "Bu görevde 5 harften uzun kelimeleri kontrol etmelisin.",
+  missingLongWordsAppend:
+    "Uzun kelimeleri ayrı bir listeye eklemelisin.",
+  missingLongWordsCountPrint:
+    "Uzun kelime sayısını yazdırmak için len(uzun_kelimeler) kullanmalısın.",
+  missingLongWordsListPrint:
+    "Uzun kelimeleri liste olarak da yazdırmalısın.",
+  missingLongWordsPrint:
+    "Sonucu ekrana yazdırmak için print(...) kullanmalısın.",
+  missingTaskMarkList:
+    "Bu görevde görevleri liste içinde tutmalısın.",
+  missingTaskMarkDictFields:
+    "Her görevi ad ve tamam alanları olan dict olarak yazmalısın.",
+  missingTaskMarkAdField:
+    "Her görev dict'inde ad alanı olmalı.",
+  missingTaskMarkTamamField:
+    "Her görev dict'inde tamam alanı olmalı.",
+  missingTaskMarkBooleanNotString:
+    "tamam değeri metin değil, boolean olmalı: True veya False.",
+  missingTaskMarkFor:
+    "Görevleri tek tek kontrol etmek için for döngüsü kullanmalısın.",
+  missingTaskMarkIf:
+    "Görev adına göre seçim yapmak için if koşulu kullanmalısın.",
+  missingTaskMarkNameCompare:
+    "Tamamlanacak görevi ad alanına göre bulmalısın.",
+  missingTaskMarkTamamAssignment:
+    "Eşleşen görevin tamam değerini True yapmalısın.",
+  missingTaskMarkPrint:
+    "Güncel görev listesini ekrana yazdırmak için print(...) kullanmalısın.",
+  wrongCaseFor: "Python'da for küçük harfle yazılır: for",
+  wrongCaseIf: "Python'da if küçük harfle yazılır: if",
+  missingTaskTrackerAllFunctions:
+    "Bu görevde ekle, listele, tamamla ve ozet fonksiyonlarını yazmalısın.",
+  missingTaskTrackerEkle:
+    "Görev eklemek için ekle(...) fonksiyonunu yazmalısın.",
+  missingTaskTrackerListele:
+    "Görevleri yazdırmak için listele(...) fonksiyonunu yazmalısın.",
+  missingTaskTrackerTamamla:
+    "Görev adına göre tamamlamak için tamamla(...) fonksiyonunu yazmalısın.",
+  missingTaskTrackerOzet:
+    "Toplam ve tamamlanan sayısını göstermek için ozet(...) fonksiyonunu yazmalısın.",
+  missingTaskTrackerDict:
+    "Görevleri ad ve tamam alanları olan dict olarak saklamalısın.",
+  missingTaskTrackerBooleanNotString:
+    "tamam değeri metin değil, boolean olmalı: True veya False.",
+  missingTaskTrackerAppend:
+    "Yeni görevi listeye eklemek için append(...) kullanmalısın.",
+  missingTaskTrackerTamamlaIf:
+    "Tamamlanacak görevi adına göre bulmak için if kullanmalısın.",
+  missingTaskTrackerTamamAssignment:
+    "Eşleşen görevin tamam değerini True yapmalısın.",
+  missingTaskTrackerOzetLen:
+    "Toplam görev sayısını bulmak için len(...) kullanmalısın.",
+  missingTaskTrackerOzetCompletedCount:
+    "ozet fonksiyonunda tamamlanan görev sayısını da hesaplamalısın.",
+  missingTaskTrackerExampleUsage:
+    "Fonksiyonları örnek bir görev listesiyle çağırmalısın.",
+  wrongCaseSplit:
+    "Python'da split küçük harfle yazılır: split()",
+  wrongCaseLen:
+    "Python'da len küçük harfle yazılır: len(...)",
   missingHabitDictList:
     "Bu görevde birden fazla alışkanlığı dict olarak liste içinde yazmalısın.",
   missingHabitDictFields:
@@ -327,6 +480,18 @@ const DEFAULT_HINTS = {
     "Sonuçları ekrana yazdırmak için print(...) kullanmalısın.",
   undefinedQuizFStringVariable:
     "f-string içinde yalnızca tanımladığın değişkenleri veya fonksiyon parametrelerini kullanmalısın.",
+  missingScoreCalculatorFunctionDef:
+    "Bu görevde def ile bir puan hesaplama fonksiyonu yazmalısın.",
+  missingScoreCalculatorTwoParams:
+    "Fonksiyon dogru ve yanlis olmak üzere iki değer almalı.",
+  missingScoreCalculation:
+    "Puanı hesaplamak için doğru sayısından puan kazanıp yanlış sayısından puan düşmelisin.",
+  missingScoreNegativeClamp:
+    "Negatif puanı 0'a sabitlemek için if kontrolü veya max(0, puan) kullanmalısın.",
+  missingScoreCalculatorReturn:
+    "Hesaplanan puanı return ile döndürmelisin.",
+  missingScoreCalculatorPrint:
+    "Fonksiyon sonucunu ekrana yazdırmak için print(...) kullanmalısın.",
   default:
     "Henüz tam değil. Görevi tekrar oku ve küçük bir düzenleme daha dene.",
 };
@@ -1033,6 +1198,718 @@ function validateSimpleListAndPrintMode(
   return { valid: true };
 }
 
+function hasStringListAssignment(input: string): boolean {
+  return nonEmptyLines(input).some((line) => {
+    if (/=\s*\[/.test(line)) return false;
+    return /^\s*[a-zA-Z_]\w*\s*=\s*["']/.test(line);
+  });
+}
+
+function hasMembershipPrintCheck(
+  input: string,
+  listVarNames: string[],
+): boolean {
+  const listVarSet = new Set(listVarNames);
+  for (const line of nonEmptyLines(input)) {
+    const argsMatch = line.match(/print\s*\(([\s\S]*)\)\s*$/i);
+    if (!argsMatch) continue;
+    const stripped = stripStringLiteralsFromArgs(argsMatch[1] ?? "");
+    if (!/\bin\b/.test(stripped)) continue;
+    const inMatch = stripped.match(/\bin\s+([a-zA-Z_]\w*)\b/);
+    if (!inMatch?.[1]) continue;
+    if (listVarSet.has(inMatch[1])) return true;
+  }
+  return false;
+}
+
+function validateListMembershipCheckMode(
+  input: string,
+  rules: StepValidation,
+): ValidationResult {
+  const listDefs = parseListDefinitions(input);
+
+  if (listDefs.length === 0) {
+    if (hasStringListAssignment(input)) {
+      return {
+        valid: false,
+        message: pickHint(rules, "missingListMembershipNotString"),
+      };
+    }
+    return {
+      valid: false,
+      message: pickHint(rules, "missingListMembershipDefinition"),
+    };
+  }
+
+  for (const def of listDefs) {
+    if (listInnerHasUnquotedElements(def.inner)) {
+      return {
+        valid: false,
+        message: pickHint(rules, "missingListMembershipQuotedElements"),
+      };
+    }
+  }
+
+  const listVarNames = listDefs.map((def) => def.varName);
+
+  if (!hasPrintCall(input)) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingListMembershipPrint"),
+    };
+  }
+
+  if (!hasMembershipPrintCheck(input, listVarNames)) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingListMembershipIn"),
+    };
+  }
+
+  return { valid: true };
+}
+
+function getDictKeyValue(dictStr: string, key: string): string | null {
+  const match = dictStr.match(new RegExp(`["']${key}["']\\s*:\\s*([^,}]+)`));
+  return match?.[1]?.trim() ?? null;
+}
+
+function isNumericGradeValue(value: string): boolean {
+  const trimmed = value.trim();
+  if (/^["']/.test(trimmed)) return false;
+  return /^-?\d+(\.\d+)?$/.test(trimmed);
+}
+
+function findStudentDictList(
+  input: string,
+): { varName: string; dicts: string[] } | null {
+  for (const assignment of extractBracketListAssignments(input)) {
+    const dicts = splitDictElements(assignment.inner);
+    if (dicts.length > 0) {
+      return { varName: assignment.varName, dicts };
+    }
+  }
+  return null;
+}
+
+function hasGradeTotalCalculation(input: string): boolean {
+  if (!/\[["']not["']\]/i.test(input)) return false;
+  const stripped = stripStringLiterals(input);
+  if (/\+\s*=/.test(stripped)) return true;
+  if (/=\s*\w+\s*\+/.test(stripped)) return true;
+  if (/\bsum\s*\(/i.test(stripped)) return true;
+  return false;
+}
+
+function hasStudentGradeAverageCalculation(input: string): boolean {
+  const stripped = stripStringLiterals(input);
+  return /\//.test(stripped) && /\blen\s*\(/i.test(stripped);
+}
+
+function printsAverageResult(input: string): boolean {
+  for (const line of nonEmptyLines(input)) {
+    const argsMatch = line.match(/print\s*\(([\s\S]*)\)\s*$/i);
+    if (!argsMatch) continue;
+    const args = argsMatch[1] ?? "";
+    const stripped = stripStringLiteralsFromArgs(args).trim();
+    if (/\/\s*len\s*\(/i.test(stripped)) return true;
+    if (/\bortalama\b/i.test(stripped)) return true;
+    if (/f["']/.test(args) && /\/\s*len\s*\(/i.test(args)) return true;
+  }
+  return false;
+}
+
+function validateStudentGradeAverageMode(
+  input: string,
+  rules: StepValidation,
+): ValidationResult {
+  const studentList = findStudentDictList(input);
+  if (!studentList) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingStudentGradeList"),
+    };
+  }
+
+  if (studentList.dicts.length < 2) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingStudentGradeMinCount"),
+    };
+  }
+
+  for (const dictStr of studentList.dicts) {
+    const hasAd = hasDictKey(dictStr, "ad");
+    const hasNot = hasDictKey(dictStr, "not");
+
+    if (!hasAd || !hasNot) {
+      if (hasAd && !hasNot) {
+        return {
+          valid: false,
+          message: pickHint(rules, "missingStudentGradeNotField"),
+        };
+      }
+      return {
+        valid: false,
+        message: pickHint(rules, "missingStudentGradeDictFields"),
+      };
+    }
+
+    const notValue = getDictKeyValue(dictStr, "not");
+    if (!notValue || !isNumericGradeValue(notValue)) {
+      return {
+        valid: false,
+        message: pickHint(rules, "missingStudentGradeNumericNot"),
+      };
+    }
+  }
+
+  if (!hasGradeTotalCalculation(input) && !hasStudentGradeAverageCalculation(input)) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingStudentGradeTotal"),
+    };
+  }
+
+  if (!hasStudentGradeAverageCalculation(input)) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingStudentGradeAverage"),
+    };
+  }
+
+  if (!hasGradeTotalCalculation(input)) {
+    if (!/\bsum\s*\(/i.test(input) || !/\[["']not["']\]/i.test(input)) {
+      return {
+        valid: false,
+        message: pickHint(rules, "missingStudentGradeTotal"),
+      };
+    }
+  }
+
+  if (!hasLenCall(input)) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingStudentGradeLen"),
+    };
+  }
+
+  if (!hasPrintCall(input)) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingStudentGradePrint"),
+    };
+  }
+
+  if (!printsAverageResult(input)) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingStudentGradeAverage"),
+    };
+  }
+
+  return { valid: true };
+}
+
+function findExpenseDictList(
+  input: string,
+): { varName: string; dicts: string[] } | null {
+  for (const assignment of extractBracketListAssignments(input)) {
+    const dicts = splitDictElements(assignment.inner);
+    if (dicts.length > 0) {
+      return { varName: assignment.varName, dicts };
+    }
+  }
+  return null;
+}
+
+function isNumericTutarValue(value: string): boolean {
+  return isNumericGradeValue(value);
+}
+
+function hasExpenseIteration(input: string): boolean {
+  if (/^\s*for\s+/im.test(input)) return true;
+  if (/\bfor\b/.test(input) && /\bsum\s*\(/i.test(input)) return true;
+  return false;
+}
+
+function hasCategoryIfCheck(input: string): boolean {
+  return /\bif\b[\s\S]*\[["']kategori["']\]/i.test(input);
+}
+
+function hasCategoryFilterComparison(input: string): boolean {
+  return /\[["']kategori["']\]\s*==\s*["']/.test(input);
+}
+
+function hasFilteredTutarTotal(input: string): boolean {
+  if (!/\[["']tutar["']\]/i.test(input)) return false;
+  if (!hasCategoryFilterComparison(input)) return false;
+  const stripped = stripStringLiterals(input);
+  if (/\+\s*=/.test(stripped)) return true;
+  if (/=\s*\w+\s*\+/.test(stripped)) return true;
+  if (/\bsum\s*\(/i.test(stripped)) return true;
+  return false;
+}
+
+function printsCategoryTotalResult(
+  input: string,
+  listVarName: string,
+): boolean {
+  for (const line of nonEmptyLines(input)) {
+    const argsMatch = line.match(/print\s*\(([\s\S]*)\)\s*$/i);
+    if (!argsMatch) continue;
+    const args = argsMatch[1] ?? "";
+    const stripped = stripStringLiteralsFromArgs(args).trim();
+    if (new RegExp(`^${listVarName}\\s*$`, "i").test(stripped)) {
+      return false;
+    }
+    return true;
+  }
+  return false;
+}
+
+function validateCategorySpendingTotalMode(
+  input: string,
+  rules: StepValidation,
+): ValidationResult {
+  const expenseList = findExpenseDictList(input);
+  if (!expenseList) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingCategorySpendingList"),
+    };
+  }
+
+  if (expenseList.dicts.length < 2) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingCategorySpendingMinCount"),
+    };
+  }
+
+  for (const dictStr of expenseList.dicts) {
+    const hasKategori = hasDictKey(dictStr, "kategori");
+    const hasTutar = hasDictKey(dictStr, "tutar");
+
+    if (!hasKategori && !hasTutar) {
+      return {
+        valid: false,
+        message: pickHint(rules, "missingCategorySpendingDictFields"),
+      };
+    }
+    if (!hasKategori) {
+      return {
+        valid: false,
+        message: pickHint(rules, "missingCategorySpendingKategoriField"),
+      };
+    }
+    if (!hasTutar) {
+      return {
+        valid: false,
+        message: pickHint(rules, "missingCategorySpendingTutarField"),
+      };
+    }
+
+    const tutarValue = getDictKeyValue(dictStr, "tutar");
+    if (!tutarValue || !isNumericTutarValue(tutarValue)) {
+      return {
+        valid: false,
+        message: pickHint(rules, "missingCategorySpendingNumericTutar"),
+      };
+    }
+  }
+
+  if (!hasExpenseIteration(input)) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingCategorySpendingForLoop"),
+    };
+  }
+
+  if (!hasCategoryIfCheck(input)) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingCategorySpendingIf"),
+    };
+  }
+
+  if (!hasCategoryFilterComparison(input)) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingCategorySpendingFilter"),
+    };
+  }
+
+  if (!hasFilteredTutarTotal(input)) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingCategorySpendingTotal"),
+    };
+  }
+
+  if (!hasPrintCall(input)) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingCategorySpendingPrint"),
+    };
+  }
+
+  if (!printsCategoryTotalResult(input, expenseList.varName)) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingCategorySpendingFilter"),
+    };
+  }
+
+  return { valid: true };
+}
+
+function hasWrongCaseStripMethod(input: string): boolean {
+  return /\.Strip\s*\(/.test(input);
+}
+
+function hasWrongCaseLowerMethod(input: string): boolean {
+  return /\.Lower\s*\(/.test(input);
+}
+
+function hasInputVariableAssignment(input: string): boolean {
+  return /^\s*[a-zA-Z_]\w*\s*=\s*input\s*\(/m.test(input);
+}
+
+function hasStripMethod(input: string): boolean {
+  return /\.strip\s*\(/.test(input);
+}
+
+function hasLowerMethod(input: string): boolean {
+  return /\.lower\s*\(/.test(input);
+}
+
+function validateInputNormalizeStripLowerMode(
+  input: string,
+  rules: StepValidation,
+): ValidationResult {
+  if (hasWrongCaseInput(input)) {
+    return { valid: false, message: pickHint(rules, "wrongCaseInput") };
+  }
+  if (hasWrongCaseStripMethod(input)) {
+    return { valid: false, message: pickHint(rules, "wrongCaseStrip") };
+  }
+  if (hasWrongCaseLowerMethod(input)) {
+    return { valid: false, message: pickHint(rules, "wrongCaseLower") };
+  }
+
+  if (!/\binput\s*\(/i.test(input) || !hasInputVariableAssignment(input)) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingInputNormalizeInput"),
+    };
+  }
+
+  if (!hasStripMethod(input)) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingInputNormalizeStrip"),
+    };
+  }
+
+  if (!hasLowerMethod(input)) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingInputNormalizeLower"),
+    };
+  }
+
+  if (!hasPrintCall(input)) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingInputNormalizePrint"),
+    };
+  }
+
+  return { valid: true };
+}
+
+function hasWrongCaseSplitMethod(input: string): boolean {
+  return /\.Split\s*\(/.test(input);
+}
+
+function hasSplitMethod(input: string): boolean {
+  return /\.split\s*\(/.test(input);
+}
+
+function variableAssignedFromSplit(input: string, varName: string): boolean {
+  return new RegExp(`\\b${varName}\\s*=\\s*\\w+\\.split\\s*\\(`).test(input);
+}
+
+function printsWordCount(input: string): boolean {
+  for (const line of nonEmptyLines(input)) {
+    const argsMatch = line.match(/print\s*\(([\s\S]*)\)\s*$/i);
+    if (!argsMatch) continue;
+    const args = argsMatch[1] ?? "";
+    if (/len\s*\([^)]*\.split\s*\(/i.test(args)) {
+      return true;
+    }
+    const lenVarMatch = args.match(/len\s*\(\s*([a-zA-Z_]\w*)\s*\)/);
+    if (lenVarMatch?.[1] && variableAssignedFromSplit(input, lenVarMatch[1])) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function hasLenOnRawInputVariable(input: string): boolean {
+  for (const line of nonEmptyLines(input)) {
+    if (!/len\s*\(/i.test(line) || /\.split\s*\(/i.test(line)) {
+      continue;
+    }
+    const lenMatch = line.match(/len\s*\(\s*([a-zA-Z_]\w*)\s*\)/);
+    if (!lenMatch?.[1]) continue;
+    const varName = lenMatch[1];
+    const fromInput = new RegExp(`\\b${varName}\\s*=\\s*input\\s*\\(`).test(
+      input,
+    );
+    if (fromInput && !variableAssignedFromSplit(input, varName)) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function validateWordCountInputSplitLenMode(
+  input: string,
+  rules: StepValidation,
+): ValidationResult {
+  if (hasWrongCaseInput(input)) {
+    return { valid: false, message: pickHint(rules, "wrongCaseInput") };
+  }
+  if (hasWrongCaseSplitMethod(input)) {
+    return { valid: false, message: pickHint(rules, "wrongCaseSplit") };
+  }
+  if (hasWrongCaseBuiltin(input, "len")) {
+    return { valid: false, message: pickHint(rules, "wrongCaseLen") };
+  }
+
+  if (!/\binput\s*\(/i.test(input)) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingWordCountInput"),
+    };
+  }
+
+  if (hasLenOnRawInputVariable(input)) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingWordCountLenSplit"),
+    };
+  }
+
+  if (!hasSplitMethod(input)) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingWordCountSplit"),
+    };
+  }
+
+  if (!hasPrintCall(input)) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingWordCountPrint"),
+    };
+  }
+
+  if (!printsWordCount(input)) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingWordCountLenSplit"),
+    };
+  }
+
+  if (!/\blen\s*\(/i.test(input)) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingWordCountLen"),
+    };
+  }
+
+  return { valid: true };
+}
+
+function hasLongWordsFilterComprehension(input: string): boolean {
+  return /=\s*\[[^\]]*\bfor\b[^\]]*\bif\b[^\]]*len\s*\([^)]+\)\s*>\s*5[^\]]*\]/i.test(
+    input,
+  );
+}
+
+function hasLongWordLengthCheck(input: string): boolean {
+  return /len\s*\([^)]+\)\s*>\s*5/i.test(input);
+}
+
+function hasForLoopStatement(input: string): boolean {
+  return /^\s*for\s+\w+\s+in\b/im.test(input);
+}
+
+function hasAppendMethod(input: string): boolean {
+  return /\.append\s*\(/i.test(input);
+}
+
+function getFilteredLongWordsVars(input: string): Set<string> {
+  const vars = new Set<string>();
+
+  const compPattern =
+    /([a-zA-Z_]\w*)\s*=\s*\[[^\]]*\bfor\b[^\]]*\bif\b[^\]]*len\s*\([^)]+\)\s*>\s*5[^\]]*\]/gi;
+  let match: RegExpExecArray | null;
+  while ((match = compPattern.exec(input)) !== null) {
+    const varName = match[1];
+    if (varName) {
+      vars.add(varName);
+    }
+  }
+
+  for (const emptyMatch of input.matchAll(/([a-zA-Z_]\w*)\s*=\s*\[\s*\]/g)) {
+    const varName = emptyMatch[1] ?? "";
+    if (!varName) continue;
+    const appendRe = new RegExp(`\\b${varName}\\s*\\.append\\s*\\(`, "i");
+    if (
+      appendRe.test(input) &&
+      hasLongWordLengthCheck(input) &&
+      hasIfStatement(input)
+    ) {
+      vars.add(varName);
+    }
+  }
+
+  return vars;
+}
+
+function printsLongWordCount(input: string): boolean {
+  const filteredVars = getFilteredLongWordsVars(input);
+  if (filteredVars.size === 0) return false;
+
+  for (const line of nonEmptyLines(input)) {
+    const argsMatch = line.match(/print\s*\(([\s\S]*)\)\s*$/i);
+    if (!argsMatch) continue;
+    const args = argsMatch[1] ?? "";
+    for (const lenMatch of args.matchAll(/len\s*\(\s*([a-zA-Z_]\w*)\s*\)/gi)) {
+      const varName = lenMatch[1] ?? "";
+      if (filteredVars.has(varName)) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+function printsLongWordsList(input: string): boolean {
+  const filteredVars = getFilteredLongWordsVars(input);
+  if (filteredVars.size === 0) return false;
+
+  for (const line of nonEmptyLines(input)) {
+    const argsMatch = line.match(/print\s*\(([\s\S]*)\)\s*$/i);
+    if (!argsMatch) continue;
+    const args = argsMatch[1] ?? "";
+    const bareVarMatch = args.match(/^\s*([a-zA-Z_]\w*)\s*$/);
+    if (bareVarMatch?.[1] && filteredVars.has(bareVarMatch[1])) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function validateLongWordsFilterCountMode(
+  input: string,
+  rules: StepValidation,
+): ValidationResult {
+  const hasComprehension = hasLongWordsFilterComprehension(input);
+
+  if (hasWrongCaseInput(input)) {
+    return { valid: false, message: pickHint(rules, "wrongCaseInput") };
+  }
+  if (hasWrongCaseSplitMethod(input)) {
+    return { valid: false, message: pickHint(rules, "wrongCaseSplit") };
+  }
+  if (hasWrongCaseBuiltin(input, "len")) {
+    return { valid: false, message: pickHint(rules, "wrongCaseLen") };
+  }
+  if (hasWrongCaseAppend(input)) {
+    return { valid: false, message: pickHint(rules, "wrongCaseAppend") };
+  }
+  if (hasWrongCasePrint(input)) {
+    return { valid: false, message: pickHint(rules, "wrongCasePrint") };
+  }
+
+  if (!/\binput\s*\(/i.test(input)) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingLongWordsInput"),
+    };
+  }
+
+  if (!hasSplitMethod(input)) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingLongWordsSplit"),
+    };
+  }
+
+  if (!hasComprehension && !hasForLoopStatement(input)) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingLongWordsFor"),
+    };
+  }
+
+  if (!hasComprehension && !hasIfStatement(input)) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingLongWordsIf"),
+    };
+  }
+
+  if (!/\blen\s*\(/i.test(input)) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingLongWordsLen"),
+    };
+  }
+
+  if (!hasLongWordLengthCheck(input)) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingLongWordsLengthCheck"),
+    };
+  }
+
+  if (!hasPrintCall(input)) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingLongWordsPrint"),
+    };
+  }
+
+  if (!printsLongWordCount(input)) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingLongWordsCountPrint"),
+    };
+  }
+
+  if (!printsLongWordsList(input)) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingLongWordsListPrint"),
+    };
+  }
+
+  if (!hasComprehension && !hasAppendMethod(input)) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingLongWordsAppend"),
+    };
+  }
+
+  return { valid: true };
+}
+
 function extractBracketListAssignments(
   input: string,
 ): { varName: string; inner: string }[] {
@@ -1145,6 +2022,546 @@ function hasDictKey(dictStr: string, key: string): boolean {
 function getTamamlandiValue(dictStr: string): string | null {
   const match = dictStr.match(/["']tamamlandi["']\s*:\s*([^,}]+)/);
   return match?.[1]?.trim() ?? null;
+}
+
+function getTamamValue(dictStr: string): string | null {
+  const match = dictStr.match(/["']tamam["']\s*:\s*([^,}]+)/);
+  return match?.[1]?.trim() ?? null;
+}
+
+function validateTamamFieldValue(
+  value: string,
+  rules: StepValidation,
+): ValidationResult | null {
+  const trimmed = value.trim();
+  if (trimmed === "True" || trimmed === "False") {
+    return null;
+  }
+  if (trimmed === "true" || trimmed === "false") {
+    return {
+      valid: false,
+      message: pickHint(rules, "invalidBooleanCase"),
+    };
+  }
+  if (/^["']/.test(trimmed)) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingTaskMarkBooleanNotString"),
+    };
+  }
+  return {
+    valid: false,
+    message: pickHint(rules, "missingTaskMarkBooleanNotString"),
+  };
+}
+
+function hasTaskNameComparison(input: string): boolean {
+  return /\[["']ad["']\]\s*==/.test(input);
+}
+
+function hasTamamTrueAssignment(input: string): boolean {
+  return /\[["']tamam["']\]\s*=\s*True\b/.test(input);
+}
+
+function hasInvalidTamamAssignment(input: string): boolean {
+  return (
+    /\[["']tamam["']\]\s*=\s*true\b/.test(input) ||
+    /\[["']tamam["']\]\s*=\s*false\b/.test(input) ||
+    /\[["']tamam["']\]\s*=\s*["']True["']/.test(input) ||
+    /\[["']tamam["']\]\s*=\s*["']False["']/.test(input)
+  );
+}
+
+function validateTaskMarkDictStructure(
+  input: string,
+  rules: StepValidation,
+): ValidationResult | { listVar: string } {
+  const minDicts = 2;
+  const listAssignments = extractBracketListAssignments(input);
+
+  if (listAssignments.length === 0) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingTaskMarkList"),
+    };
+  }
+
+  const qualifiedLists = listAssignments
+    .map((assignment) => ({
+      ...assignment,
+      dicts: splitDictElements(assignment.inner),
+    }))
+    .filter((assignment) => assignment.dicts.length >= minDicts);
+
+  if (qualifiedLists.length === 0) {
+    const partialDicts = listAssignments.flatMap((assignment) =>
+      splitDictElements(assignment.inner),
+    );
+    if (partialDicts.length > 0) {
+      return {
+        valid: false,
+        message: pickHint(rules, "missingTaskMarkDictFields"),
+      };
+    }
+    if (hasStandaloneDictAssignment(input)) {
+      return {
+        valid: false,
+        message: pickHint(rules, "missingTaskMarkList"),
+      };
+    }
+    return {
+      valid: false,
+      message: pickHint(rules, "missingTaskMarkList"),
+    };
+  }
+
+  const primary = qualifiedLists[0]!;
+
+  for (const dictStr of primary.dicts) {
+    const hasAd = hasDictKey(dictStr, "ad");
+    const hasTamam = hasDictKey(dictStr, "tamam");
+
+    if (!hasAd && !hasTamam) {
+      return {
+        valid: false,
+        message: pickHint(rules, "missingTaskMarkDictFields"),
+      };
+    }
+    if (!hasAd) {
+      return {
+        valid: false,
+        message: pickHint(rules, "missingTaskMarkAdField"),
+      };
+    }
+    if (!hasTamam) {
+      return {
+        valid: false,
+        message: pickHint(rules, "missingTaskMarkTamamField"),
+      };
+    }
+
+    const tamamValue = getTamamValue(dictStr);
+    if (!tamamValue) {
+      return {
+        valid: false,
+        message: pickHint(rules, "missingTaskMarkTamamField"),
+      };
+    }
+
+    const tamamError = validateTamamFieldValue(tamamValue, rules);
+    if (tamamError) {
+      return tamamError;
+    }
+  }
+
+  return { listVar: primary.varName };
+}
+
+function validateTaskMarkCompleteByNameMode(
+  input: string,
+  rules: StepValidation,
+): ValidationResult {
+  if (hasWrongCaseFor(input)) {
+    return { valid: false, message: pickHint(rules, "wrongCaseFor") };
+  }
+  if (hasWrongCaseIfKeyword(input)) {
+    return { valid: false, message: pickHint(rules, "wrongCaseIf") };
+  }
+  if (hasWrongCasePrint(input)) {
+    return { valid: false, message: pickHint(rules, "wrongCasePrint") };
+  }
+
+  const structureResult = validateTaskMarkDictStructure(input, rules);
+  if ("valid" in structureResult && structureResult.valid === false) {
+    return structureResult;
+  }
+  const { listVar } = structureResult as { listVar: string };
+
+  if (!hasForLoopStatement(input)) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingTaskMarkFor"),
+    };
+  }
+
+  if (!hasIfStatement(input)) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingTaskMarkIf"),
+    };
+  }
+
+  if (!hasTaskNameComparison(input)) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingTaskMarkNameCompare"),
+    };
+  }
+
+  if (hasInvalidTamamAssignment(input)) {
+    if (/\[["']tamam["']\]\s*=\s*(true|false)\b/.test(input)) {
+      return {
+        valid: false,
+        message: pickHint(rules, "invalidBooleanCase"),
+      };
+    }
+    return {
+      valid: false,
+      message: pickHint(rules, "missingTaskMarkBooleanNotString"),
+    };
+  }
+
+  if (!hasTamamTrueAssignment(input)) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingTaskMarkTamamAssignment"),
+    };
+  }
+
+  if (!hasPrintCall(input)) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingTaskMarkPrint"),
+    };
+  }
+
+  if (!printUsesListVar(input, listVar)) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingTaskMarkPrint"),
+    };
+  }
+
+  return { valid: true };
+}
+
+const TASK_TRACKER_FUNCTION_NAMES = [
+  "ekle",
+  "listele",
+  "tamamla",
+  "ozet",
+] as const;
+
+function getMissingTaskTrackerFunctions(
+  defs: { name: string; params: string[] }[],
+): string[] {
+  const names = new Set(defs.map((def) => def.name));
+  return TASK_TRACKER_FUNCTION_NAMES.filter((name) => !names.has(name));
+}
+
+function hasTaskDictFields(text: string): boolean {
+  return /["']ad["']\s*:/.test(text) && /["']tamam["']\s*:/.test(text);
+}
+
+function hasTamamIfCheckInBody(bodyText: string): boolean {
+  return /if\s+.*\[["']tamam["']\]/i.test(bodyText);
+}
+
+function hasCompletedTaskCounting(bodyText: string): boolean {
+  if (
+    /sum\s*\(\s*1\s+for\b/i.test(bodyText) &&
+    /\[["']tamam["']\]/i.test(bodyText)
+  ) {
+    return true;
+  }
+  const hasIncrement =
+    /\+\s*=\s*1/.test(bodyText) || /=\s*\w+\s*\+\s*1/.test(bodyText);
+  return hasIncrement && /\[["']tamam["']\]/i.test(bodyText);
+}
+
+function validateTamamBooleanLiteralsInText(
+  text: string,
+  rules: StepValidation,
+): ValidationResult | null {
+  for (const match of text.matchAll(/["']tamam["']\s*:\s*([^,}\n]+)/g)) {
+    const tamamError = validateTamamFieldValue(match[1] ?? "", rules);
+    if (tamamError) {
+      return {
+        valid: false,
+        message: pickHint(rules, "missingTaskTrackerBooleanNotString"),
+      };
+    }
+  }
+
+  if (
+    /\[["']tamam["']\]\s*=\s*true\b/.test(text) ||
+    /\[["']tamam["']\]\s*=\s*false\b/.test(text)
+  ) {
+    return {
+      valid: false,
+      message: pickHint(rules, "invalidBooleanCase"),
+    };
+  }
+
+  if (
+    /\[["']tamam["']\]\s*=\s*["']True["']/.test(text) ||
+    /\[["']tamam["']\]\s*=\s*["']False["']/.test(text)
+  ) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingTaskTrackerBooleanNotString"),
+    };
+  }
+
+  return null;
+}
+
+function validateTaskTrackerEkleBody(
+  bodyText: string,
+  params: string[],
+  rules: StepValidation,
+): ValidationResult | null {
+  if (params.length < 2) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingTaskTrackerDict"),
+    };
+  }
+
+  if (!/\.append\s*\(/i.test(bodyText)) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingTaskTrackerAppend"),
+    };
+  }
+
+  if (!hasTaskDictFields(bodyText)) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingTaskTrackerDict"),
+    };
+  }
+
+  if (!/["']tamam["']\s*:\s*False\b/.test(bodyText)) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingTaskTrackerDict"),
+    };
+  }
+
+  return validateTamamBooleanLiteralsInText(bodyText, rules);
+}
+
+function validateTaskTrackerListeleBody(
+  bodyText: string,
+  rules: StepValidation,
+): ValidationResult | null {
+  if (!hasForLoopStatement(bodyText)) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingTaskTrackerListele"),
+    };
+  }
+
+  if (!hasPrintCall(bodyText)) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingTaskTrackerListele"),
+    };
+  }
+
+  return null;
+}
+
+function validateTaskTrackerTamamlaBody(
+  bodyText: string,
+  params: string[],
+  rules: StepValidation,
+): ValidationResult | null {
+  if (params.length < 2) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingTaskTrackerTamamla"),
+    };
+  }
+
+  if (!hasForLoopStatement(bodyText)) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingTaskTrackerTamamla"),
+    };
+  }
+
+  if (!hasIfStatement(bodyText)) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingTaskTrackerTamamlaIf"),
+    };
+  }
+
+  if (!hasTaskNameComparison(bodyText)) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingTaskTrackerTamamlaIf"),
+    };
+  }
+
+  const booleanError = validateTamamBooleanLiteralsInText(bodyText, rules);
+  if (booleanError) {
+    return booleanError;
+  }
+
+  if (!hasTamamTrueAssignment(bodyText)) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingTaskTrackerTamamAssignment"),
+    };
+  }
+
+  return null;
+}
+
+function validateTaskTrackerOzetBody(
+  bodyText: string,
+  rules: StepValidation,
+): ValidationResult | null {
+  if (!hasLenCall(bodyText)) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingTaskTrackerOzetLen"),
+    };
+  }
+
+  if (!hasCompletedTaskCounting(bodyText)) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingTaskTrackerOzetCompletedCount"),
+    };
+  }
+
+  if (!hasPrintCall(bodyText)) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingTaskTrackerOzet"),
+    };
+  }
+
+  return null;
+}
+
+function hasExampleTaskTrackerUsage(input: string): boolean {
+  const topLevel = nonEmptyLines(input)
+    .filter((line) => !/^\s*def\s+/.test(line))
+    .join("\n");
+
+  if (!/=\s*\[\s*\]/.test(topLevel)) {
+    return false;
+  }
+  if (countTopLevelFunctionCalls(input, "ekle") < 1) {
+    return false;
+  }
+  if (countTopLevelFunctionCalls(input, "tamamla") < 1) {
+    return false;
+  }
+  if (countTopLevelFunctionCalls(input, "listele") < 1) {
+    return false;
+  }
+  if (countTopLevelFunctionCalls(input, "ozet") < 1) {
+    return false;
+  }
+  return true;
+}
+
+function validateTaskTrackerFullProjectMode(
+  input: string,
+  rules: StepValidation,
+): ValidationResult {
+  if (hasWrongCaseFor(input)) {
+    return { valid: false, message: pickHint(rules, "wrongCaseFor") };
+  }
+  if (hasWrongCaseIfKeyword(input)) {
+    return { valid: false, message: pickHint(rules, "wrongCaseIf") };
+  }
+  if (hasWrongCasePrint(input)) {
+    return { valid: false, message: pickHint(rules, "wrongCasePrint") };
+  }
+  if (hasWrongCaseAppend(input)) {
+    return { valid: false, message: pickHint(rules, "wrongCaseAppend") };
+  }
+
+  const defs = extractFunctionDefs(input);
+  const missing = getMissingTaskTrackerFunctions(defs);
+
+  if (missing.length === TASK_TRACKER_FUNCTION_NAMES.length) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingTaskTrackerAllFunctions"),
+    };
+  }
+  if (missing.includes("ekle")) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingTaskTrackerEkle"),
+    };
+  }
+  if (missing.includes("listele")) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingTaskTrackerListele"),
+    };
+  }
+  if (missing.includes("tamamla")) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingTaskTrackerTamamla"),
+    };
+  }
+  if (missing.includes("ozet")) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingTaskTrackerOzet"),
+    };
+  }
+
+  const booleanError = validateTamamBooleanLiteralsInText(input, rules);
+  if (booleanError) {
+    return booleanError;
+  }
+
+  const ekleDef = defs.find((def) => def.name === "ekle")!;
+  const ekleError = validateTaskTrackerEkleBody(
+    getFunctionBodyLines(input, "ekle").join("\n"),
+    ekleDef.params,
+    rules,
+  );
+  if (ekleError) {
+    return ekleError;
+  }
+
+  const listeleError = validateTaskTrackerListeleBody(
+    getFunctionBodyLines(input, "listele").join("\n"),
+    rules,
+  );
+  if (listeleError) {
+    return listeleError;
+  }
+
+  const tamamlaDef = defs.find((def) => def.name === "tamamla")!;
+  const tamamlaError = validateTaskTrackerTamamlaBody(
+    getFunctionBodyLines(input, "tamamla").join("\n"),
+    tamamlaDef.params,
+    rules,
+  );
+  if (tamamlaError) {
+    return tamamlaError;
+  }
+
+  const ozetError = validateTaskTrackerOzetBody(
+    getFunctionBodyLines(input, "ozet").join("\n"),
+    rules,
+  );
+  if (ozetError) {
+    return ozetError;
+  }
+
+  if (!hasExampleTaskTrackerUsage(input)) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingTaskTrackerExampleUsage"),
+    };
+  }
+
+  return { valid: true };
 }
 
 function validateTamamlandiValue(
@@ -1675,6 +3092,14 @@ function hasWrongCasePrint(input: string): boolean {
     }
   }
   return false;
+}
+
+function hasWrongCaseFor(input: string): boolean {
+  return /^\s*For\s+/m.test(input);
+}
+
+function hasWrongCaseIfKeyword(input: string): boolean {
+  return /^\s*If\s+/m.test(input);
 }
 
 function hasWrongCaseBuiltin(input: string, builtin: string): boolean {
@@ -2554,6 +3979,99 @@ function validateBooleanHelperFunctionMode(
   return { valid: true };
 }
 
+function hasScoreCalculationLogic(
+  bodyText: string,
+  params: string[],
+): boolean {
+  const stripped = stripStringLiterals(bodyText);
+  if (params.length < 2) return false;
+
+  const paramsUsed = params.filter((param) =>
+    new RegExp(`\\b${param}\\b`).test(stripped),
+  );
+  if (paramsUsed.length < 2) return false;
+  if (!/\*/.test(stripped) || !/-/.test(stripped)) return false;
+
+  return params.some((param) =>
+    new RegExp(`\\b${param}\\b\\s*\\*|\\*\\s*\\b${param}\\b`).test(stripped),
+  );
+}
+
+function hasNegativeScoreClamp(bodyText: string): boolean {
+  const stripped = stripStringLiterals(bodyText);
+
+  if (/max\s*\(\s*0\s*,/.test(stripped)) {
+    return true;
+  }
+
+  if (/if\s+\w+\s*<\s*0/.test(stripped)) {
+    if (/=\s*0\b/.test(stripped) || /return\s+0\b/.test(stripped)) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+function validateScoreCalculatorFunctionMode(
+  input: string,
+  rules: StepValidation,
+): ValidationResult {
+  const defs = extractFunctionDefs(input);
+  if (defs.length === 0) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingScoreCalculatorFunctionDef"),
+    };
+  }
+
+  const primary = defs[0]!;
+  if (primary.params.length < 2) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingScoreCalculatorTwoParams"),
+    };
+  }
+
+  const bodyLines = getFunctionBodyLines(input, primary.name);
+  const bodyText = bodyLines.join("\n");
+
+  if (!hasScoreCalculationLogic(bodyText, primary.params)) {
+    return { valid: false, message: pickHint(rules, "missingScoreCalculation") };
+  }
+
+  if (!hasNegativeScoreClamp(bodyText)) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingScoreNegativeClamp"),
+    };
+  }
+
+  const hasReturnInBody = bodyLines.some((line) => /^\s*return\b/.test(line));
+  if (!hasReturnInBody) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingScoreCalculatorReturn"),
+    };
+  }
+
+  if (!isFunctionPrinted(input, primary.name)) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingScoreCalculatorPrint"),
+    };
+  }
+
+  if (countTopLevelFunctionCalls(input, primary.name) === 0) {
+    return {
+      valid: false,
+      message: pickHint(rules, "missingScoreCalculatorPrint"),
+    };
+  }
+
+  return { valid: true };
+}
+
 function validateMathFunctionAddAndPrintMode(
   input: string,
   rules: StepValidation,
@@ -3138,6 +4656,22 @@ function validateByMode(
       return validateListAppendAndPrintMode(input, rules);
     case "simpleListAndPrint":
       return validateSimpleListAndPrintMode(input, rules);
+    case "listMembershipCheck":
+      return validateListMembershipCheckMode(input, rules);
+    case "studentGradeAverage":
+      return validateStudentGradeAverageMode(input, rules);
+    case "categorySpendingTotal":
+      return validateCategorySpendingTotalMode(input, rules);
+    case "inputNormalizeStripLower":
+      return validateInputNormalizeStripLowerMode(input, rules);
+    case "wordCountInputSplitLen":
+      return validateWordCountInputSplitLenMode(input, rules);
+    case "longWordsFilterCount":
+      return validateLongWordsFilterCountMode(input, rules);
+    case "taskMarkCompleteByName":
+      return validateTaskMarkCompleteByNameMode(input, rules);
+    case "taskTrackerFullProject":
+      return validateTaskTrackerFullProjectMode(input, rules);
     case "habitDictList":
       return validateHabitDictListMode(input, rules);
     case "habitCompletionPercentage":
@@ -3160,6 +4694,8 @@ function validateByMode(
       return validateTwoGreetingFunctionsMode(input, rules);
     case "quizFunctionProject":
       return validateQuizFunctionProjectMode(input, rules);
+    case "scoreCalculatorFunction":
+      return validateScoreCalculatorFunctionMode(input, rules);
     default:
       return { valid: true };
   }
@@ -3456,6 +4992,56 @@ function applyModeDefaults(rules: StepValidation): void {
       rules.mustIncludeAssignment = false;
       rules.mustIncludeLoop = false;
       break;
+    case "listMembershipCheck":
+      rules.mustLookLikePython = true;
+      rules.mustIncludeAssignment = false;
+      rules.mustIncludePrint = true;
+      break;
+    case "studentGradeAverage":
+      rules.mustLookLikePython = true;
+      rules.mustIncludeAssignment = false;
+      rules.mustIncludePrint = true;
+      break;
+    case "categorySpendingTotal":
+      rules.mustLookLikePython = true;
+      rules.mustIncludeAssignment = false;
+      rules.mustIncludePrint = true;
+      rules.requiresFString = false;
+      break;
+    case "inputNormalizeStripLower":
+      rules.mustLookLikePython = true;
+      rules.mustIncludeAssignment = false;
+      rules.mustIncludePrint = true;
+      break;
+    case "wordCountInputSplitLen":
+      rules.mustLookLikePython = true;
+      rules.mustIncludeAssignment = false;
+      rules.mustIncludePrint = true;
+      break;
+    case "longWordsFilterCount":
+      rules.mustLookLikePython = true;
+      rules.mustIncludeAssignment = false;
+      rules.mustIncludePrint = true;
+      rules.mustIncludeLoop = false;
+      rules.mustIncludeIf = false;
+      break;
+    case "taskMarkCompleteByName":
+      rules.mustLookLikePython = true;
+      rules.mustIncludeAssignment = false;
+      rules.mustIncludePrint = true;
+      rules.mustIncludeLoop = false;
+      rules.mustIncludeIf = false;
+      rules.mustIncludeDef = false;
+      break;
+    case "taskTrackerFullProject":
+      rules.mustLookLikePython = true;
+      rules.mustIncludeAssignment = false;
+      rules.mustIncludePrint = false;
+      rules.mustIncludeLoop = false;
+      rules.mustIncludeIf = false;
+      rules.mustIncludeDef = false;
+      rules.requiresFString = false;
+      break;
     case "habitDictList":
       rules.mustLookLikePython = true;
       rules.mustIncludeAssignment = false;
@@ -3510,6 +5096,12 @@ function applyModeDefaults(rules: StepValidation): void {
       break;
     case "quizFunctionProject":
       rules.mustLookLikePython = true;
+      break;
+    case "scoreCalculatorFunction":
+      rules.mustLookLikePython = true;
+      rules.mustIncludeDef = true;
+      rules.mustIncludePrint = true;
+      rules.mustIncludeAssignment = false;
       break;
   }
 }
@@ -4749,6 +6341,636 @@ export const CODE_VALIDATION_FIXTURES: {
     name: "mathFunctionAddAndPrint — Print büyük harf ret",
     mode: "mathFunctionAddAndPrint",
     input: "def topla(a, b):\nreturn a + b\n\nPrint(topla(5, 7))",
+    expectValid: false,
+    expectMessage: /print küçük harfle/,
+  },
+  {
+    name: "scoreCalculatorFunction — kullanıcı cevabı kabul",
+    mode: "scoreCalculatorFunction",
+    input:
+      "def puan_hesapla(dogru, yanlis):\npuan = dogru * 10 - yanlis * 5\nif puan < 0:\n    puan = 0\nreturn puan\n\nprint(puan_hesapla(3, 8))",
+    expectValid: true,
+  },
+  {
+    name: "scoreCalculatorFunction — max(0, puan) kabul",
+    mode: "scoreCalculatorFunction",
+    input:
+      "def puan_hesapla(dogru, yanlis):\npuan = dogru * 10 - yanlis * 5\nreturn max(0, puan)\n\nprint(puan_hesapla(5, 2))",
+    expectValid: true,
+  },
+  {
+    name: "scoreCalculatorFunction — farklı fonksiyon adı kabul",
+    mode: "scoreCalculatorFunction",
+    input:
+      "def hesapla(dogru, yanlis):\nsonuc = dogru * 10 - yanlis * 5\nif sonuc < 0:\nreturn 0\nreturn sonuc\n\nprint(hesapla(3, 8))",
+    expectValid: true,
+  },
+  {
+    name: "scoreCalculatorFunction — negatif sabitleme yok ret",
+    mode: "scoreCalculatorFunction",
+    input:
+      "def puan_hesapla(dogru, yanlis):\nreturn dogru * 10 - yanlis * 5\n\nprint(puan_hesapla(3, 8))",
+    expectValid: false,
+    expectMessage: /Negatif puanı 0'a sabitlemek/,
+  },
+  {
+    name: "scoreCalculatorFunction — tek parametre ret",
+    mode: "scoreCalculatorFunction",
+    input: "def puan_hesapla(dogru):\nreturn dogru * 10\n\nprint(puan_hesapla(3))",
+    expectValid: false,
+    expectMessage: /iki değer almalı/,
+  },
+  {
+    name: "scoreCalculatorFunction — puan hesabı yok ret",
+    mode: "scoreCalculatorFunction",
+    input:
+      "def puan_hesapla(dogru, yanlis):\npuan = dogru + yanlis\nreturn puan\n\nprint(puan_hesapla(3, 8))",
+    expectValid: false,
+    expectMessage: /puan kazanıp yanlış sayısından puan düşmelisin/,
+  },
+  {
+    name: "scoreCalculatorFunction — return yok ret",
+    mode: "scoreCalculatorFunction",
+    input:
+      "def puan_hesapla(dogru, yanlis):\npuan = dogru * 10 - yanlis * 5\nif puan < 0:\npuan = 0\n\nprint(puan_hesapla(3, 8))",
+    expectValid: false,
+    expectMessage: /return ile döndürmelisin/,
+  },
+  {
+    name: "scoreCalculatorFunction — Print büyük harf ret",
+    mode: "scoreCalculatorFunction",
+    input:
+      "def puan_hesapla(dogru, yanlis):\npuan = dogru * 10 - yanlis * 5\nif puan < 0:\npuan = 0\nreturn puan\n\nPrint(puan_hesapla(3, 8))",
+    expectValid: false,
+    expectMessage: /print küçük harfle/,
+  },
+  {
+    name: "listMembershipCheck — kullanıcı cevabı kabul",
+    mode: "listMembershipCheck",
+    input:
+      'isimler = ["Ali", "Ayşe", "Mehmet"]\nprint("Ali" in isimler)',
+    expectValid: true,
+  },
+  {
+    name: "listMembershipCheck — tek tırnak kabul",
+    mode: "listMembershipCheck",
+    input: 'liste = ["Ali", "Ayşe", "Mehmet"]\nprint(\'Ali\' in liste)',
+    expectValid: true,
+  },
+  {
+    name: "listMembershipCheck — aranan değişken kabul",
+    mode: "listMembershipCheck",
+    input:
+      'isimler = ["Ali", "Ayşe", "Mehmet"]\naranan = "Ali"\nprint(aranan in isimler)',
+    expectValid: true,
+  },
+  {
+    name: "listMembershipCheck — in yok ret",
+    mode: "listMembershipCheck",
+    input: 'isimler = ["Ali", "Ayşe", "Mehmet"]\nprint(isimler)',
+    expectValid: false,
+    expectMessage: /in operatörünü/,
+  },
+  {
+    name: "listMembershipCheck — sadece string print ret",
+    mode: "listMembershipCheck",
+    input: 'isimler = ["Ali", "Ayşe", "Mehmet"]\nprint("Ali")',
+    expectValid: false,
+    expectMessage: /in operatörünü/,
+  },
+  {
+    name: "listMembershipCheck — string liste ret",
+    mode: "listMembershipCheck",
+    input: 'isimler = "Ali, Ayşe, Mehmet"\nprint("Ali" in isimler)',
+    expectValid: false,
+    expectMessage: /liste olarak yazmalısın/,
+  },
+  {
+    name: "listMembershipCheck — tırnaksız eleman ret",
+    mode: "listMembershipCheck",
+    input: "isimler = [Ali, Ayşe, Mehmet]\nprint(\"Ali\" in isimler)",
+    expectValid: false,
+    expectMessage: /tırnak içinde/,
+  },
+  {
+    name: "listMembershipCheck — Print büyük harf ret",
+    mode: "listMembershipCheck",
+    input: 'isimler = ["Ali", "Ayşe", "Mehmet"]\nPrint("Ali" in isimler)',
+    expectValid: false,
+    expectMessage: /print küçük harfle/,
+  },
+  {
+    name: "studentGradeAverage — kullanıcı cevabı kabul",
+    mode: "studentGradeAverage",
+    input:
+      'ogrenciler = [\n{"ad": "Ali", "not": 85},\n{"ad": "Ayşe", "not": 90}\n]\n\ntoplam = 0\n\nfor ogrenci in ogrenciler:\ntoplam += ogrenci["not"]\n\nortalama = toplam / len(ogrenciler)\n\nprint(ortalama)',
+    expectValid: true,
+  },
+  {
+    name: "studentGradeAverage — f-string etiket kabul",
+    mode: "studentGradeAverage",
+    input:
+      'ogrenciler = [\n{"ad": "Ali", "not": 80},\n{"ad": "Ayşe", "not": 90},\n{"ad": "Mehmet", "not": 70}\n]\n\ntoplam = 0\n\nfor ogrenci in ogrenciler:\ntoplam = toplam + ogrenci["not"]\n\nortalama = toplam / len(ogrenciler)\nprint("Ortalama:", ortalama)',
+    expectValid: true,
+  },
+  {
+    name: "studentGradeAverage — sum comprehension kabul",
+    mode: "studentGradeAverage",
+    input:
+      'ogrenciler = [\n{"ad": "Ali", "not": 80},\n{"ad": "Ayşe", "not": 90}\n]\n\nortalama = sum([ogrenci["not"] for ogrenci in ogrenciler]) / len(ogrenciler)\nprint(ortalama)',
+    expectValid: true,
+  },
+  {
+    name: "studentGradeAverage — tek öğrenci ret",
+    mode: "studentGradeAverage",
+    input:
+      'ogrenciler = [\n{"ad": "Ali", "not": 85}\n]\n\ntoplam = 0\nfor ogrenci in ogrenciler:\ntoplam += ogrenci["not"]\n\nortalama = toplam / len(ogrenciler)\nprint(ortalama)',
+    expectValid: false,
+    expectMessage: /en az 2 öğrenci/,
+  },
+  {
+    name: "studentGradeAverage — not alanı yok ret",
+    mode: "studentGradeAverage",
+    input:
+      'ogrenciler = [\n{"ad": "Ali"},\n{"ad": "Ayşe"}\n]\n\nprint(ogrenciler)',
+    expectValid: false,
+    expectMessage: /not alanı/,
+  },
+  {
+    name: "studentGradeAverage — ortalama yok ret",
+    mode: "studentGradeAverage",
+    input:
+      'ogrenciler = [\n{"ad": "Ali", "not": 85},\n{"ad": "Ayşe", "not": 90}\n]\n\nprint(ogrenciler)',
+    expectValid: false,
+    expectMessage: /ortalama|toplamalısın/,
+  },
+  {
+    name: "studentGradeAverage — sadece toplam print ret",
+    mode: "studentGradeAverage",
+    input:
+      'ogrenciler = [\n{"ad": "Ali", "not": 85},\n{"ad": "Ayşe", "not": 90}\n]\n\ntoplam = 0\n\nfor ogrenci in ogrenciler:\ntoplam += ogrenci["not"]\n\nprint(toplam)',
+    expectValid: false,
+    expectMessage: /ortalama|öğrenci sayısına böl/,
+  },
+  {
+    name: "studentGradeAverage — string not ret",
+    mode: "studentGradeAverage",
+    input:
+      'ogrenciler = [\n{"ad": "Ali", "not": "85"},\n{"ad": "Ayşe", "not": "90"}\n]\n\ntoplam = 0\n\nfor ogrenci in ogrenciler:\ntoplam += ogrenci["not"]\n\nortalama = toplam / len(ogrenciler)\nprint(ortalama)',
+    expectValid: false,
+    expectMessage: /sayı olarak/,
+  },
+  {
+    name: "studentGradeAverage — Print büyük harf ret",
+    mode: "studentGradeAverage",
+    input:
+      'ogrenciler = [\n{"ad": "Ali", "not": 85},\n{"ad": "Ayşe", "not": 90}\n]\n\ntoplam = 0\n\nfor ogrenci in ogrenciler:\ntoplam += ogrenci["not"]\n\nortalama = toplam / len(ogrenciler)\n\nPrint(ortalama)',
+    expectValid: false,
+    expectMessage: /print küçük harfle/,
+  },
+  {
+    name: "categorySpendingTotal — kullanıcı cevabı kabul",
+    mode: "categorySpendingTotal",
+    input:
+      'harcamalar = [\n{"kategori": "Yemek", "tutar": 50},\n{"kategori": "Ulaşım", "tutar": 30},\n{"kategori": "Yemek", "tutar": 80}\n]\n\ntoplam = 0\n\nfor harcama in harcamalar:\nif harcama["kategori"] == "Yemek":\ntoplam += harcama["tutar"]\n\nprint(toplam)',
+    expectValid: true,
+  },
+  {
+    name: "categorySpendingTotal — etiketli print kabul",
+    mode: "categorySpendingTotal",
+    input:
+      'harcamalar = [\n{"kategori": "Market", "tutar": 100},\n{"kategori": "Ulaşım", "tutar": 40},\n{"kategori": "Market", "tutar": 60}\n]\n\ntoplam = 0\n\nfor item in harcamalar:\nif item["kategori"] == "Market":\ntoplam = toplam + item["tutar"]\n\nprint("Toplam:", toplam)',
+    expectValid: true,
+  },
+  {
+    name: "categorySpendingTotal — sum comprehension kabul",
+    mode: "categorySpendingTotal",
+    input:
+      'harcamalar = [\n{"kategori": "Yemek", "tutar": 50},\n{"kategori": "Ulaşım", "tutar": 30},\n{"kategori": "Yemek", "tutar": 80}\n]\n\ntoplam = sum(harcama["tutar"] for harcama in harcamalar if harcama["kategori"] == "Yemek")\nprint(toplam)',
+    expectValid: true,
+  },
+  {
+    name: "categorySpendingTotal — toplam hesabı yok ret",
+    mode: "categorySpendingTotal",
+    input:
+      'harcamalar = [\n{"kategori": "Yemek", "tutar": 50},\n{"kategori": "Ulaşım", "tutar": 30}\n]\n\nprint(harcamalar)',
+    expectValid: false,
+    expectMessage: /for döngüsü|kategori için/,
+  },
+  {
+    name: "categorySpendingTotal — kategori filtresi yok ret",
+    mode: "categorySpendingTotal",
+    input:
+      'harcamalar = [\n{"kategori": "Yemek", "tutar": 50},\n{"kategori": "Ulaşım", "tutar": 30}\n]\n\ntoplam = 0\n\nfor harcama in harcamalar:\ntoplam += harcama["tutar"]\n\nprint(toplam)',
+    expectValid: false,
+    expectMessage: /belirli bir kategori|if koşulu/,
+  },
+  {
+    name: "categorySpendingTotal — tutar alanı yok ret",
+    mode: "categorySpendingTotal",
+    input:
+      'harcamalar = [\n{"kategori": "Yemek"},\n{"kategori": "Ulaşım"}\n]\n\ntoplam = 0\n\nfor harcama in harcamalar:\nif harcama["kategori"] == "Yemek":\ntoplam += harcama["tutar"]\n\nprint(toplam)',
+    expectValid: false,
+    expectMessage: /tutar alanı/,
+  },
+  {
+    name: "categorySpendingTotal — string tutar ret",
+    mode: "categorySpendingTotal",
+    input:
+      'harcamalar = [\n{"kategori": "Yemek", "tutar": "50"},\n{"kategori": "Yemek", "tutar": "80"}\n]\n\ntoplam = 0\n\nfor harcama in harcamalar:\nif harcama["kategori"] == "Yemek":\ntoplam += harcama["tutar"]\n\nprint(toplam)',
+    expectValid: false,
+    expectMessage: /sayı olarak/,
+  },
+  {
+    name: "categorySpendingTotal — Print büyük harf ret",
+    mode: "categorySpendingTotal",
+    input:
+      'harcamalar = [\n{"kategori": "Yemek", "tutar": 50},\n{"kategori": "Ulaşım", "tutar": 30}\n]\n\ntoplam = 0\n\nfor harcama in harcamalar:\nif harcama["kategori"] == "Yemek":\ntoplam += harcama["tutar"]\n\nPrint(toplam)',
+    expectValid: false,
+    expectMessage: /print küçük harfle/,
+  },
+  {
+    name: "inputNormalizeStripLower — kullanıcı cevabı kabul",
+    mode: "inputNormalizeStripLower",
+    input:
+      "girdi = input()\n\ntemiz_girdi = girdi.strip().lower()\n\nprint(temiz_girdi)",
+    expectValid: true,
+  },
+  {
+    name: "inputNormalizeStripLower — prompt ile kabul",
+    mode: "inputNormalizeStripLower",
+    input:
+      'metin = input("Bir şey yaz: ")\nsonuc = metin.strip().lower()\nprint(sonuc)',
+    expectValid: true,
+  },
+  {
+    name: "inputNormalizeStripLower — print içinde zincir kabul",
+    mode: "inputNormalizeStripLower",
+    input: "cevap = input()\nprint(cevap.strip().lower())",
+    expectValid: true,
+  },
+  {
+    name: "inputNormalizeStripLower — ayrı satırlarda kabul",
+    mode: "inputNormalizeStripLower",
+    input:
+      "girdi = input()\ngirdi = girdi.strip()\ngirdi = girdi.lower()\nprint(girdi)",
+    expectValid: true,
+  },
+  {
+    name: "inputNormalizeStripLower — strip ve lower yok ret",
+    mode: "inputNormalizeStripLower",
+    input: "girdi = input()\nprint(girdi)",
+    expectValid: false,
+    expectMessage: /strip\(\)/,
+  },
+  {
+    name: "inputNormalizeStripLower — lower yok ret",
+    mode: "inputNormalizeStripLower",
+    input: "girdi = input()\ntemiz = girdi.strip()\nprint(temiz)",
+    expectValid: false,
+    expectMessage: /lower\(\)/,
+  },
+  {
+    name: "inputNormalizeStripLower — strip yok ret",
+    mode: "inputNormalizeStripLower",
+    input: "girdi = input()\ntemiz = girdi.lower()\nprint(temiz)",
+    expectValid: false,
+    expectMessage: /strip\(\)/,
+  },
+  {
+    name: "inputNormalizeStripLower — Input büyük harf ret",
+    mode: "inputNormalizeStripLower",
+    input:
+      "girdi = Input()\ntemiz_girdi = girdi.strip().lower()\nprint(temiz_girdi)",
+    expectValid: false,
+    expectMessage: /input küçük harfle/,
+  },
+  {
+    name: "inputNormalizeStripLower — Strip büyük harf ret",
+    mode: "inputNormalizeStripLower",
+    input:
+      "girdi = input()\ntemiz_girdi = girdi.Strip().lower()\nprint(temiz_girdi)",
+    expectValid: false,
+    expectMessage: /strip küçük harfle/,
+  },
+  {
+    name: "inputNormalizeStripLower — Lower büyük harf ret",
+    mode: "inputNormalizeStripLower",
+    input:
+      "girdi = input()\ntemiz_girdi = girdi.strip().Lower()\nprint(temiz_girdi)",
+    expectValid: false,
+    expectMessage: /lower küçük harfle/,
+  },
+  {
+    name: "inputNormalizeStripLower — Print büyük harf ret",
+    mode: "inputNormalizeStripLower",
+    input:
+      "girdi = input()\ntemiz_girdi = girdi.strip().lower()\nPrint(temiz_girdi)",
+    expectValid: false,
+    expectMessage: /print küçük harfle/,
+  },
+  {
+    name: "wordCountInputSplitLen — kullanıcı cevabı kabul",
+    mode: "wordCountInputSplitLen",
+    input:
+      "cumle = input()\n\nkelimeler = cumle.split()\n\nprint(len(kelimeler))",
+    expectValid: true,
+  },
+  {
+    name: "wordCountInputSplitLen — prompt ile kabul",
+    mode: "wordCountInputSplitLen",
+    input:
+      'metin = input("Cümle yaz: ")\nkelimeler = metin.split()\nprint(len(kelimeler))',
+    expectValid: true,
+  },
+  {
+    name: "wordCountInputSplitLen — print içinde zincir kabul",
+    mode: "wordCountInputSplitLen",
+    input: "cumle = input()\nprint(len(cumle.split()))",
+    expectValid: true,
+  },
+  {
+    name: "wordCountInputSplitLen — kelime sayısı yok ret",
+    mode: "wordCountInputSplitLen",
+    input: "cumle = input()\nprint(cumle)",
+    expectValid: false,
+    expectMessage: /split\(\)/,
+  },
+  {
+    name: "wordCountInputSplitLen — liste yazdırma ret",
+    mode: "wordCountInputSplitLen",
+    input: "cumle = input()\nkelimeler = cumle.split()\nprint(kelimeler)",
+    expectValid: false,
+    expectMessage: /split\(\) sonucunu len/,
+  },
+  {
+    name: "wordCountInputSplitLen — karakter sayısı ret",
+    mode: "wordCountInputSplitLen",
+    input: "cumle = input()\nprint(len(cumle))",
+    expectValid: false,
+    expectMessage: /split\(\) sonucunu len/,
+  },
+  {
+    name: "wordCountInputSplitLen — Split büyük harf ret",
+    mode: "wordCountInputSplitLen",
+    input:
+      "cumle = input()\nkelimeler = cumle.Split()\nprint(len(kelimeler))",
+    expectValid: false,
+    expectMessage: /split küçük harfle/,
+  },
+  {
+    name: "wordCountInputSplitLen — Len büyük harf ret",
+    mode: "wordCountInputSplitLen",
+    input:
+      "cumle = input()\nkelimeler = cumle.split()\nprint(Len(kelimeler))",
+    expectValid: false,
+    expectMessage: /len küçük harfle/,
+  },
+  {
+    name: "wordCountInputSplitLen — Print büyük harf ret",
+    mode: "wordCountInputSplitLen",
+    input:
+      "cumle = input()\nkelimeler = cumle.split()\nPrint(len(kelimeler))",
+    expectValid: false,
+    expectMessage: /print küçük harfle/,
+  },
+  {
+    name: "longWordsFilterCount — kullanıcı cevabı kabul",
+    mode: "longWordsFilterCount",
+    input:
+      "cumle = input()\n\nkelimeler = cumle.split()\nuzun_kelimeler = []\n\nfor kelime in kelimeler:\nif len(kelime) > 5:\nuzun_kelimeler.append(kelime)\n\nprint(len(uzun_kelimeler))\nprint(uzun_kelimeler)",
+    expectValid: true,
+  },
+  {
+    name: "longWordsFilterCount — prompt ile kabul",
+    mode: "longWordsFilterCount",
+    input:
+      'metin = input("Cümle yaz: ")\nkelimeler = metin.split()\nuzunlar = []\n\nfor kelime in kelimeler:\nif len(kelime) > 5:\nuzunlar.append(kelime)\n\nprint("Uzun kelime sayısı:", len(uzunlar))\nprint(uzunlar)',
+    expectValid: true,
+  },
+  {
+    name: "longWordsFilterCount — list comprehension kabul",
+    mode: "longWordsFilterCount",
+    input:
+      "cumle = input()\nkelimeler = cumle.split()\nuzun_kelimeler = [kelime for kelime in kelimeler if len(kelime) > 5]\nprint(len(uzun_kelimeler))\nprint(uzun_kelimeler)",
+    expectValid: true,
+  },
+  {
+    name: "longWordsFilterCount — tüm kelime sayısı ret",
+    mode: "longWordsFilterCount",
+    input: "cumle = input()\nkelimeler = cumle.split()\nprint(len(kelimeler))",
+    expectValid: false,
+    expectMessage: /for döngüsü/,
+  },
+  {
+    name: "longWordsFilterCount — if kontrolü yok ret",
+    mode: "longWordsFilterCount",
+    input:
+      "cumle = input()\nkelimeler = cumle.split()\nuzun_kelimeler = []\n\nfor kelime in kelimeler:\nuzun_kelimeler.append(kelime)\n\nprint(len(uzun_kelimeler))\nprint(uzun_kelimeler)",
+    expectValid: false,
+    expectMessage: /5 harften uzun/,
+  },
+  {
+    name: "longWordsFilterCount — sayı yazdırılmıyor ret",
+    mode: "longWordsFilterCount",
+    input:
+      "cumle = input()\nkelimeler = cumle.split()\nuzun_kelimeler = []\n\nfor kelime in kelimeler:\nif len(kelime) > 5:\nprint(kelime)",
+    expectValid: false,
+    expectMessage: /Uzun kelime sayısını/,
+  },
+  {
+    name: "longWordsFilterCount — liste yazdırılmıyor ret",
+    mode: "longWordsFilterCount",
+    input:
+      "cumle = input()\nkelimeler = cumle.split()\nuzun_kelimeler = []\n\nfor kelime in kelimeler:\nif len(kelime) > 5:\nuzun_kelimeler.append(kelime)\n\nprint(uzun_kelimeler)",
+    expectValid: false,
+    expectMessage: /Uzun kelime sayısını/,
+  },
+  {
+    name: "longWordsFilterCount — Append büyük harf ret",
+    mode: "longWordsFilterCount",
+    input:
+      "cumle = input()\nkelimeler = cumle.split()\nuzun_kelimeler = []\n\nfor kelime in kelimeler:\nif len(kelime) > 5:\nuzun_kelimeler.Append(kelime)\n\nprint(len(uzun_kelimeler))\nprint(uzun_kelimeler)",
+    expectValid: false,
+    expectMessage: /append küçük harfle/,
+  },
+  {
+    name: "longWordsFilterCount — Split büyük harf ret",
+    mode: "longWordsFilterCount",
+    input:
+      "cumle = input()\nkelimeler = cumle.Split()\nuzun_kelimeler = []\n\nfor kelime in kelimeler:\nif len(kelime) > 5:\nuzun_kelimeler.append(kelime)\n\nprint(len(uzun_kelimeler))\nprint(uzun_kelimeler)",
+    expectValid: false,
+    expectMessage: /split küçük harfle/,
+  },
+  {
+    name: "longWordsFilterCount — Len büyük harf ret",
+    mode: "longWordsFilterCount",
+    input:
+      "cumle = input()\nkelimeler = cumle.split()\nuzun_kelimeler = []\n\nfor kelime in kelimeler:\nif Len(kelime) > 5:\nuzun_kelimeler.append(kelime)\n\nprint(len(uzun_kelimeler))\nprint(uzun_kelimeler)",
+    expectValid: false,
+    expectMessage: /len küçük harfle/,
+  },
+  {
+    name: "longWordsFilterCount — Print büyük harf ret",
+    mode: "longWordsFilterCount",
+    input:
+      "cumle = input()\nkelimeler = cumle.split()\nuzun_kelimeler = []\n\nfor kelime in kelimeler:\nif len(kelime) > 5:\nuzun_kelimeler.append(kelime)\n\nPrint(len(uzun_kelimeler))\nprint(uzun_kelimeler)",
+    expectValid: false,
+    expectMessage: /print küçük harfle/,
+  },
+  {
+    name: "taskMarkCompleteByName — kullanıcı cevabı kabul",
+    mode: "taskMarkCompleteByName",
+    input:
+      'gorevler = [\n{"ad": "Kitap oku", "tamam": False},\n{"ad": "Spor yap", "tamam": False}\n]\n\naranan = "Kitap oku"\n\nfor gorev in gorevler:\nif gorev["ad"] == aranan:\ngorev["tamam"] = True\n\nprint(gorevler)',
+    expectValid: true,
+  },
+  {
+    name: "taskMarkCompleteByName — doğrudan string karşılaştırma kabul",
+    mode: "taskMarkCompleteByName",
+    input:
+      'gorevler = [\n{"ad": "Ders çalış", "tamam": False},\n{"ad": "Spor yap", "tamam": False}\n]\n\nfor gorev in gorevler:\nif gorev["ad"] == "Spor yap":\ngorev["tamam"] = True\n\nprint(gorevler)',
+    expectValid: true,
+  },
+  {
+    name: "taskMarkCompleteByName — güncelleme yok ret",
+    mode: "taskMarkCompleteByName",
+    input:
+      'gorevler = [\n{"ad": "Kitap oku", "tamam": False},\n{"ad": "Spor yap", "tamam": False}\n]\n\nprint(gorevler)',
+    expectValid: false,
+    expectMessage: /for döngüsü/,
+  },
+  {
+    name: "taskMarkCompleteByName — ad filtresi yok ret",
+    mode: "taskMarkCompleteByName",
+    input:
+      'gorevler = [\n{"ad": "Kitap oku", "tamam": False},\n{"ad": "Spor yap", "tamam": False}\n]\n\nfor gorev in gorevler:\ngorev["tamam"] = True\n\nprint(gorevler)',
+    expectValid: false,
+    expectMessage: /if koşulu/,
+  },
+  {
+    name: "taskMarkCompleteByName — string boolean ret",
+    mode: "taskMarkCompleteByName",
+    input:
+      'gorevler = [\n{"ad": "Kitap oku", "tamam": "False"},\n{"ad": "Spor yap", "tamam": "False"}\n]\n\naranan = "Kitap oku"\n\nfor gorev in gorevler:\nif gorev["ad"] == aranan:\ngorev["tamam"] = "True"\n\nprint(gorevler)',
+    expectValid: false,
+    expectMessage: /boolean olmalı/,
+  },
+  {
+    name: "taskMarkCompleteByName — küçük harf boolean ret",
+    mode: "taskMarkCompleteByName",
+    input:
+      'gorevler = [\n{"ad": "Kitap oku", "tamam": false},\n{"ad": "Spor yap", "tamam": false}\n]\n\naranan = "Kitap oku"\n\nfor gorev in gorevler:\nif gorev["ad"] == aranan:\ngorev["tamam"] = true\n\nprint(gorevler)',
+    expectValid: false,
+    expectMessage: /büyük harfle yazılır/,
+  },
+  {
+    name: "taskMarkCompleteByName — print yok ret",
+    mode: "taskMarkCompleteByName",
+    input:
+      'gorevler = [\n{"ad": "Kitap oku", "tamam": False},\n{"ad": "Spor yap", "tamam": False}\n]\n\naranan = "Kitap oku"\n\nfor gorev in gorevler:\nif gorev["ad"] == aranan:\ngorev["tamam"] = True',
+    expectValid: false,
+    expectMessage: /print/,
+  },
+  {
+    name: "taskMarkCompleteByName — For büyük harf ret",
+    mode: "taskMarkCompleteByName",
+    input:
+      'gorevler = [\n{"ad": "Kitap oku", "tamam": False},\n{"ad": "Spor yap", "tamam": False}\n]\n\naranan = "Kitap oku"\n\nFor gorev in gorevler:\nif gorev["ad"] == aranan:\ngorev["tamam"] = True\n\nprint(gorevler)',
+    expectValid: false,
+    expectMessage: /for küçük harfle/,
+  },
+  {
+    name: "taskMarkCompleteByName — If büyük harf ret",
+    mode: "taskMarkCompleteByName",
+    input:
+      'gorevler = [\n{"ad": "Kitap oku", "tamam": False},\n{"ad": "Spor yap", "tamam": False}\n]\n\naranan = "Kitap oku"\n\nfor gorev in gorevler:\nIf gorev["ad"] == aranan:\ngorev["tamam"] = True\n\nprint(gorevler)',
+    expectValid: false,
+    expectMessage: /if küçük harfle/,
+  },
+  {
+    name: "taskMarkCompleteByName — Print büyük harf ret",
+    mode: "taskMarkCompleteByName",
+    input:
+      'gorevler = [\n{"ad": "Kitap oku", "tamam": False},\n{"ad": "Spor yap", "tamam": False}\n]\n\naranan = "Kitap oku"\n\nfor gorev in gorevler:\nif gorev["ad"] == aranan:\ngorev["tamam"] = True\n\nPrint(gorevler)',
+    expectValid: false,
+    expectMessage: /print küçük harfle/,
+  },
+  {
+    name: "taskTrackerFullProject — kullanıcı cevabı kabul",
+    mode: "taskTrackerFullProject",
+    input:
+      'def ekle(gorevler, ad):\ngorev = {\n"ad": ad,\n"tamam": False\n}\ngorevler.append(gorev)\n\ndef listele(gorevler):\nfor gorev in gorevler:\nprint(gorev)\n\ndef tamamla(gorevler, ad):\nfor gorev in gorevler:\nif gorev["ad"] == ad:\ngorev["tamam"] = True\n\ndef ozet(gorevler):\ntoplam = len(gorevler)\ntamamlanan = 0\n\nfor gorev in gorevler:\nif gorev["tamam"]:\ntamamlanan += 1\n\nprint(f"Toplam görev: {toplam}")\nprint(f"Tamamlanan görev: {tamamlanan}")\n\ngorevler = []\n\nekle(gorevler, "Kitap oku")\nekle(gorevler, "Spor yap")\n\ntamamla(gorevler, "Kitap oku")\n\nlistele(gorevler)\nozet(gorevler)',
+    expectValid: true,
+  },
+  {
+    name: "taskTrackerFullProject — inline dict kabul",
+    mode: "taskTrackerFullProject",
+    input:
+      'def ekle(liste, ad):\nliste.append({"ad": ad, "tamam": False})\n\ndef listele(liste):\nfor gorev in liste:\nprint(gorev)\n\ndef tamamla(liste, ad):\nfor gorev in liste:\nif gorev["ad"] == ad:\ngorev["tamam"] = True\n\ndef ozet(liste):\ntoplam = len(liste)\ntamamlanan = 0\nfor gorev in liste:\nif gorev["tamam"]:\ntamamlanan += 1\nprint(f"Toplam: {toplam}")\nprint(f"Tamamlanan: {tamamlanan}")\n\ngorevler = []\nekle(gorevler, "Ders çalış")\ntamamla(gorevler, "Ders çalış")\nlistele(gorevler)\nozet(gorevler)',
+    expectValid: true,
+  },
+  {
+    name: "taskTrackerFullProject — fonksiyonlar eksik ret",
+    mode: "taskTrackerFullProject",
+    input:
+      'def ekle(gorevler, ad):\ngorevler.append({"ad": ad, "tamam": False})\n\ngorevler = []\nekle(gorevler, "Kitap oku")',
+    expectValid: false,
+    expectMessage: /listele/,
+  },
+  {
+    name: "taskTrackerFullProject — tamam alanı yok ret",
+    mode: "taskTrackerFullProject",
+    input:
+      'def ekle(gorevler, ad):\ngorevler.append({"ad": ad})\n\ndef listele(gorevler):\nfor gorev in gorevler:\nprint(gorev)\n\ndef tamamla(gorevler, ad):\nfor gorev in gorevler:\nif gorev["ad"] == ad:\ngorev["tamam"] = True\n\ndef ozet(gorevler):\nprint(len(gorevler))\n\ngorevler = []\nekle(gorevler, "Kitap oku")\nlistele(gorevler)\nozet(gorevler)',
+    expectValid: false,
+    expectMessage: /ad ve tamam/,
+  },
+  {
+    name: "taskTrackerFullProject — string boolean ret",
+    mode: "taskTrackerFullProject",
+    input:
+      'def ekle(gorevler, ad):\ngorevler.append({"ad": ad, "tamam": "False"})\n\ndef listele(gorevler):\nfor gorev in gorevler:\nprint(gorev)\n\ndef tamamla(gorevler, ad):\nfor gorev in gorevler:\nif gorev["ad"] == ad:\ngorev["tamam"] = "True"\n\ndef ozet(gorevler):\nprint(len(gorevler))\n\ngorevler = []\nekle(gorevler, "Kitap oku")\ntamamla(gorevler, "Kitap oku")\nlistele(gorevler)\nozet(gorevler)',
+    expectValid: false,
+    expectMessage: /boolean olmalı/,
+  },
+  {
+    name: "taskTrackerFullProject — tamamla if yok ret",
+    mode: "taskTrackerFullProject",
+    input:
+      'def ekle(gorevler, ad):\ngorevler.append({"ad": ad, "tamam": False})\n\ndef listele(gorevler):\nfor gorev in gorevler:\nprint(gorev)\n\ndef tamamla(gorevler, ad):\nfor gorev in gorevler:\ngorev["tamam"] = True\n\ndef ozet(gorevler):\nprint(len(gorevler))\n\ngorevler = []\nekle(gorevler, "Kitap oku")\ntamamla(gorevler, "Kitap oku")\nlistele(gorevler)\nozet(gorevler)',
+    expectValid: false,
+    expectMessage: /if kullanmalısın/,
+  },
+  {
+    name: "taskTrackerFullProject — ozet tamamlanan sayısı yok ret",
+    mode: "taskTrackerFullProject",
+    input:
+      'def ekle(gorevler, ad):\ngorevler.append({"ad": ad, "tamam": False})\n\ndef listele(gorevler):\nfor gorev in gorevler:\nprint(gorev)\n\ndef tamamla(gorevler, ad):\nfor gorev in gorevler:\nif gorev["ad"] == ad:\ngorev["tamam"] = True\n\ndef ozet(gorevler):\ntoplam = len(gorevler)\nprint(toplam)\n\ngorevler = []\nekle(gorevler, "Kitap oku")\ntamamla(gorevler, "Kitap oku")\nlistele(gorevler)\nozet(gorevler)',
+    expectValid: false,
+    expectMessage: /tamamlanan görev sayısını/,
+  },
+  {
+    name: "taskTrackerFullProject — Append büyük harf ret",
+    mode: "taskTrackerFullProject",
+    input:
+      'def ekle(gorevler, ad):\ngorev = {"ad": ad, "tamam": False}\ngorevler.Append(gorev)',
+    expectValid: false,
+    expectMessage: /append küçük harfle/,
+  },
+  {
+    name: "taskTrackerFullProject — For büyük harf ret",
+    mode: "taskTrackerFullProject",
+    input:
+      'def listele(gorevler):\nFor gorev in gorevler:\nprint(gorev)',
+    expectValid: false,
+    expectMessage: /for küçük harfle/,
+  },
+  {
+    name: "taskTrackerFullProject — Print büyük harf ret",
+    mode: "taskTrackerFullProject",
+    input:
+      'def listele(gorevler):\nfor gorev in gorevler:\nPrint(gorev)',
     expectValid: false,
     expectMessage: /print küçük harfle/,
   },

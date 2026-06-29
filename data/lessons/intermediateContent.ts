@@ -228,9 +228,7 @@ export const intermediateLessons: Record<string, LessonContent> = {
         exampleSolution:
           "def puan(d, y):\n    p = d * 10 - y * 2\n    return max(0, p)\nprint(puan(5, 1))",
         validation: {
-          validationMode: "miniProject",
-          mustIncludeDef: true,
-          requiredPatterns: ["return", "max\\s*\\("],
+          validationMode: "scoreCalculatorFunction",
           minLength: 35,
         },
       }),
@@ -306,9 +304,7 @@ export const intermediateLessons: Record<string, LessonContent> = {
         checklist: ["in operatörü", "print bool"],
         exampleSolution: 'isimler = ["Ali", "Can"]\nprint("Ali" in isimler)',
         validation: {
-          validationMode: "miniProject",
-          mustIncludePrint: true,
-          requiredPatterns: ["\\bin\\b"],
+          validationMode: "listMembershipCheck",
           minLength: 20,
         },
       }),
@@ -382,10 +378,7 @@ export const intermediateLessons: Record<string, LessonContent> = {
         exampleSolution:
           'o=[{"ad":"A","not":70},{"ad":"B","not":80},{"ad":"C","not":90}]\nt=sum(x["not"] for x in o)\nprint(f"Ortalama: {t/len(o)}")',
         validation: {
-          validationMode: "miniProject",
-          mustIncludeLoop: true,
-          requiresFString: true,
-          mustIncludePrint: true,
+          validationMode: "studentGradeAverage",
           minLength: 35,
         },
       }),
@@ -507,11 +500,7 @@ export const intermediateLessons: Record<string, LessonContent> = {
         exampleSolution:
           'h=[{"kat":"Ulasim","tutar":40},{"kat":"Yemek","tutar":60},{"kat":"Yemek","tutar":25}]\nt=0\nfor x in h:\n    if x["kat"]=="Yemek": t+=x["tutar"]\nprint(f"Yemek: {t} TL")',
         validation: {
-          validationMode: "miniProject",
-          mustIncludeLoop: true,
-          mustIncludeIf: true,
-          requiresFString: true,
-          mustIncludePrint: true,
+          validationMode: "categorySpendingTotal",
           minLength: 40,
         },
       }),
@@ -571,9 +560,7 @@ export const intermediateLessons: Record<string, LessonContent> = {
         checklist: ["strip", "lower", "print sonuç"],
         exampleSolution: 'g = "  EVET  "\nprint(g.strip().lower())',
         validation: {
-          validationMode: "miniProject",
-          mustIncludePrint: true,
-          requiredPatterns: ["strip", "lower"],
+          validationMode: "inputNormalizeStripLower",
           minLength: 20,
         },
       }),
@@ -604,9 +591,7 @@ export const intermediateLessons: Record<string, LessonContent> = {
         checklist: ["split", "len", "print"],
         exampleSolution: 't = "bir iki uc"\nprint(len(t.split()))',
         validation: {
-          validationMode: "miniProject",
-          mustIncludePrint: true,
-          requiredPatterns: ["split", "len\\s*\\("],
+          validationMode: "wordCountInputSplitLen",
           minLength: 20,
         },
       }),
@@ -615,10 +600,7 @@ export const intermediateLessons: Record<string, LessonContent> = {
         exampleSolution:
           't = "kod python listeler"\nc=0\nfor w in t.split():\n    if len(w)>5: c+=1; print(w)\nprint(f"Adet: {c}")',
         validation: {
-          validationMode: "miniProject",
-          mustIncludeLoop: true,
-          mustIncludeIf: true,
-          mustIncludePrint: true,
+          validationMode: "longWordsFilterCount",
           minLength: 35,
         },
       }),
@@ -805,11 +787,7 @@ export const intermediateLessons: Record<string, LessonContent> = {
         exampleSolution:
           'def tamamla(g, ad):\n    for x in g:\n        if x["ad"]==ad:\n            x["tamam"]=True\ng=[{"ad":"X","tamam":False}]\ntamamla(g,"X")\nprint(g)',
         validation: {
-          validationMode: "miniProject",
-          mustIncludeDef: true,
-          mustIncludeLoop: true,
-          mustIncludeIf: true,
-          mustIncludePrint: true,
+          validationMode: "taskMarkCompleteByName",
           minLength: 35,
         },
       }),
@@ -819,10 +797,7 @@ export const intermediateLessons: Record<string, LessonContent> = {
           'def ozet(g):\n    t=len(g)\n    c=sum(1 for x in g if x["tamam"])\n    print(f"{c}/{t} bitti")\ng=[]\ng.append({"ad":"Kod","tamam":True})\ng.append({"ad":"Spor","tamam":False})\nozet(g)',
         migo: "Orta yolu tamamladın — mükemmel ilerleme!",
         validation: {
-          validationMode: "miniProject",
-          mustIncludeDef: true,
-          mustIncludePrint: true,
-          requiresFString: true,
+          validationMode: "taskTrackerFullProject",
           minLength: 45,
         },
       }),
