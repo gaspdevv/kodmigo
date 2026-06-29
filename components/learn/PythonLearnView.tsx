@@ -7,29 +7,26 @@ import { getDashboardTheme } from "@/components/dashboard/getDashboardTheme";
 import LearningPathHeader from "@/components/learn/LearningPathHeader";
 import MigoPathTip from "@/components/learn/MigoPathTip";
 import UnitSection from "@/components/learn/UnitSection";
-import { getPythonPathMeta, getPythonPathUnits, type Unit } from "@/data/pythonPath";
+import {
+  getChainedPathSections,
+  getPythonChainDisplayMeta,
+  type ChainedPathSection,
+} from "@/data/pythonPath";
 import { getActivePathLevel } from "@/lib/onboarding-data";
 import { useRequireAuth } from "@/lib/auth/useRequireAuth";
-import {
-  applyPythonLessonStatuses,
-  getLearningProgress,
-} from "@/lib/progress";
+import { getLearningProgress } from "@/lib/progress";
 
 export default function PythonLearnView() {
   const theme = getDashboardTheme();
   const { loading: authLoading, isAuthenticated } = useRequireAuth();
   const searchParams = useSearchParams();
-  const pathLevel = getActivePathLevel();
-  const pathMeta = useMemo(
-    () => getPythonPathMeta(pathLevel),
-    [pathLevel],
-  );
-  const baseUnits = useMemo(
-    () => getPythonPathUnits(pathLevel),
-    [pathLevel],
+  const startLevel = getActivePathLevel();
+  const pathDisplay = useMemo(
+    () => getPythonChainDisplayMeta(startLevel),
+    [startLevel],
   );
 
-  const [units, setUnits] = useState<Unit[]>(baseUnits);
+  const [sections, setSections] = useState<ChainedPathSection[]>([]);
   const [focusedLessonSlug, setFocusedLessonSlug] = useState<string | null>(
     null,
   );
@@ -37,11 +34,11 @@ export default function PythonLearnView() {
 
   useEffect(() => {
     const saved = getLearningProgress().python;
-    setUnits(
-      applyPythonLessonStatuses(baseUnits, saved.completedLessonIds),
+    setSections(
+      getChainedPathSections(startLevel, saved.completedLessonIds),
     );
     setIsReady(true);
-  }, [pathLevel, baseUnits]);
+  }, [startLevel]);
 
   const focusParam = searchParams.get("focus");
 
@@ -70,7 +67,7 @@ export default function PythonLearnView() {
     };
   }, [isReady, focusParam]);
 
-  const visibleUnits = useMemo(() => units, [units]);
+  let unitIndex = 0;
 
   if (authLoading || !isAuthenticated || !isReady) {
     return (
@@ -89,15 +86,36 @@ export default function PythonLearnView() {
   return (
     <main className={`min-h-screen overflow-x-hidden pb-24 ${theme.pageBackground}`}>
       <div className="mx-auto max-w-lg px-4 pb-6 pt-6 sm:px-6">
-        <LearningPathHeader pathMeta={pathMeta} />
-        <MigoPathTip migoTip={pathMeta.migoTip} />
-        {visibleUnits.map((unit, index) => (
-          <UnitSection
-            key={unit.id}
-            unit={unit}
-            index={index}
-            focusedLessonSlug={focusedLessonSlug}
-          />
+        <LearningPathHeader pathDisplay={pathDisplay} />
+        <MigoPathTip migoTip={pathDisplay.migoTip} />
+        {sections.map((section) => (
+          <div key={section.level} className="mb-8">
+            <div className="mb-4">
+              <span
+                className={`mb-2 inline-block rounded-full px-3 py-1 text-xs font-semibold ${theme.softBadge}`}
+              >
+                {section.meta.levelLabel}
+              </span>
+              <h2 className={`text-lg font-bold ${theme.primaryText}`}>
+                {section.meta.title}
+              </h2>
+              <p className={`mt-1 text-sm ${theme.mutedText}`}>
+                {section.meta.description}
+              </p>
+            </div>
+            {section.units.map((unit) => {
+              const index = unitIndex;
+              unitIndex += 1;
+              return (
+                <UnitSection
+                  key={unit.id}
+                  unit={unit}
+                  index={index}
+                  focusedLessonSlug={focusedLessonSlug}
+                />
+              );
+            })}
+          </div>
         ))}
       </div>
       <BottomNav activeTab="Yol" />

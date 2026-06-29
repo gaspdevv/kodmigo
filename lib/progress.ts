@@ -284,29 +284,7 @@ export function applyLessonCompletion(
   };
 }
 
-export function applyPythonLessonStatuses(
-  units: Unit[],
-  completedLessonIds: string[],
-): Unit[] {
-  const completedSet = new Set(completedLessonIds.map(normalizeLessonId));
-  let foundCurrent = false;
-
-  return units.map((unit) => ({
-    ...unit,
-    lessons: unit.lessons.map((lesson) => {
-      if (completedSet.has(lesson.slug)) {
-        return { ...lesson, status: "completed" as const };
-      }
-
-      if (!foundCurrent) {
-        foundCurrent = true;
-        return { ...lesson, status: "current" as const };
-      }
-
-      return { ...lesson, status: "locked" as const };
-    }),
-  }));
-}
+export { applyPythonLessonStatuses } from "@/data/pythonPath";
 
 // Re-export for consumers that need total lessons with active level
 export { getPythonTotalLessons } from "@/data/pythonPath";

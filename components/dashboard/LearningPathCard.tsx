@@ -3,27 +3,28 @@
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { getDashboardTheme } from "@/components/dashboard/getDashboardTheme";
-import { getPythonPathMeta } from "@/data/pythonPath";
-import { getActivePathLevel } from "@/lib/onboarding-data";
 import {
-  getDefaultLearningProgress,
-  getLearningProgress,
-  type PythonLearningProgress,
-} from "@/lib/progress";
+  getActivePythonLevelProgress,
+  type ActivePythonLevelProgress,
+} from "@/data/pythonPath";
+import { getActivePathLevel } from "@/lib/onboarding-data";
+import { getEffectiveCompletedLessonIds } from "@/lib/progress";
 import { useAppStateRefresh } from "@/lib/useAppStateRefresh";
+
+const CARD_TITLE = "Python Öğrenme Yolu";
 
 export default function LearningPathCard() {
   const theme = getDashboardTheme();
-  const pathMeta = getPythonPathMeta(getActivePathLevel());
-  const defaultProgress = getDefaultLearningProgress().python;
-
-  const [learningProgress, setLearningProgress] =
-    useState<PythonLearningProgress>(defaultProgress);
+  const [activeProgress, setActiveProgress] =
+    useState<ActivePythonLevelProgress | null>(null);
   const [isReady, setIsReady] = useState(false);
 
   const refreshProgress = useCallback(() => {
-    const saved = getLearningProgress().python;
-    setLearningProgress(saved);
+    const startLevel = getActivePathLevel();
+    const completedLessonIds = getEffectiveCompletedLessonIds();
+    setActiveProgress(
+      getActivePythonLevelProgress(completedLessonIds, startLevel),
+    );
     setIsReady(true);
   }, []);
 
@@ -33,11 +34,7 @@ export default function LearningPathCard() {
 
   useAppStateRefresh(refreshProgress);
 
-  const displayCount = learningProgress.completedCount;
-  const displayPercent = learningProgress.progressPercent;
-  const roundedPercent = Math.round(displayPercent);
-
-  if (!isReady) {
+  if (!isReady || !activeProgress) {
     return (
       <div className="mb-4 block" aria-hidden>
         <section
@@ -51,16 +48,18 @@ export default function LearningPathCard() {
     );
   }
 
+  const roundedPercent = Math.round(activeProgress.percent);
+
   return (
     <Link href="/learn/python" className="mb-4 block">
       <section
         className={`rounded-3xl border p-5 transition hover:border-kodmigo-orange/40 ${theme.cardBackground} ${theme.cardBorder} ${theme.cardShadow}`}
       >
         <h2 className={`mb-2 text-lg font-bold ${theme.primaryText}`}>
-          {pathMeta.title}
+          {CARD_TITLE}
         </h2>
         <p className={`mb-4 text-sm ${theme.mutedText}`}>
-          {pathMeta.description}
+          {activeProgress.subtitle}
         </p>
 
         <div
@@ -68,7 +67,7 @@ export default function LearningPathCard() {
         >
           <div
             className={`h-full rounded-full ${theme.progressBar}`}
-            style={{ width: `${displayPercent}%` }}
+            style={{ width: `${activeProgress.percent}%` }}
           />
         </div>
 
@@ -77,7 +76,7 @@ export default function LearningPathCard() {
         >
           <span className="shrink-0">%{roundedPercent} tamamlandı</span>
           <span className="min-w-0 text-right break-words">
-            {displayCount} / {learningProgress.totalLessons} ders tamamlandı
+            {activeProgress.countLabel}
           </span>
         </div>
       </section>

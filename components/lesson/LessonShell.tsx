@@ -19,8 +19,10 @@ import {
   isTaskStepType,
   isValidatedTaskStepType,
 } from "@/data/lessons";
-import { getLessonXpReward } from "@/data/pythonPath";
+import { getLessonXpReward, isLessonInChain } from "@/data/pythonPath";
 import { resolveLessonXpReward } from "@/lib/xp-rewards";
+import { getActivePathLevel } from "@/lib/onboarding-data";
+import { isLessonCompleted } from "@/lib/progress";
 import {
   answersMatch,
   getStableQuizOptions,
@@ -186,6 +188,18 @@ export default function LessonShell({ lesson, theme }: LessonShellProps) {
     if (!isCodeOrderInteractive || !step.orderLines?.length) return;
     setOrderedLines(getInitialCodeOrderLines(lesson.id, step.id, step.orderLines));
   }, [stepIndex, isCodeOrderInteractive, lesson.id, step.id, step.orderLines]);
+
+  useEffect(() => {
+    if (authLoading || !isAuthenticated) return;
+
+    const startLevel = getActivePathLevel();
+    const inChain = isLessonInChain(lesson.id, startLevel);
+    const completed = isLessonCompleted("python", lesson.id);
+
+    if (!inChain && !completed) {
+      router.replace("/learn/python");
+    }
+  }, [authLoading, isAuthenticated, lesson.id, router]);
 
   const resetAnswerState = useCallback(() => {
     setSelectedAnswer(null);

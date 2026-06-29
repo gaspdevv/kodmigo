@@ -7,8 +7,8 @@ import {
   buildLearnPythonHref,
   getLessonUnit,
   getNextPythonLesson,
-  getPythonLessonsInOrder,
-  getPythonPathMeta,
+  getPythonChainDisplayMeta,
+  getPythonLessonsInChain,
   type Lesson,
 } from "@/data/pythonPath";
 import { getActivePathLevel } from "@/lib/onboarding-data";
@@ -24,12 +24,12 @@ export default function NextLessonCard() {
 
   useEffect(() => {
     const pathLevel = getActivePathLevel();
-    const pathMeta = getPythonPathMeta(pathLevel);
+    const pathDisplay = getPythonChainDisplayMeta(pathLevel);
     const completedLessonIds = getEffectiveCompletedLessonIds();
     const next = getNextPythonLesson(completedLessonIds, pathLevel);
-    const totalLessons = getPythonLessonsInOrder(pathLevel).length;
+    const totalLessons = getPythonLessonsInChain(pathLevel).length;
 
-    setPathTitle(pathMeta.title);
+    setPathTitle(pathDisplay.title);
     setNextLesson(next);
     setAllCompleted(next === null && totalLessons > 0);
     setIsReady(true);
@@ -59,10 +59,10 @@ export default function NextLessonCard() {
           Sıradaki ders
         </p>
         <h2 className={`mb-2 break-words text-xl font-bold ${theme.primaryText}`}>
-          {pathTitle} tamamlandı
+          Python yolunu tamamladın
         </h2>
         <p className={`mb-4 text-sm ${theme.mutedText}`}>
-          Harika iş! Yeni projeler yakında eklenecek.
+          Harika iş! {pathTitle} boyunca tüm dersleri bitirdin.
         </p>
 
         <Link
