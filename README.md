@@ -25,7 +25,8 @@ Tamamlanan ilk aşama:
 Canlı demo linki:
 
 ```text
-https://kodmigo.vercel.app/
+https://kodmigo.com/
+Yedek link: https://kodmigo.vercel.app/
 
 ```
 
