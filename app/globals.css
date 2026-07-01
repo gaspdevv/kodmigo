@@ -207,3 +207,29 @@ html {
     animation: none;
   }
 }
+
+@keyframes confetti-fall {
+  0% {
+    transform: translate3d(0, -12vh, 0) rotate(var(--confetti-rotation, 0deg));
+    opacity: 1;
+  }
+
+  100% {
+    transform: translate3d(var(--confetti-drift, 0px), 105vh, 0)
+      rotate(calc(var(--confetti-rotation, 0deg) + 540deg));
+    opacity: 0;
+  }
+}
+
+.confetti-particle {
+  animation-name: confetti-fall;
+  animation-timing-function: cubic-bezier(0.22, 0.61, 0.36, 1);
+  animation-fill-mode: forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .confetti-particle {
+    animation: none;
+    display: none;
+  }
+}

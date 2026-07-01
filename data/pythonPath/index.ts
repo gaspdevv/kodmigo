@@ -282,7 +282,7 @@ export function getActivePythonLevelProgress(
     percent: 100,
     isAllCompleted: true,
     subtitle: "Python öğrenme yolunu tamamladın! 🎉",
-    countLabel: "Tüm dersler tamamlandı",
+    countLabel: `${totalChainCompleted} / ${totalChainLessons} ders tamamlandı`,
   };
 }
 

@@ -55,8 +55,17 @@ export default function LearningPathCard() {
       <section
         className={`rounded-3xl border p-5 transition hover:border-kodmigo-orange/40 ${theme.cardBackground} ${theme.cardBorder} ${theme.cardShadow}`}
       >
-        <h2 className={`mb-2 text-lg font-bold ${theme.primaryText}`}>
-          {CARD_TITLE}
+        <h2 className={`mb-2 flex items-center gap-2 text-lg font-bold ${theme.primaryText}`}>
+          <span>{CARD_TITLE}</span>
+          {activeProgress.isAllCompleted && (
+            <span
+              className={`inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-sm ${theme.currentBadge}`}
+              aria-label="Tamamlandı"
+              title="Tamamlandı"
+            >
+              🏆
+            </span>
+          )}
         </h2>
         <p className={`mb-4 text-sm ${theme.mutedText}`}>
           {activeProgress.subtitle}

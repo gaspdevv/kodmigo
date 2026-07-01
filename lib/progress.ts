@@ -100,6 +100,7 @@ export type PythonLearningProgress = {
   completedLessonIds: string[];
   completedCount: number;
   progressPercent: number;
+  pythonPathCompletionCelebrated?: boolean;
 };
 
 export type LearningProgressStore = {
@@ -109,6 +110,7 @@ export type LearningProgressStore = {
 function buildPythonProgress(
   activePathLevel: PathLevel,
   completedLessonIds: string[],
+  pythonPathCompletionCelebrated = false,
 ): PythonLearningProgress {
   const pathFiltered = filterCompletedForPath(
     completedLessonIds,
@@ -126,6 +128,7 @@ function buildPythonProgress(
       completedCount,
       totalLessons,
     ),
+    pythonPathCompletionCelebrated,
   };
 }
 
@@ -168,7 +171,14 @@ function parsePythonLearningProgress(raw: unknown): PythonLearningProgress | nul
     ),
   ];
 
-  return buildPythonProgress(activePathLevel, completedLessonIds);
+  const pythonPathCompletionCelebrated =
+    data.pythonPathCompletionCelebrated === true;
+
+  return buildPythonProgress(
+    activePathLevel,
+    completedLessonIds,
+    pythonPathCompletionCelebrated,
+  );
 }
 
 function parseLearningProgressStore(raw: unknown): LearningProgressStore | null {
@@ -203,6 +213,7 @@ export function getLearningProgress(): LearningProgressStore {
         python: buildPythonProgress(
           currentLevel,
           parsed.python.completedLessonIds,
+          parsed.python.pythonPathCompletionCelebrated === true,
         ),
       };
     }
@@ -250,6 +261,7 @@ export function saveLearningProgress(progress: LearningProgressStore): void {
       python: buildPythonProgress(
         activePathLevel,
         progress.python.completedLessonIds,
+        progress.python.pythonPathCompletionCelebrated === true,
       ),
     };
     localStorage.setItem(LEARNING_PROGRESS_KEY, JSON.stringify(normalized));
@@ -280,8 +292,25 @@ export function applyLessonCompletion(
     progress: buildPythonProgress(
       progress.activePathLevel,
       completedLessonIds,
+      progress.pythonPathCompletionCelebrated === true,
     ),
   };
+}
+
+export function isPythonPathCompletionCelebrated(): boolean {
+  return getLearningProgress().python.pythonPathCompletionCelebrated === true;
+}
+
+export function markPythonPathCompletionCelebrated(): void {
+  const current = getLearningProgress();
+  if (current.python.pythonPathCompletionCelebrated) return;
+
+  saveLearningProgress({
+    python: {
+      ...current.python,
+      pythonPathCompletionCelebrated: true,
+    },
+  });
 }
 
 export { applyPythonLessonStatuses } from "@/data/pythonPath";

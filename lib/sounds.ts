@@ -102,6 +102,19 @@ export function playWrongSound(): void {
   }
 }
 
+export function playCelebrationSound(): void {
+  try {
+    const ctx = getAudioContext();
+    if (!ctx) return;
+
+    playTone(ctx, 523.25, 0, 0.12, 0.06);
+    playTone(ctx, 659.25, 0.1, 0.14, 0.055);
+    playTone(ctx, 783.99, 0.2, 0.16, 0.05);
+    playTone(ctx, 1046.5, 0.32, 0.2, 0.04);
+  } catch {
+    // Ses desteklenmiyorsa sessizce geç
+  }
+}
 export function playClickSound(): void {
   try {
     const ctx = getAudioContext();

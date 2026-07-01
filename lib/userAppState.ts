@@ -124,6 +124,7 @@ function parseRemoteUserProgress(raw: unknown): UserProgress | null {
 function buildPythonProgressFromIds(
   activePathLevel: PathLevel,
   completedLessonIds: string[],
+  pythonPathCompletionCelebrated = false,
 ): LearningProgressStore["python"] {
   const pathFiltered = filterCompletedForPath(
     completedLessonIds,
@@ -141,6 +142,7 @@ function buildPythonProgressFromIds(
       completedCount,
       totalLessons,
     ),
+    pythonPathCompletionCelebrated,
   };
 }
 
@@ -155,6 +157,7 @@ function parseRemoteLearningProgress(raw: unknown): LearningProgressStore | null
   const pythonData = pythonRaw as {
     activePathLevel?: unknown;
     completedLessonIds?: unknown;
+    pythonPathCompletionCelebrated?: unknown;
   };
 
   if (!Array.isArray(pythonData.completedLessonIds)) return null;
@@ -172,8 +175,15 @@ function parseRemoteLearningProgress(raw: unknown): LearningProgressStore | null
     ),
   ];
 
+  const pythonPathCompletionCelebrated =
+    pythonData.pythonPathCompletionCelebrated === true;
+
   return {
-    python: buildPythonProgressFromIds(activePathLevel, completedLessonIds),
+    python: buildPythonProgressFromIds(
+      activePathLevel,
+      completedLessonIds,
+      pythonPathCompletionCelebrated,
+    ),
   };
 }
 
@@ -357,7 +367,12 @@ function mergeLearningProgress(
   ];
 
   return {
-    python: buildPythonProgressFromIds(activePathLevel, mergedIds),
+    python: buildPythonProgressFromIds(
+      activePathLevel,
+      mergedIds,
+      local.python.pythonPathCompletionCelebrated === true ||
+        remote.python.pythonPathCompletionCelebrated === true,
+    ),
   };
 }
 

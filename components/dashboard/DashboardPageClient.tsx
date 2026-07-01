@@ -9,6 +9,7 @@ import { getStageTheme, type StageKey } from "@/components/dashboard/stageThemes
 import LearningPathCard from "@/components/dashboard/LearningPathCard";
 import MigoTipCard from "@/components/dashboard/MigoTipCard";
 import NextLessonCard from "@/components/dashboard/NextLessonCard";
+import PythonPathCelebrationController from "@/components/dashboard/PythonPathCelebrationController";
 import StageProgressCard from "@/components/dashboard/StageProgressCard";
 import { useAppStateSync } from "@/components/providers/AppStateSyncProvider";
 import { useRequireAuth } from "@/lib/auth/useRequireAuth";
@@ -96,6 +97,7 @@ export default function DashboardPageClient() {
         <MigoTipCard />
       </div>
       <BottomNav activeTab="Ana Sayfa" />
+      <PythonPathCelebrationController />
     </main>
   );
 }
