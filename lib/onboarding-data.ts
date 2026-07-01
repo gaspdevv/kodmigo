@@ -12,12 +12,14 @@ export type DailyTime = "5" | "10" | "15" | "30";
 
 export type OnboardingSelections = {
   level: CodingLevel | null;
-  goal: LearningGoal | null;
+  goals: LearningGoal[];
   dailyTime: DailyTime | null;
 };
 
 export type OnboardingProfile = {
   codingLevel: PathLevel;
+  learningGoals: LearningGoal[];
+  /** @deprecated İlk seçilen hedef — geriye dönük uyumluluk için korunur. */
   learningGoal: LearningGoal;
   dailyTime: DailyTime;
   completedAt?: string;
@@ -91,18 +93,49 @@ function normalizeDailyTime(value: unknown): DailyTime {
   return DAILY_TIME_MAP[value] ?? "10";
 }
 
-function normalizeLearningGoal(value: unknown): LearningGoal {
-  const valid: LearningGoal[] = [
-    "start",
-    "school",
-    "career",
-    "ai",
-    "projects",
-  ];
-  if (typeof value === "string" && valid.includes(value as LearningGoal)) {
-    return value as LearningGoal;
+const VALID_LEARNING_GOALS: LearningGoal[] = [
+  "start",
+  "school",
+  "career",
+  "ai",
+  "projects",
+];
+
+function isValidLearningGoal(value: string): value is LearningGoal {
+  return VALID_LEARNING_GOALS.includes(value as LearningGoal);
+}
+
+export function normalizeLearningGoals(value: unknown): LearningGoal[] {
+  if (Array.isArray(value)) {
+    return [
+      ...new Set(
+        value
+          .filter((item): item is string => typeof item === "string")
+          .map((item) => item.trim())
+          .filter(isValidLearningGoal),
+      ),
+    ];
   }
-  return "start";
+
+  if (typeof value === "string" && value.trim()) {
+    return isValidLearningGoal(value) ? [value] : [];
+  }
+
+  return [];
+}
+
+function buildLearningGoalsFromProfileData(
+  data: Record<string, unknown>,
+): LearningGoal[] {
+  const fromArray = normalizeLearningGoals(
+    data.learningGoals ?? data.learningReasons,
+  );
+  if (fromArray.length > 0) return fromArray;
+
+  const legacySingle = normalizeLearningGoals(
+    data.learningGoal ?? data.goal ?? data.reason,
+  );
+  return legacySingle;
 }
 
 export function parseOnboardingProfile(raw: unknown): OnboardingProfile | null {
@@ -112,9 +145,13 @@ export function parseOnboardingProfile(raw: unknown): OnboardingProfile | null {
   if (Object.keys(data).length === 0) return null;
 
   if (data.codingLevel !== undefined || data.pathLevel !== undefined) {
+    const learningGoals = buildLearningGoalsFromProfileData(data);
+    if (learningGoals.length === 0) return null;
+
     return {
       codingLevel: normalizeCodingLevel(data.codingLevel ?? data.pathLevel),
-      learningGoal: normalizeLearningGoal(data.learningGoal ?? data.goal),
+      learningGoals,
+      learningGoal: learningGoals[0],
       dailyTime: normalizeDailyTime(data.dailyTime ?? data.time),
       completedAt:
         typeof data.completedAt === "string" ? data.completedAt : undefined,
@@ -123,9 +160,13 @@ export function parseOnboardingProfile(raw: unknown): OnboardingProfile | null {
 
   if (data.level !== undefined && typeof data.level === "string") {
     const legacyLevel = data.level as CodingLevel;
+    const learningGoals = buildLearningGoalsFromProfileData(data);
+    if (learningGoals.length === 0) return null;
+
     return {
       codingLevel: pathLevelFromCodingLevel(legacyLevel),
-      learningGoal: normalizeLearningGoal(data.goal),
+      learningGoals,
+      learningGoal: learningGoals[0],
       dailyTime: normalizeDailyTime(data.dailyTime),
       completedAt:
         typeof data.completedAt === "string" ? data.completedAt : undefined,
@@ -152,7 +193,12 @@ export function hasCompletedOnboarding(profile: unknown): boolean {
     data.codingLevel !== undefined ||
     data.pathLevel !== undefined ||
     data.level !== undefined;
-  const hasGoal = data.learningGoal !== undefined || data.goal !== undefined;
+  const hasGoal =
+    (Array.isArray(data.learningGoals) && data.learningGoals.length > 0) ||
+    (Array.isArray(data.learningReasons) && data.learningReasons.length > 0) ||
+    data.learningGoal !== undefined ||
+    data.goal !== undefined ||
+    data.reason !== undefined;
   const hasTime = data.dailyTime !== undefined || data.time !== undefined;
 
   return hasLevel && hasGoal && hasTime;
@@ -191,9 +237,13 @@ export function getOnboardingProfile(): OnboardingProfile | null {
       return null;
     }
 
+    const learningGoals = buildLearningGoalsFromProfileData(legacy);
+    if (learningGoals.length === 0) return null;
+
     return {
       codingLevel: pathLevelFromCodingLevel(legacy.level as CodingLevel),
-      learningGoal: normalizeLearningGoal(legacy.goal),
+      learningGoals,
+      learningGoal: learningGoals[0],
       dailyTime: normalizeDailyTime(legacy.dailyTime),
       completedAt:
         typeof legacy.completedAt === "string" ? legacy.completedAt : undefined,
@@ -214,8 +264,20 @@ export function hasCompletedLocalOnboarding(): boolean {
 export function saveOnboardingProfile(profile: OnboardingProfile): void {
   if (typeof window === "undefined") return;
 
+  const learningGoals =
+    profile.learningGoals.length > 0
+      ? profile.learningGoals
+      : [profile.learningGoal];
+  const learningGoal = learningGoals[0] ?? profile.learningGoal;
+
+  const storedProfile: OnboardingProfile = {
+    ...profile,
+    learningGoals,
+    learningGoal,
+  };
+
   try {
-    localStorage.setItem(ONBOARDING_PROFILE_KEY, JSON.stringify(profile));
+    localStorage.setItem(ONBOARDING_PROFILE_KEY, JSON.stringify(storedProfile));
 
     const legacyLevel: CodingLevel =
       profile.codingLevel === "beginner"
@@ -228,7 +290,8 @@ export function saveOnboardingProfile(profile: OnboardingProfile): void {
       ONBOARDING_STORAGE_KEY,
       JSON.stringify({
         level: legacyLevel,
-        goal: profile.learningGoal,
+        goal: learningGoal,
+        learningGoals,
         dailyTime: profile.dailyTime,
         completedAt: profile.completedAt ?? new Date().toISOString(),
       }),
@@ -282,6 +345,10 @@ export function getLevelLabel(level: CodingLevel): string {
 
 export function getGoalLabel(goal: LearningGoal): string {
   return goalOptions.find((o) => o.value === goal)?.label ?? goal;
+}
+
+export function getGoalsLabel(goals: LearningGoal[]): string {
+  return goals.map(getGoalLabel).join(", ");
 }
 
 export function getDailyTimeLabel(time: DailyTime): string {

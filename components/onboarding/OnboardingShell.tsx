@@ -12,7 +12,7 @@ import { useAuthUser } from "@/lib/auth/useAuthUser";
 import {
   dailyTimeOptions,
   getDailyTimeLabel,
-  getGoalLabel,
+  getGoalsLabel,
   getLevelLabel,
   getPathLevelLabel,
   goalOptions,
@@ -22,8 +22,11 @@ import {
   saveOnboardingProfile,
   type OnboardingSelections,
 } from "@/lib/onboarding-data";
-import { getLocalAppState } from "@/lib/userAppState";
-import { completeAuthSession } from "@/lib/auth/completeAuthSession";
+import {
+  getLocalAppState,
+  upsertRemoteAppState,
+} from "@/lib/userAppState";
+import { persistAppStateIfAuthed } from "@/lib/appStatePersist";
 import { createClient } from "@/lib/supabase/client";
 
 type Screen = "welcome" | "level" | "goal" | "time" | "result";
@@ -43,7 +46,7 @@ function canProceed(screen: Screen, selections: OnboardingSelections): boolean {
     case "level":
       return selections.level !== null;
     case "goal":
-      return selections.goal !== null;
+      return selections.goals.length > 0;
     case "time":
       return selections.dailyTime !== null;
     case "result":
@@ -90,9 +93,12 @@ export default function OnboardingShell() {
   const [screen, setScreen] = useState<Screen>("welcome");
   const [selections, setSelections] = useState<OnboardingSelections>({
     level: null,
-    goal: null,
+    goals: [],
     dailyTime: null,
   });
+  const [goalError, setGoalError] = useState<string | null>(null);
+  const [finishError, setFinishError] = useState<string | null>(null);
+  const [isFinishing, setIsFinishing] = useState(false);
 
   useEffect(() => {
     if (authLoading) return;
@@ -115,7 +121,25 @@ export default function OnboardingShell() {
   const isResult = screen === "result";
   const canGoNext = canProceed(screen, selections);
 
+  function toggleGoal(goal: (typeof goalOptions)[number]["value"]) {
+    setGoalError(null);
+    setSelections((prev) => {
+      const isSelected = prev.goals.includes(goal);
+      return {
+        ...prev,
+        goals: isSelected
+          ? prev.goals.filter((item) => item !== goal)
+          : [...prev.goals, goal],
+      };
+    });
+  }
+
   function handleNext() {
+    if (screen === "goal" && selections.goals.length === 0) {
+      setGoalError("Devam etmek için en az bir neden seçmelisin.");
+      return;
+    }
+
     if (!canGoNext) return;
 
     const next = getNextScreen(screen);
@@ -132,29 +156,56 @@ export default function OnboardingShell() {
   }
 
   async function handleFinish() {
+    if (isFinishing) return;
+
     if (
       selections.level === null ||
-      selections.goal === null ||
+      selections.goals.length === 0 ||
       selections.dailyTime === null
     ) {
+      setFinishError("Eksik seçim var. Lütfen tüm adımları tamamla.");
       return;
     }
 
-    const pathLevel = pathLevelFromCodingLevel(selections.level);
-
-    saveOnboardingProfile({
-      codingLevel: pathLevel,
-      learningGoal: selections.goal,
-      dailyTime: selections.dailyTime,
-      completedAt: new Date().toISOString(),
-    });
-
-    const supabase = createClient();
-    if (supabase) {
-      await completeAuthSession(supabase);
+    if (!user) {
+      setFinishError("Oturum bulunamadı. Lütfen tekrar giriş yap.");
+      return;
     }
 
-    router.push("/dashboard");
+    setIsFinishing(true);
+    setFinishError(null);
+
+    try {
+      const pathLevel = pathLevelFromCodingLevel(selections.level);
+
+      saveOnboardingProfile({
+        codingLevel: pathLevel,
+        learningGoals: selections.goals,
+        learningGoal: selections.goals[0],
+        dailyTime: selections.dailyTime,
+        completedAt: new Date().toISOString(),
+      });
+
+      const supabase = createClient();
+      if (!supabase) {
+        throw new Error("Supabase bağlantısı yapılandırılmamış.");
+      }
+
+      const saveError = await upsertRemoteAppState(user.id, getLocalAppState());
+      if (saveError) {
+        throw new Error(saveError);
+      }
+
+      await persistAppStateIfAuthed(true);
+      router.replace("/dashboard");
+    } catch (error) {
+      if (process.env.NODE_ENV !== "production") {
+        console.error("[Kodmigo] onboarding finish hatası:", error);
+      }
+      setFinishError("Onboarding kaydedilemedi. Lütfen tekrar dene.");
+    } finally {
+      setIsFinishing(false);
+    }
   }
 
   const waitingForAppState = Boolean(
@@ -229,18 +280,24 @@ export default function OnboardingShell() {
 
           {screen === "goal" && (
             <OnboardingStep title="Python'u neden öğrenmek istiyorsun?">
+              <p className="mb-3 text-sm text-slate-500">
+                Birden fazla seçenek işaretleyebilirsin.
+              </p>
               <div className="flex flex-col gap-3">
                 {goalOptions.map((option) => (
                   <OptionCard
                     key={option.value}
                     label={option.label}
-                    selected={selections.goal === option.value}
-                    onSelect={() =>
-                      setSelections((prev) => ({ ...prev, goal: option.value }))
-                    }
+                    selected={selections.goals.includes(option.value)}
+                    onSelect={() => toggleGoal(option.value)}
                   />
                 ))}
               </div>
+              {goalError && (
+                <p className="mt-3 text-sm font-medium text-rose-600">
+                  {goalError}
+                </p>
+              )}
             </OnboardingStep>
           )}
 
@@ -266,7 +323,7 @@ export default function OnboardingShell() {
 
           {screen === "result" &&
             selections.level &&
-            selections.goal &&
+            selections.goals.length > 0 &&
             selections.dailyTime && (
               <div className="flex flex-1 flex-col gap-6">
                 <OnboardingStep
@@ -287,7 +344,7 @@ export default function OnboardingShell() {
                       <div className="flex items-start justify-between gap-4 border-b border-slate-100 pb-3">
                         <dt className="text-sm text-slate-500">Hedef</dt>
                         <dd className="break-words text-right text-sm font-semibold text-kodmigo-navy">
-                          {getGoalLabel(selections.goal)}
+                          {getGoalsLabel(selections.goals)}
                         </dd>
                       </div>
                       <div className="flex items-start justify-between gap-4">
@@ -308,6 +365,12 @@ export default function OnboardingShell() {
             )}
         </div>
 
+        {finishError && (
+          <p className="mt-4 text-center text-sm font-medium text-rose-600">
+            {finishError}
+          </p>
+        )}
+
         <div className="mt-8 flex gap-3">
           {showBack && (
             <button
@@ -323,19 +386,24 @@ export default function OnboardingShell() {
             <button
               type="button"
               onClick={handleFinish}
-              className="inline-flex h-12 flex-1 cursor-pointer items-center justify-center rounded-2xl bg-kodmigo-orange px-4 text-base font-semibold text-white shadow-lg shadow-kodmigo-orange/25 transition hover:bg-orange-600"
+              disabled={isFinishing}
+              className={`inline-flex h-12 flex-1 items-center justify-center rounded-2xl px-4 text-base font-semibold text-white shadow-lg shadow-kodmigo-orange/25 transition ${
+                isFinishing
+                  ? "cursor-not-allowed bg-kodmigo-orange/70"
+                  : "cursor-pointer bg-kodmigo-orange hover:bg-orange-600"
+              }`}
             >
-              Ana Sayfa&apos;ya geç
+              {isFinishing ? "Kaydediliyor..." : "Ana Sayfa'ya geç"}
             </button>
           ) : (
             <button
               type="button"
               onClick={handleNext}
-              disabled={!canGoNext}
+              disabled={screen !== "goal" && !canGoNext}
               className={`inline-flex h-12 items-center justify-center rounded-2xl px-4 text-base font-semibold transition ${
                 showBack ? "flex-1" : "w-full"
               } ${
-                canGoNext
+                screen === "goal" || canGoNext
                   ? "cursor-pointer bg-kodmigo-orange text-white shadow-lg shadow-kodmigo-orange/25 hover:bg-orange-600"
                   : "cursor-not-allowed bg-slate-200 text-slate-400"
               }`}

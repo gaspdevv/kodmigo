@@ -408,10 +408,10 @@ function mergeOnboardingProfile(
 ): OnboardingProfile | null {
   if (remote !== null && hasCompletedOnboarding(remote)) return remote;
 
-  // Sunucuda kayıt varsa boş onboarding, eski local veriyi yeni hesaba taşıma.
-  if (options?.remoteRowExists) return null;
-
   if (local !== null && hasCompletedOnboarding(local)) return local;
+
+  // Sunucuda kayıt varsa boş onboarding — tamamlanmamış eski local veriyi taşıma.
+  if (options?.remoteRowExists) return null;
 
   return null;
 }
