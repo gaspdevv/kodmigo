@@ -1,4 +1,6 @@
 import { notifyAppStateLocalChanged } from "@/lib/appStateNotify";
+import { isSafeAvatarDataUrl } from "@/lib/avatar";
+import { sanitizeDisplayUsername, validateUsername } from "@/lib/username";
 
 const STORAGE_KEY = "kodmigo_profile";
 
@@ -10,10 +12,6 @@ export type ProfileData = {
 
 export const DEFAULT_USERNAME = "Kodmigo Öğrencisi";
 export const MAX_USERNAME_LENGTH = 24;
-
-function normalizeUsername(value: string): string {
-  return value.trim().slice(0, MAX_USERNAME_LENGTH);
-}
 
 export function getDefaultProfile(): ProfileData {
   return {
@@ -30,13 +28,16 @@ function parseProfile(raw: unknown): ProfileData | null {
 
   const username =
     typeof data.username === "string" && data.username.trim().length > 0
-      ? data.username.trim()
+      ? sanitizeDisplayUsername(data.username)
       : DEFAULT_USERNAME;
 
-  const avatarDataUrl =
+  const rawAvatar =
     data.avatarDataUrl === null || typeof data.avatarDataUrl === "string"
       ? data.avatarDataUrl
       : null;
+
+  const avatarDataUrl =
+    rawAvatar && isSafeAvatarDataUrl(rawAvatar) ? rawAvatar : null;
 
   const showcasedBadgeId =
     data.showcasedBadgeId === null || typeof data.showcasedBadgeId === "string"
@@ -65,8 +66,11 @@ export function saveProfile(profile: ProfileData): void {
 
   try {
     const normalized: ProfileData = {
-      username: profile.username.trim() || DEFAULT_USERNAME,
-      avatarDataUrl: profile.avatarDataUrl,
+      username: sanitizeDisplayUsername(profile.username),
+      avatarDataUrl:
+        profile.avatarDataUrl && isSafeAvatarDataUrl(profile.avatarDataUrl)
+          ? profile.avatarDataUrl
+          : null,
       showcasedBadgeId: profile.showcasedBadgeId,
     };
     localStorage.setItem(STORAGE_KEY, JSON.stringify(normalized));
@@ -78,17 +82,19 @@ export function saveProfile(profile: ProfileData): void {
 
 export function updateProfileAvatar(avatarDataUrl: string | null): ProfileData {
   const profile = getProfile();
-  const updated = { ...profile, avatarDataUrl };
+  const safeAvatar =
+    avatarDataUrl && isSafeAvatarDataUrl(avatarDataUrl) ? avatarDataUrl : null;
+  const updated = { ...profile, avatarDataUrl: safeAvatar };
   saveProfile(updated);
   return updated;
 }
 
 export function updateProfileUsername(username: string): ProfileData | null {
-  const normalized = normalizeUsername(username);
-  if (!normalized) return null;
+  const trimmed = username.trim();
+  if (validateUsername(trimmed)) return null;
 
   const profile = getProfile();
-  const updated = { ...profile, username: normalized };
+  const updated = { ...profile, username: trimmed };
   saveProfile(updated);
   return updated;
 }

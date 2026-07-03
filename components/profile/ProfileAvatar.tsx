@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react";
 import type { StageTheme } from "@/components/dashboard/stageThemes";
-import { processAvatarFile } from "@/lib/avatar";
+import { isSafeAvatarDataUrl, processAvatarFile } from "@/lib/avatar";
 import { playClickSound } from "@/lib/sounds";
 
 type ProfileAvatarProps = {
@@ -57,7 +57,7 @@ export default function ProfileAvatar({
         aria-label="Profil fotoğrafını değiştir"
         className={`relative flex h-20 w-20 cursor-pointer items-center justify-center overflow-hidden rounded-2xl shadow-sm ring-2 transition hover:scale-[1.02] active:scale-[0.98] disabled:cursor-wait disabled:opacity-70 ${theme.iconBadge}`}
       >
-        {avatarDataUrl ? (
+        {avatarDataUrl && isSafeAvatarDataUrl(avatarDataUrl) ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
             src={avatarDataUrl}

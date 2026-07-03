@@ -2,6 +2,20 @@ import { DEFAULT_USERNAME, MAX_USERNAME_LENGTH } from "@/lib/profile";
 
 export const MIN_USERNAME_LENGTH = 3;
 
+const USERNAME_PATTERN = /^[\p{L}\p{N}_\- ]+$/u;
+const UNSAFE_USERNAME_CHARS = /[<>"'`\\]/;
+
+export function sanitizeDisplayUsername(value: string): string {
+  const trimmed = value.trim().slice(0, MAX_USERNAME_LENGTH);
+  if (!trimmed || UNSAFE_USERNAME_CHARS.test(trimmed)) {
+    return DEFAULT_USERNAME;
+  }
+  if (!USERNAME_PATTERN.test(trimmed)) {
+    return DEFAULT_USERNAME;
+  }
+  return trimmed;
+}
+
 export function getAuthUsername(
   userMetadata: Record<string, unknown> | undefined,
 ): string | null {
@@ -17,10 +31,16 @@ export function resolveGreetingName(
   localUsername?: string | null,
 ): string | null {
   const auth = authUsername?.trim();
-  if (auth) return auth;
+  if (auth) {
+    const safe = sanitizeDisplayUsername(auth);
+    return safe !== DEFAULT_USERNAME ? safe : null;
+  }
 
   const local = localUsername?.trim();
-  if (local && local !== DEFAULT_USERNAME) return local;
+  if (local && local !== DEFAULT_USERNAME) {
+    const safe = sanitizeDisplayUsername(local);
+    return safe !== DEFAULT_USERNAME ? safe : null;
+  }
 
   return null;
 }
@@ -30,10 +50,10 @@ export function resolveDisplayUsername(
   localUsername?: string | null,
 ): string {
   const auth = authUsername?.trim();
-  if (auth) return auth;
+  if (auth) return sanitizeDisplayUsername(auth);
 
   const local = localUsername?.trim();
-  if (local) return local;
+  if (local) return sanitizeDisplayUsername(local);
 
   return DEFAULT_USERNAME;
 }
@@ -46,11 +66,19 @@ export function validateUsername(username: string): string | null {
   }
 
   if (trimmed.length < MIN_USERNAME_LENGTH) {
-    return "Kullanıcı adı en az 3 karakter olmalı.";
+    return "Kullanıcı adı 3–24 karakter olmalı ve güvenli karakterler içermeli.";
   }
 
   if (trimmed.length > MAX_USERNAME_LENGTH) {
-    return "Kullanıcı adı en fazla 24 karakter olabilir.";
+    return "Kullanıcı adı 3–24 karakter olmalı ve güvenli karakterler içermeli.";
+  }
+
+  if (UNSAFE_USERNAME_CHARS.test(trimmed)) {
+    return "Kullanıcı adı 3–24 karakter olmalı ve güvenli karakterler içermeli.";
+  }
+
+  if (!USERNAME_PATTERN.test(trimmed)) {
+    return "Kullanıcı adı 3–24 karakter olmalı ve güvenli karakterler içermeli.";
   }
 
   return null;

@@ -4,10 +4,24 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
 import AuthShell from "@/components/auth/AuthShell";
-import { mapAuthErrorMessage } from "@/lib/auth/actions";
+import TurnstileWidget, {
+  getTurnstileSiteKey,
+} from "@/components/auth/TurnstileWidget";
+import { mapAuthError } from "@/lib/auth/actions";
 import { completeAuthSessionAndResolveRedirect } from "@/lib/auth/completeAuthSession";
 import { buildEmailConfirmationRedirectUrl } from "@/lib/auth/routes";
+import {
+  isSignUpOnCooldown,
+  markSignUpCooldown,
+  SIGNUP_COOLDOWN_MESSAGE,
+} from "@/lib/auth/signup-cooldown";
 import { useAuthUser } from "@/lib/auth/useAuthUser";
+import {
+  normalizeEmail,
+  validateEmail,
+  validatePassword,
+  validatePasswordMatch,
+} from "@/lib/auth/validation";
 import { createClient } from "@/lib/supabase/client";
 import { SUPABASE_ENV_HINT } from "@/lib/supabase/env";
 import { validateUsername } from "@/lib/username";
@@ -15,7 +29,7 @@ import { validateUsername } from "@/lib/username";
 const SIGN_IN_LINK = "/auth/sign-in?redirect=/onboarding";
 
 const EMAIL_VERIFICATION_MESSAGE =
-  "Kaydını tamamlamak için e-posta adresine gönderdiğimiz doğrulama bağlantısına tıkla.";
+  "Doğrulama e-postanı gönderdik. Lütfen gelen kutunu ve spam klasörünü kontrol et.";
 
 const EMAIL_VERIFICATION_HINT =
   "E-postayı göremiyorsan spam/gereksiz klasörünü kontrol et.";
@@ -30,9 +44,12 @@ export default function SignUpForm() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [showSignInLink, setShowSignInLink] = useState(false);
   const [awaitingEmailVerification, setAwaitingEmailVerification] =
     useState(false);
-  const [loading, setLoading] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  const turnstileEnabled = Boolean(getTurnstileSiteKey());
 
   useEffect(() => {
     if (authLoading || awaitingEmailVerification || !user) return;
@@ -50,9 +67,10 @@ export default function SignUpForm() {
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (loading) return;
+    if (isSubmitting) return;
 
     setError(null);
+    setShowSignInLink(false);
 
     const usernameError = validateUsername(username);
     if (usernameError) {
@@ -60,13 +78,33 @@ export default function SignUpForm() {
       return;
     }
 
-    if (password.length < 6) {
-      setError("Şifre en az 6 karakter olmalı.");
+    const emailError = validateEmail(email);
+    if (emailError) {
+      setError(emailError);
       return;
     }
 
-    if (password !== confirmPassword) {
-      setError("Şifreler eşleşmiyor.");
+    const passwordError = validatePassword(password);
+    if (passwordError) {
+      setError(passwordError);
+      return;
+    }
+
+    const passwordMatchError = validatePasswordMatch(password, confirmPassword);
+    if (passwordMatchError) {
+      setError(passwordMatchError);
+      return;
+    }
+
+    const normalizedEmail = normalizeEmail(email);
+
+    if (isSignUpOnCooldown(normalizedEmail)) {
+      setError(SIGNUP_COOLDOWN_MESSAGE);
+      return;
+    }
+
+    if (turnstileEnabled && !captchaToken) {
+      setError("Güvenlik doğrulaması tamamlanamadı. Lütfen tekrar dene.");
       return;
     }
 
@@ -76,10 +114,10 @@ export default function SignUpForm() {
       return;
     }
 
-    setLoading(true);
+    setIsSubmitting(true);
 
     const { data, error: signUpError } = await supabase.auth.signUp({
-      email: email.trim(),
+      email: normalizedEmail,
       password,
       options: {
         emailRedirectTo: buildEmailConfirmationRedirectUrl(
@@ -88,28 +126,33 @@ export default function SignUpForm() {
         data: {
           username: username.trim(),
         },
+        captchaToken: captchaToken ?? undefined,
       },
     });
 
     if (signUpError) {
-      setLoading(false);
-      setError(
-        mapAuthErrorMessage(signUpError.message, { status: signUpError.status }),
-      );
+      setIsSubmitting(false);
+      const mapped = mapAuthError(signUpError.message, {
+        status: signUpError.status,
+      });
+      setShowSignInLink(mapped.kind === "user_exists");
+      setError(mapped.message);
       return;
     }
+
+    markSignUpCooldown(normalizedEmail);
 
     if (data.session?.user) {
       const destination = await completeAuthSessionAndResolveRedirect(
         supabase,
         redirectTo,
       );
-      setLoading(false);
+      setIsSubmitting(false);
       router.replace(destination);
       return;
     }
 
-    setLoading(false);
+    setIsSubmitting(false);
     setAwaitingEmailVerification(true);
   };
 
@@ -201,7 +244,9 @@ export default function SignUpForm() {
             onChange={(event) => setUsername(event.target.value)}
             autoComplete="username"
             required
-            disabled={loading}
+            minLength={3}
+            maxLength={24}
+            disabled={isSubmitting}
             className="w-full min-w-0 rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none transition focus:border-kodmigo-orange/50 focus:ring-2 focus:ring-kodmigo-orange/20 disabled:opacity-60"
             placeholder="Kullanıcı adı"
           />
@@ -221,7 +266,8 @@ export default function SignUpForm() {
             onChange={(event) => setEmail(event.target.value)}
             autoComplete="email"
             required
-            disabled={loading}
+            maxLength={254}
+            disabled={isSubmitting}
             className="w-full min-w-0 rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none transition focus:border-kodmigo-orange/50 focus:ring-2 focus:ring-kodmigo-orange/20 disabled:opacity-60"
             placeholder="ornek@email.com"
           />
@@ -241,9 +287,11 @@ export default function SignUpForm() {
             onChange={(event) => setPassword(event.target.value)}
             autoComplete="new-password"
             required
-            disabled={loading}
+            minLength={8}
+            maxLength={72}
+            disabled={isSubmitting}
             className="w-full min-w-0 rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none transition focus:border-kodmigo-orange/50 focus:ring-2 focus:ring-kodmigo-orange/20 disabled:opacity-60"
-            placeholder="En az 6 karakter"
+            placeholder="En az 8 karakter"
           />
         </div>
 
@@ -261,24 +309,41 @@ export default function SignUpForm() {
             onChange={(event) => setConfirmPassword(event.target.value)}
             autoComplete="new-password"
             required
-            disabled={loading}
+            minLength={8}
+            maxLength={72}
+            disabled={isSubmitting}
             className="w-full min-w-0 rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none transition focus:border-kodmigo-orange/50 focus:ring-2 focus:ring-kodmigo-orange/20 disabled:opacity-60"
             placeholder="Şifreni tekrar gir"
           />
         </div>
 
+        <TurnstileWidget
+          onTokenChange={setCaptchaToken}
+          onError={() =>
+            setError("Güvenlik doğrulaması tamamlanamadı. Lütfen tekrar dene.")
+          }
+        />
+
         {error && (
-          <p className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
-            {error}
-          </p>
+          <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+            <p>{error}</p>
+            {showSignInLink && (
+              <Link
+                href={SIGN_IN_LINK}
+                className="mt-2 inline-block font-semibold text-kodmigo-orange hover:underline"
+              >
+                Giriş yap
+              </Link>
+            )}
+          </div>
         )}
 
         <button
           type="submit"
-          disabled={loading || !isConfigured}
+          disabled={isSubmitting || !isConfigured}
           className="inline-flex h-12 w-full items-center justify-center rounded-2xl bg-kodmigo-orange text-base font-semibold text-white shadow-lg shadow-kodmigo-orange/25 transition hover:bg-orange-600 disabled:cursor-not-allowed disabled:opacity-60"
         >
-          {loading ? "Kayıt olunuyor..." : "Kayıt ol"}
+          {isSubmitting ? "Kayıt oluşturuluyor..." : "Kayıt ol"}
         </button>
       </form>
     </AuthShell>

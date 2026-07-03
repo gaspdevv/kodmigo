@@ -6,6 +6,11 @@ export const AVATAR_JPEG_QUALITY = 0.82;
 export const AVATAR_TOO_LARGE_MESSAGE =
   "Profil fotoğrafı çok büyük. Lütfen daha küçük bir görsel seç.";
 
+export function isSafeAvatarDataUrl(dataUrl: string | null): boolean {
+  if (!dataUrl) return true;
+  return /^data:image\/(jpeg|jpg|png|webp|gif);base64,/i.test(dataUrl);
+}
+
 export function isAvatarDataUrlTooLarge(dataUrl: string): boolean {
   return dataUrl.length > MAX_AVATAR_DATA_URL_CHARS;
 }

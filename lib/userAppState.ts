@@ -40,6 +40,8 @@ import {
 import type { PathLevel } from "@/lib/onboarding-data";
 import { calculateLearningProgressPercent } from "@/lib/progress";
 import { normalizeUserProgressFromXp } from "@/lib/stage-progress";
+import { isSafeAvatarDataUrl } from "@/lib/avatar";
+import { sanitizeDisplayUsername } from "@/lib/username";
 import { createClient } from "@/lib/supabase/client";
 import { logSupabaseError } from "@/lib/supabase/debug";
 
@@ -92,13 +94,16 @@ function parseRemoteProfile(raw: unknown): ProfileData | null {
   const data = raw as Partial<ProfileData>;
   const username =
     typeof data.username === "string" && data.username.trim().length > 0
-      ? data.username.trim()
+      ? sanitizeDisplayUsername(data.username)
       : DEFAULT_USERNAME;
 
-  const avatarDataUrl =
+  const rawAvatar =
     data.avatarDataUrl === null || typeof data.avatarDataUrl === "string"
       ? data.avatarDataUrl
       : null;
+
+  const avatarDataUrl =
+    rawAvatar && isSafeAvatarDataUrl(rawAvatar) ? rawAvatar : null;
 
   const showcasedBadgeId =
     data.showcasedBadgeId === null || typeof data.showcasedBadgeId === "string"

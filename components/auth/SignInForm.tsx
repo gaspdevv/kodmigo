@@ -4,9 +4,19 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
 import AuthShell from "@/components/auth/AuthShell";
-import { mapAuthErrorMessage } from "@/lib/auth/actions";
+import TurnstileWidget, {
+  getTurnstileSiteKey,
+} from "@/components/auth/TurnstileWidget";
+import { mapAuthError } from "@/lib/auth/actions";
 import { completeAuthSessionAndResolveRedirect } from "@/lib/auth/completeAuthSession";
+import {
+  clearLoginAttempts,
+  formatLoginLockoutError,
+  getLoginLockState,
+  recordFailedLoginAttempt,
+} from "@/lib/auth/login-attempts";
 import { useAuthUser } from "@/lib/auth/useAuthUser";
+import { validateEmail } from "@/lib/auth/validation";
 import { createClient } from "@/lib/supabase/client";
 import { SUPABASE_ENV_HINT } from "@/lib/supabase/env";
 
@@ -18,7 +28,9 @@ export default function SignInForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  const turnstileEnabled = Boolean(getTurnstileSiteKey());
 
   useEffect(() => {
     if (authLoading || !user) return;
@@ -36,9 +48,33 @@ export default function SignInForm() {
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (loading) return;
+    if (isSubmitting) return;
 
     setError(null);
+
+    const emailError = validateEmail(email);
+    if (emailError) {
+      setError(emailError);
+      return;
+    }
+
+    if (!password) {
+      setError("Şifreni gir.");
+      return;
+    }
+
+    const normalizedEmail = email.trim().toLowerCase();
+    const lockState = getLoginLockState(normalizedEmail);
+
+    if (lockState.isLocked) {
+      setError(formatLoginLockoutError(lockState.minutesRemaining));
+      return;
+    }
+
+    if (turnstileEnabled && !captchaToken) {
+      setError("Güvenlik doğrulaması tamamlanamadı. Lütfen tekrar dene.");
+      return;
+    }
 
     const supabase = createClient();
     if (!supabase) {
@@ -46,28 +82,49 @@ export default function SignInForm() {
       return;
     }
 
-    setLoading(true);
+    setIsSubmitting(true);
 
-    const { error: signInError } = await supabase.auth.signInWithPassword({
-      email: email.trim(),
-      password,
-    });
+    try {
+      const { error: signInError } = await supabase.auth.signInWithPassword({
+        email: normalizedEmail,
+        password,
+        options: captchaToken ? { captchaToken } : undefined,
+      });
 
-    if (signInError) {
-      setLoading(false);
-      setError(
-        mapAuthErrorMessage(signInError.message, { status: signInError.status }),
+      if (signInError) {
+        const attemptState = recordFailedLoginAttempt(normalizedEmail);
+
+        if (process.env.NODE_ENV === "development") {
+          console.debug("[login-attempts]", {
+            count: attemptState.count,
+            isLocked: attemptState.isLocked,
+            minutesRemaining: attemptState.minutesRemaining,
+          });
+        }
+
+        if (attemptState.isLocked) {
+          setError(formatLoginLockoutError(attemptState.minutesRemaining));
+          return;
+        }
+
+        const mapped = mapAuthError(signInError.message, {
+          status: signInError.status,
+          code: signInError.code,
+        });
+        setError(mapped.message);
+        return;
+      }
+
+      clearLoginAttempts(normalizedEmail);
+
+      const destination = await completeAuthSessionAndResolveRedirect(
+        supabase,
+        redirectTo,
       );
-      return;
+      router.replace(destination);
+    } finally {
+      setIsSubmitting(false);
     }
-
-    const destination = await completeAuthSessionAndResolveRedirect(
-      supabase,
-      redirectTo,
-    );
-    setLoading(false);
-
-    router.replace(destination);
   };
 
   if (authLoading || user) {
@@ -115,7 +172,8 @@ export default function SignInForm() {
             onChange={(event) => setEmail(event.target.value)}
             autoComplete="email"
             required
-            disabled={loading}
+            maxLength={254}
+            disabled={isSubmitting}
             className="w-full min-w-0 rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none transition focus:border-kodmigo-orange/50 focus:ring-2 focus:ring-kodmigo-orange/20 disabled:opacity-60"
             placeholder="ornek@email.com"
           />
@@ -135,11 +193,19 @@ export default function SignInForm() {
             onChange={(event) => setPassword(event.target.value)}
             autoComplete="current-password"
             required
-            disabled={loading}
+            maxLength={72}
+            disabled={isSubmitting}
             className="w-full min-w-0 rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none transition focus:border-kodmigo-orange/50 focus:ring-2 focus:ring-kodmigo-orange/20 disabled:opacity-60"
             placeholder="Şifren"
           />
         </div>
+
+        <TurnstileWidget
+          onTokenChange={setCaptchaToken}
+          onError={() =>
+            setError("Güvenlik doğrulaması tamamlanamadı. Lütfen tekrar dene.")
+          }
+        />
 
         {error && (
           <p className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
@@ -149,10 +215,10 @@ export default function SignInForm() {
 
         <button
           type="submit"
-          disabled={loading || !isConfigured}
+          disabled={isSubmitting || !isConfigured}
           className="inline-flex h-12 w-full items-center justify-center rounded-2xl bg-kodmigo-orange text-base font-semibold text-white shadow-lg shadow-kodmigo-orange/25 transition hover:bg-orange-600 disabled:cursor-not-allowed disabled:opacity-60"
         >
-          {loading ? "Giriş yapılıyor..." : "Giriş yap"}
+          {isSubmitting ? "Giriş yapılıyor..." : "Giriş yap"}
         </button>
       </form>
     </AuthShell>
