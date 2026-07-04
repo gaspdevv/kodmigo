@@ -85,6 +85,37 @@ export default function SettingsPageClient() {
             </p>
           )}
         </section>
+
+        <section
+          className={`mt-4 rounded-3xl border p-6 ${theme.cardBackground} ${theme.cardBorder} ${theme.cardShadow}`}
+        >
+          <h2 className={`mb-1 text-lg font-bold ${theme.primaryText}`}>
+            Bilgilendirme
+          </h2>
+          <p className={`mb-4 text-sm leading-relaxed ${theme.mutedText}`}>
+            Verilerini nasıl kullandığımızı ve temel kuralları buradan
+            okuyabilirsin.
+          </p>
+
+          <div className="space-y-2">
+            <Link
+              href="/privacy"
+              onClick={playClickSound}
+              className={`flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-semibold transition hover:scale-[1.01] active:scale-[0.99] ${theme.softBadge}`}
+            >
+              <span>Gizlilik Politikası</span>
+              <span aria-hidden="true">→</span>
+            </Link>
+            <Link
+              href="/terms"
+              onClick={playClickSound}
+              className={`flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-semibold transition hover:scale-[1.01] active:scale-[0.99] ${theme.softBadge}`}
+            >
+              <span>Kullanım Şartları</span>
+              <span aria-hidden="true">→</span>
+            </Link>
+          </div>
+        </section>
       </div>
     </main>
   );
