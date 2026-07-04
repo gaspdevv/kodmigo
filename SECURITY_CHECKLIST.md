@@ -30,9 +30,9 @@ Yayın öncesi güvenlik kontrol listesi. Kod tarafında yapılanlar ve Supabase
 
 - `next.config.ts` — X-Content-Type-Options, Referrer-Policy, X-Frame-Options, Permissions-Policy, CSP, production HSTS.
 
-### CAPTCHA / Turnstile hazırlığı
+### CAPTCHA / hCaptcha hazırlığı
 
-- `components/auth/TurnstileWidget.tsx` — `NEXT_PUBLIC_TURNSTILE_SITE_KEY` varsa widget yüklenir; yoksa auth akışı normal çalışır.
+- `components/auth/HCaptchaWidget.tsx` — `NEXT_PUBLIC_HCAPTCHA_SITE_KEY` varsa görünür hCaptcha widget'ı (`@hcaptcha/react-hcaptcha`) render edilir; yoksa auth akışı normal çalışır.
 - Sign-in / sign-up Supabase çağrılarına `captchaToken` desteği eklendi.
 
 ### RLS (SQL referans)
@@ -57,10 +57,11 @@ Yayın öncesi güvenlik kontrol listesi. Kod tarafında yapılanlar ve Supabase
 
 ### CAPTCHA / Bot protection
 
-1. [Cloudflare Turnstile](https://dash.cloudflare.com/) — site oluştur, **site key** (public) ve **secret key** al.
-2. **Supabase → Authentication → Bot and Abuse Protection → CAPTCHA** — Turnstile etkinleştir, secret key gir.
-3. Vercel env: `NEXT_PUBLIC_TURNSTILE_SITE_KEY=<site-key>`
-4. CAPTCHA'yı Supabase'te açmadan önce frontend env'in deploy edildiğinden emin ol; aksi halde auth başarısız olur.
+1. [hCaptcha](https://dashboard.hcaptcha.com/) — site oluştur, **site key** (public) ve **secret key** al.
+2. **Supabase → Authentication → Bot and Abuse Protection → CAPTCHA** — hCaptcha etkinleştir, secret key gir.
+3. Vercel env (Production): `NEXT_PUBLIC_HCAPTCHA_SITE_KEY=<site-key>`
+4. `NEXT_PUBLIC_*` değişkenleri build zamanında inline edilir; env ekledikten sonra **yeni bir build** tetikle (mevcut build'i "redeploy" etmek yetmez).
+5. CAPTCHA'yı Supabase'te açmadan önce frontend env'in deploy edildiğinden emin ol; aksi halde auth başarısız olur.
 
 ### RLS — user_app_state
 
@@ -116,7 +117,7 @@ Production ve Preview ortamlarında:
 |----------|---------|---------|
 | `NEXT_PUBLIC_SUPABASE_URL` | Evet | Evet |
 | `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Evet | Evet |
-| `NEXT_PUBLIC_TURNSTILE_SITE_KEY` | Evet | CAPTCHA açılınca |
+| `NEXT_PUBLIC_HCAPTCHA_SITE_KEY` | Evet | CAPTCHA açılınca |
 
 **Olmaması gerekenler:** `SUPABASE_SERVICE_ROLE_KEY`, `OPENAI_API_KEY`, herhangi bir secret/private key.
 
@@ -134,7 +135,7 @@ Production ve Preview ortamlarında:
 ## Environment / secret audit (kod taraması)
 
 - Frontend'de `service_role`, `OPENAI`, `sk-` pattern bulunmadı.
-- `process.env` kullanımı: yalnızca `NEXT_PUBLIC_SUPABASE_*` ve opsiyonel `NEXT_PUBLIC_TURNSTILE_SITE_KEY`.
+- `process.env` kullanımı: yalnızca `NEXT_PUBLIC_SUPABASE_*` ve opsiyonel `NEXT_PUBLIC_HCAPTCHA_SITE_KEY`.
 - `.env.example` gerçek secret içermiyor.
 - `.env.local` gitignore'da olmalı (commitlenmemeli).
 

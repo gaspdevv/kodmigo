@@ -41,6 +41,18 @@ export async function signOutUser(): Promise<string | null> {
   return null;
 }
 
+export const CAPTCHA_REQUIRED_MESSAGE =
+  "Devam etmek için güvenlik doğrulamasını tamamla.";
+
+export const CAPTCHA_WIDGET_FAILED_MESSAGE =
+  "Güvenlik doğrulaması tamamlanamadı. Lütfen tekrar dene.";
+
+export const CAPTCHA_EXPIRED_MESSAGE =
+  "Güvenlik doğrulaması süresi doldu. Lütfen tekrar dene.";
+
+export const CAPTCHA_REJECTED_MESSAGE =
+  "Güvenlik doğrulaması başarısız oldu. Lütfen tekrar dene.";
+
 export type AuthErrorKind =
   | "invalid_credentials"
   | "rate_limit"
@@ -56,6 +68,18 @@ export type MappedAuthError = {
   message: string;
   kind: AuthErrorKind;
 };
+
+function isCaptchaAuthError(message: string, code?: string): boolean {
+  const normalized = message.toLowerCase();
+  const normalizedCode = code?.toLowerCase() ?? "";
+
+  return (
+    normalized.includes("captcha") ||
+    normalized.includes("hcaptcha") ||
+    normalized.includes("bot") ||
+    normalizedCode.includes("captcha")
+  );
+}
 
 function isRateLimitError(message: string, status?: number): boolean {
   const normalized = message.toLowerCase();
@@ -101,14 +125,10 @@ export function mapAuthError(
     };
   }
 
-  if (
-    normalized.includes("captcha") ||
-    normalized.includes("turnstile") ||
-    normalized.includes("bot")
-  ) {
+  if (isCaptchaAuthError(message, code)) {
     return {
       kind: "captcha_failed",
-      message: "Güvenlik doğrulaması tamamlanamadı. Lütfen tekrar dene.",
+      message: CAPTCHA_REJECTED_MESSAGE,
     };
   }
 

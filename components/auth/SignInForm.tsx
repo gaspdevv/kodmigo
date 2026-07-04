@@ -4,10 +4,13 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
 import AuthShell from "@/components/auth/AuthShell";
-import TurnstileWidget, {
-  getTurnstileSiteKey,
-} from "@/components/auth/TurnstileWidget";
-import { mapAuthError } from "@/lib/auth/actions";
+import HCaptchaWidget, {
+  isHCaptchaEnabled,
+} from "@/components/auth/HCaptchaWidget";
+import {
+  CAPTCHA_REQUIRED_MESSAGE,
+  mapAuthError,
+} from "@/lib/auth/actions";
 import { completeAuthSessionAndResolveRedirect } from "@/lib/auth/completeAuthSession";
 import {
   clearLoginAttempts,
@@ -30,7 +33,13 @@ export default function SignInForm() {
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
-  const turnstileEnabled = Boolean(getTurnstileSiteKey());
+  const isCaptchaEnabled = isHCaptchaEnabled();
+
+  useEffect(() => {
+    if (process.env.NODE_ENV === "development") {
+      console.debug("[hCaptcha] enabled:", isCaptchaEnabled);
+    }
+  }, [isCaptchaEnabled]);
 
   useEffect(() => {
     if (authLoading || !user) return;
@@ -71,8 +80,8 @@ export default function SignInForm() {
       return;
     }
 
-    if (turnstileEnabled && !captchaToken) {
-      setError("Güvenlik doğrulaması tamamlanamadı. Lütfen tekrar dene.");
+    if (isCaptchaEnabled && !captchaToken) {
+      setError(CAPTCHA_REQUIRED_MESSAGE);
       return;
     }
 
@@ -92,6 +101,17 @@ export default function SignInForm() {
       });
 
       if (signInError) {
+        const mapped = mapAuthError(signInError.message, {
+          status: signInError.status,
+          code: signInError.code,
+        });
+
+        if (mapped.kind === "captcha_failed") {
+          setCaptchaToken(null);
+          setError(mapped.message);
+          return;
+        }
+
         const attemptState = recordFailedLoginAttempt(normalizedEmail);
 
         if (process.env.NODE_ENV === "development") {
@@ -107,10 +127,6 @@ export default function SignInForm() {
           return;
         }
 
-        const mapped = mapAuthError(signInError.message, {
-          status: signInError.status,
-          code: signInError.code,
-        });
         setError(mapped.message);
         return;
       }
@@ -200,12 +216,16 @@ export default function SignInForm() {
           />
         </div>
 
-        <TurnstileWidget
-          onTokenChange={setCaptchaToken}
-          onError={() =>
-            setError("Güvenlik doğrulaması tamamlanamadı. Lütfen tekrar dene.")
-          }
-        />
+        {isCaptchaEnabled && (
+          <HCaptchaWidget
+            onTokenChange={setCaptchaToken}
+            onVerified={() => setError(null)}
+            onFailure={(_reason, message) => {
+              setCaptchaToken(null);
+              setError(message);
+            }}
+          />
+        )}
 
         {error && (
           <p className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">

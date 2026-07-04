@@ -4,10 +4,13 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
 import AuthShell from "@/components/auth/AuthShell";
-import TurnstileWidget, {
-  getTurnstileSiteKey,
-} from "@/components/auth/TurnstileWidget";
-import { mapAuthError } from "@/lib/auth/actions";
+import HCaptchaWidget, {
+  isHCaptchaEnabled,
+} from "@/components/auth/HCaptchaWidget";
+import {
+  CAPTCHA_REQUIRED_MESSAGE,
+  mapAuthError,
+} from "@/lib/auth/actions";
 import { completeAuthSessionAndResolveRedirect } from "@/lib/auth/completeAuthSession";
 import { buildEmailConfirmationRedirectUrl } from "@/lib/auth/routes";
 import {
@@ -49,7 +52,13 @@ export default function SignUpForm() {
     useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
-  const turnstileEnabled = Boolean(getTurnstileSiteKey());
+  const isCaptchaEnabled = isHCaptchaEnabled();
+
+  useEffect(() => {
+    if (process.env.NODE_ENV === "development") {
+      console.debug("[hCaptcha] enabled:", isCaptchaEnabled);
+    }
+  }, [isCaptchaEnabled]);
 
   useEffect(() => {
     if (authLoading || awaitingEmailVerification || !user) return;
@@ -103,8 +112,8 @@ export default function SignUpForm() {
       return;
     }
 
-    if (turnstileEnabled && !captchaToken) {
-      setError("Güvenlik doğrulaması tamamlanamadı. Lütfen tekrar dene.");
+    if (isCaptchaEnabled && !captchaToken) {
+      setError(CAPTCHA_REQUIRED_MESSAGE);
       return;
     }
 
@@ -134,7 +143,11 @@ export default function SignUpForm() {
       setIsSubmitting(false);
       const mapped = mapAuthError(signUpError.message, {
         status: signUpError.status,
+        code: signUpError.code,
       });
+      if (mapped.kind === "captcha_failed") {
+        setCaptchaToken(null);
+      }
       setShowSignInLink(mapped.kind === "user_exists");
       setError(mapped.message);
       return;
@@ -317,12 +330,16 @@ export default function SignUpForm() {
           />
         </div>
 
-        <TurnstileWidget
-          onTokenChange={setCaptchaToken}
-          onError={() =>
-            setError("Güvenlik doğrulaması tamamlanamadı. Lütfen tekrar dene.")
-          }
-        />
+        {isCaptchaEnabled && (
+          <HCaptchaWidget
+            onTokenChange={setCaptchaToken}
+            onVerified={() => setError(null)}
+            onFailure={(_reason, message) => {
+              setCaptchaToken(null);
+              setError(message);
+            }}
+          />
+        )}
 
         {error && (
           <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
