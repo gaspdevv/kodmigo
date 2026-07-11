@@ -57,3 +57,33 @@ export function buildSignInRedirectUrl(
 export function buildEmailConfirmationRedirectUrl(origin: string): string {
   return `${origin}${AUTH_CONFIRMED_PATH}`;
 }
+
+const BLOCKED_POST_LOGIN_REDIRECT_PATHS = [
+  AUTH_SIGN_IN_PATH,
+  AUTH_SIGN_UP_PATH,
+  AUTH_FORGOT_PASSWORD_PATH,
+  AUTH_UPDATE_PASSWORD_PATH,
+  AUTH_CONFIRMED_PATH,
+  AUTH_CALLBACK_PATH,
+  AUTH_CONFIRM_PATH,
+  AUTH_START_PATH,
+] as const;
+
+/** Giriş sonrası yönlendirme için güvenli redirect param (auth sayfalarını engeller) */
+export function resolveSafePostLoginRedirect(
+  redirectTo: string | null,
+): string | null {
+  if (!redirectTo?.startsWith("/") || redirectTo.startsWith("//")) {
+    return null;
+  }
+
+  const isBlocked = BLOCKED_POST_LOGIN_REDIRECT_PATHS.some(
+    (path) => redirectTo === path || redirectTo.startsWith(`${path}/`),
+  );
+
+  if (isBlocked) {
+    return null;
+  }
+
+  return redirectTo;
+}

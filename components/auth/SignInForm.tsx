@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import AuthShell from "@/components/auth/AuthShell";
 import HCaptchaWidget, {
   isHCaptchaEnabled,
@@ -19,7 +19,7 @@ import {
   getLoginLockState,
   recordFailedLoginAttempt,
 } from "@/lib/auth/login-attempts";
-import { AUTH_FORGOT_PASSWORD_PATH } from "@/lib/auth/routes";
+import { AUTH_FORGOT_PASSWORD_PATH, resolveSafePostLoginRedirect } from "@/lib/auth/routes";
 import { useAuthUser } from "@/lib/auth/useAuthUser";
 import { validateEmail } from "@/lib/auth/validation";
 import { createClient } from "@/lib/supabase/client";
@@ -28,8 +28,9 @@ import { SUPABASE_ENV_HINT } from "@/lib/supabase/env";
 export default function SignInForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const redirectTo = searchParams.get("redirect");
+  const redirectTo = resolveSafePostLoginRedirect(searchParams.get("redirect"));
   const passwordUpdated = searchParams.get("passwordUpdated") === "1";
+  const passwordUpdatedCleanupRef = useRef(false);
   const { user, loading: authLoading, isConfigured } = useAuthUser();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -45,17 +46,21 @@ export default function SignInForm() {
   }, [isCaptchaEnabled]);
 
   useEffect(() => {
-    if (passwordUpdated) {
-      const supabase = createClient();
-      if (!supabase) return;
+    if (!passwordUpdated || passwordUpdatedCleanupRef.current) return;
+    passwordUpdatedCleanupRef.current = true;
 
-      void supabase.auth.getSession().then(({ data: { session } }) => {
-        if (session) {
-          void signOutUser();
-        }
-      });
-      return;
-    }
+    const supabase = createClient();
+    if (!supabase) return;
+
+    void supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session) {
+        void signOutUser();
+      }
+    });
+  }, [passwordUpdated]);
+
+  useEffect(() => {
+    if (passwordUpdated) return;
 
     if (authLoading || !user) return;
 

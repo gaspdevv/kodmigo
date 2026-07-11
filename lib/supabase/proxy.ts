@@ -9,6 +9,7 @@ import {
   AUTH_SIGN_IN_PATH,
   AUTH_SIGN_UP_PATH,
   isProtectedRoute,
+  resolveSafePostLoginRedirect,
   shouldRedirectLoggedInUserFromAuth,
 } from "@/lib/auth/routes";
 import { getSupabaseKey, getSupabaseUrl } from "@/lib/supabase/env";
@@ -131,7 +132,9 @@ export async function updateSession(request: NextRequest) {
         return supabaseResponse;
       }
 
-      const redirectTarget = request.nextUrl.searchParams.get("redirect");
+      const redirectTarget = resolveSafePostLoginRedirect(
+        request.nextUrl.searchParams.get("redirect"),
+      );
       const destinationPath = resolvePostLoginPath(
         redirectTarget,
         hasOnboardingProfile,

@@ -55,7 +55,7 @@ export async function resolvePostLoginPathAfterSync(
   } = await supabase.auth.getSession();
 
   if (!session?.user) {
-    return ONBOARDING_PATH;
+    return "/dashboard";
   }
 
   const onboardingComplete = await fetchUserHasOnboardingProfile(
