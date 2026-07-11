@@ -7,6 +7,7 @@ import AuthShell from "@/components/auth/AuthShell";
 import HCaptchaWidget, {
   isHCaptchaEnabled,
 } from "@/components/auth/HCaptchaWidget";
+import PasswordChecklist from "@/components/auth/PasswordChecklist";
 import {
   CAPTCHA_REQUIRED_MESSAGE,
   mapAuthError,
@@ -20,6 +21,7 @@ import {
 } from "@/lib/auth/signup-cooldown";
 import { useAuthUser } from "@/lib/auth/useAuthUser";
 import {
+  isPasswordFormValid,
   normalizeEmail,
   validateEmail,
   validatePassword,
@@ -53,6 +55,7 @@ export default function SignUpForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
   const isCaptchaEnabled = isHCaptchaEnabled();
+  const isFormValid = isPasswordFormValid(password, confirmPassword);
 
   useEffect(() => {
     if (process.env.NODE_ENV === "development") {
@@ -304,7 +307,7 @@ export default function SignUpForm() {
             maxLength={72}
             disabled={isSubmitting}
             className="w-full min-w-0 rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none transition focus:border-kodmigo-orange/50 focus:ring-2 focus:ring-kodmigo-orange/20 disabled:opacity-60"
-            placeholder="En az 8 karakter"
+            placeholder="Güçlü bir şifre seç"
           />
         </div>
 
@@ -329,6 +332,8 @@ export default function SignUpForm() {
             placeholder="Şifreni tekrar gir"
           />
         </div>
+
+        <PasswordChecklist password={password} confirmPassword={confirmPassword} />
 
         {isCaptchaEnabled && (
           <HCaptchaWidget
@@ -357,7 +362,7 @@ export default function SignUpForm() {
 
         <button
           type="submit"
-          disabled={isSubmitting || !isConfigured}
+          disabled={isSubmitting || !isConfigured || !isFormValid}
           className="inline-flex h-12 w-full items-center justify-center rounded-2xl bg-kodmigo-orange text-base font-semibold text-white shadow-lg shadow-kodmigo-orange/25 transition hover:bg-orange-600 disabled:cursor-not-allowed disabled:opacity-60"
         >
           {isSubmitting ? "Kayıt oluşturuluyor..." : "Kayıt ol"}

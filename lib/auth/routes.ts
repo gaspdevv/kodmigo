@@ -1,5 +1,7 @@
 export const AUTH_SIGN_IN_PATH = "/auth/sign-in";
 export const AUTH_SIGN_UP_PATH = "/auth/sign-up";
+export const AUTH_FORGOT_PASSWORD_PATH = "/auth/forgot-password";
+export const AUTH_UPDATE_PASSWORD_PATH = "/auth/update-password";
 export const AUTH_START_PATH = "/auth/start";
 export const AUTH_CALLBACK_PATH = "/auth/callback";
 export const AUTH_CONFIRM_PATH = "/auth/confirm";
@@ -10,6 +12,7 @@ export const AUTH_ROUTES_SKIP_LOGGED_IN_REDIRECT = [
   AUTH_CALLBACK_PATH,
   AUTH_CONFIRM_PATH,
   AUTH_CONFIRMED_PATH,
+  AUTH_UPDATE_PASSWORD_PATH,
 ] as const;
 
 export const PROTECTED_ROUTE_PREFIXES = [

@@ -18,6 +18,7 @@ import {
   getLoginLockState,
   recordFailedLoginAttempt,
 } from "@/lib/auth/login-attempts";
+import { AUTH_FORGOT_PASSWORD_PATH } from "@/lib/auth/routes";
 import { useAuthUser } from "@/lib/auth/useAuthUser";
 import { validateEmail } from "@/lib/auth/validation";
 import { createClient } from "@/lib/supabase/client";
@@ -27,6 +28,7 @@ export default function SignInForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const redirectTo = searchParams.get("redirect");
+  const passwordUpdated = searchParams.get("passwordUpdated") === "1";
   const { user, loading: authLoading, isConfigured } = useAuthUser();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -174,6 +176,12 @@ export default function SignInForm() {
       )}
 
       <form onSubmit={handleSubmit} className="space-y-4">
+        {passwordUpdated && (
+          <div className="rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800">
+            Şifren güncellendi. Yeni şifrenle giriş yapabilirsin.
+          </div>
+        )}
+
         <div>
           <label
             htmlFor="email"
@@ -214,6 +222,14 @@ export default function SignInForm() {
             className="w-full min-w-0 rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none transition focus:border-kodmigo-orange/50 focus:ring-2 focus:ring-kodmigo-orange/20 disabled:opacity-60"
             placeholder="Şifren"
           />
+          <div className="mt-2 text-right">
+            <Link
+              href={AUTH_FORGOT_PASSWORD_PATH}
+              className="text-sm text-kodmigo-orange hover:underline"
+            >
+              Şifremi unuttum
+            </Link>
+          </div>
         </div>
 
         {isCaptchaEnabled && (

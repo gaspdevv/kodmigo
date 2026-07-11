@@ -159,10 +159,14 @@ export function mapAuthError(
     };
   }
 
-  if (normalized.includes("password should be at least")) {
+  if (
+    normalized.includes("password should be at least") ||
+    normalized.includes("password is too weak") ||
+    normalized.includes("weak password")
+  ) {
     return {
       kind: "validation",
-      message: "Şifre en az 8 karakter olmalı.",
+      message: "Şifren güvenlik kurallarını karşılamıyor.",
     };
   }
 
