@@ -2,13 +2,14 @@
 
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import AuthShell from "@/components/auth/AuthShell";
 import PasswordChecklist from "@/components/auth/PasswordChecklist";
 import { mapAuthError } from "@/lib/auth/actions";
 import {
   AUTH_FORGOT_PASSWORD_PATH,
   AUTH_SIGN_IN_PATH,
+  AUTH_UPDATE_PASSWORD_PATH,
 } from "@/lib/auth/routes";
 import {
   isPasswordFormValid,
@@ -17,9 +18,15 @@ import {
 } from "@/lib/auth/validation";
 import { createClient } from "@/lib/supabase/client";
 import { SUPABASE_ENV_HINT } from "@/lib/supabase/env";
+import type { SupabaseClient } from "@supabase/supabase-js";
 
 const INVALID_RECOVERY_MESSAGE =
   "Şifre yenileme bağlantısı geçersiz veya süresi dolmuş olabilir. Lütfen yeniden şifre yenileme isteği gönder.";
+
+const RECOVERY_WAIT_MS = 1500;
+
+/** Strict Mode çift mount'ta aynı code'un iki kez exchange edilmesini önler */
+const recoveryExchangePromises = new Map<string, Promise<boolean>>();
 
 function hasSupabaseRecoveryError(searchParams: URLSearchParams): boolean {
   if (searchParams.get("error") === "1") return true;
@@ -28,6 +35,99 @@ function hasSupabaseRecoveryError(searchParams: URLSearchParams): boolean {
 
   const error = searchParams.get("error");
   return Boolean(error && error !== "1");
+}
+
+function getRecoveryCodeFromUrl(): string | null {
+  if (typeof window === "undefined") return null;
+
+  const queryCode = new URLSearchParams(window.location.search).get("code");
+  if (queryCode) return queryCode;
+
+  return null;
+}
+
+function hashHasRecoveryTokens(): boolean {
+  if (typeof window === "undefined") return false;
+
+  const hashParams = new URLSearchParams(
+    window.location.hash.replace(/^#/, ""),
+  );
+
+  return (
+    hashParams.get("type") === "recovery" || hashParams.has("access_token")
+  );
+}
+
+async function exchangeRecoveryCodeForSession(
+  client: SupabaseClient,
+  code: string,
+): Promise<boolean> {
+  const existing = recoveryExchangePromises.get(code);
+  if (existing) {
+    return existing;
+  }
+
+  const exchangePromise = (async () => {
+    const { error: exchangeError } =
+      await client.auth.exchangeCodeForSession(code);
+
+    if (!exchangeError) {
+      return true;
+    }
+
+    if (process.env.NODE_ENV !== "production") {
+      console.error("[Kodmigo] exchangeCodeForSession error:", exchangeError);
+    }
+
+    const {
+      data: { session },
+    } = await client.auth.getSession();
+
+    return Boolean(session);
+  })();
+
+  recoveryExchangePromises.set(code, exchangePromise);
+  return exchangePromise;
+}
+
+async function waitForRecoverySession(
+  client: SupabaseClient,
+  timeoutMs: number,
+): Promise<boolean> {
+  const {
+    data: { session: initialSession },
+  } = await client.auth.getSession();
+
+  if (initialSession) {
+    return true;
+  }
+
+  return new Promise((resolve) => {
+    let settled = false;
+
+    const finish = (hasSession: boolean) => {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timeoutId);
+      subscription.unsubscribe();
+      resolve(hasSession);
+    };
+
+    const timeoutId = setTimeout(async () => {
+      const {
+        data: { session },
+      } = await client.auth.getSession();
+      finish(Boolean(session));
+    }, timeoutMs);
+
+    const {
+      data: { subscription },
+    } = client.auth.onAuthStateChange((event, session) => {
+      if (event === "PASSWORD_RECOVERY" || session) {
+        finish(Boolean(session));
+      }
+    });
+  });
 }
 
 function InvalidRecoveryView() {
@@ -69,8 +169,8 @@ export default function UpdatePasswordForm() {
   const [sessionReady, setSessionReady] = useState(false);
   const [sessionChecking, setSessionChecking] = useState(true);
   const [invalidRecovery, setInvalidRecovery] = useState(false);
+  const recoveryInitRef = useRef(false);
 
-  const authCode = searchParams.get("code");
   const showUrlError = hasSupabaseRecoveryError(searchParams);
 
   const supabase = createClient();
@@ -84,6 +184,9 @@ export default function UpdatePasswordForm() {
       return;
     }
 
+    if (recoveryInitRef.current) return;
+    recoveryInitRef.current = true;
+
     let cancelled = false;
 
     async function establishRecoverySession() {
@@ -96,44 +199,39 @@ export default function UpdatePasswordForm() {
         return;
       }
 
-      if (authCode) {
-        const { error: exchangeError } =
-          await client.auth.exchangeCodeForSession(authCode);
+      const recoveryCode = getRecoveryCodeFromUrl();
+      const hasHashRecovery = hashHasRecoveryTokens();
+
+      if (recoveryCode) {
+        const exchangeSucceeded = await exchangeRecoveryCodeForSession(
+          client,
+          recoveryCode,
+        );
 
         if (cancelled) return;
 
-        if (exchangeError) {
-          setInvalidRecovery(true);
+        if (exchangeSucceeded) {
+          setSessionReady(true);
+          setInvalidRecovery(false);
           setSessionChecking(false);
+          router.replace(AUTH_UPDATE_PASSWORD_PATH);
           return;
         }
       }
 
-      const {
-        data: { session },
-      } = await client.auth.getSession();
+      const hasSession = await waitForRecoverySession(
+        client,
+        hasHashRecovery || recoveryCode ? RECOVERY_WAIT_MS : 0,
+      );
 
       if (cancelled) return;
 
-      if (session) {
+      if (hasSession) {
         setSessionReady(true);
-        setSessionChecking(false);
-        return;
-      }
-
-      // detectSessionInUrl hash fragment işlemesi için kısa bekleme
-      await new Promise((resolve) => setTimeout(resolve, 300));
-
-      if (cancelled) return;
-
-      const {
-        data: { session: retrySession },
-      } = await client.auth.getSession();
-
-      if (cancelled) return;
-
-      if (retrySession) {
-        setSessionReady(true);
+        setInvalidRecovery(false);
+        if (recoveryCode) {
+          router.replace(AUTH_UPDATE_PASSWORD_PATH);
+        }
       } else {
         setInvalidRecovery(true);
       }
@@ -146,7 +244,7 @@ export default function UpdatePasswordForm() {
     return () => {
       cancelled = true;
     };
-  }, [authCode, showUrlError]);
+  }, [showUrlError, router]);
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
