@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { FormEvent, useEffect, useRef, useState } from "react";
 import AuthShell from "@/components/auth/AuthShell";
 import PasswordChecklist from "@/components/auth/PasswordChecklist";
-import { mapAuthError } from "@/lib/auth/actions";
+import { mapAuthError, signOutUser } from "@/lib/auth/actions";
 import {
   AUTH_FORGOT_PASSWORD_PATH,
   AUTH_SIGN_IN_PATH,
@@ -286,8 +286,8 @@ export default function UpdatePasswordForm() {
         return;
       }
 
-      await supabase.auth.signOut();
-      router.replace(`${AUTH_SIGN_IN_PATH}?passwordUpdated=1`);
+      await signOutUser();
+      window.location.assign(`${AUTH_SIGN_IN_PATH}?passwordUpdated=1`);
     } finally {
       setIsSubmitting(false);
     }

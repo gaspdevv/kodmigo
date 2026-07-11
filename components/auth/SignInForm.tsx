@@ -10,6 +10,7 @@ import HCaptchaWidget, {
 import {
   CAPTCHA_REQUIRED_MESSAGE,
   mapAuthError,
+  signOutUser,
 } from "@/lib/auth/actions";
 import { completeAuthSessionAndResolveRedirect } from "@/lib/auth/completeAuthSession";
 import {
@@ -44,6 +45,18 @@ export default function SignInForm() {
   }, [isCaptchaEnabled]);
 
   useEffect(() => {
+    if (passwordUpdated) {
+      const supabase = createClient();
+      if (!supabase) return;
+
+      void supabase.auth.getSession().then(({ data: { session } }) => {
+        if (session) {
+          void signOutUser();
+        }
+      });
+      return;
+    }
+
     if (authLoading || !user) return;
 
     const supabase = createClient();
@@ -54,7 +67,7 @@ export default function SignInForm() {
         router.replace(destination);
       },
     );
-  }, [authLoading, user, router, redirectTo]);
+  }, [authLoading, user, router, redirectTo, passwordUpdated]);
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -145,7 +158,7 @@ export default function SignInForm() {
     }
   };
 
-  if (authLoading || user) {
+  if (authLoading || (user && !passwordUpdated)) {
     return (
       <main className="flex min-h-screen items-center justify-center bg-background">
         <p className="text-sm text-slate-500">Yükleniyor...</p>

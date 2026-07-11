@@ -6,6 +6,7 @@ import {
   resolvePostLoginPath,
 } from "@/lib/auth/postLoginRedirect";
 import {
+  AUTH_SIGN_IN_PATH,
   AUTH_SIGN_UP_PATH,
   isProtectedRoute,
   shouldRedirectLoggedInUserFromAuth,
@@ -123,6 +124,13 @@ export async function updateSession(request: NextRequest) {
     }
 
     if (shouldRedirectLoggedInUserFromAuth(pathname)) {
+      if (
+        pathname === AUTH_SIGN_IN_PATH &&
+        request.nextUrl.searchParams.get("passwordUpdated") === "1"
+      ) {
+        return supabaseResponse;
+      }
+
       const redirectTarget = request.nextUrl.searchParams.get("redirect");
       const destinationPath = resolvePostLoginPath(
         redirectTarget,
