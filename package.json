@@ -7,7 +7,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "validate:lessons": "npx tsx scripts/validate-lessons.ts"
+    "validate:lessons": "npx tsx scripts/validate-lessons.ts",
+    "generate:icons": "node scripts/generate-icons.mjs",
+    "install:icons": "node scripts/install-icons.mjs",
+    "generate:favicons": "node scripts/generate-favicons.mjs"
   },
   "dependencies": {
     "@hcaptcha/react-hcaptcha": "^2.0.2",
@@ -18,13 +21,17 @@
     "react-dom": "19.2.4"
   },
   "devDependencies": {
+    "@napi-rs/canvas": "^1.0.2",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.2.9",
+    "sharp": "^0.35.3",
     "tailwindcss": "^4",
+    "to-ico": "^1.1.5",
+    "twemoji": "^14.0.2",
     "typescript": "^5"
   }
 }
